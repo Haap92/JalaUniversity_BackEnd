@@ -1,0 +1,5 @@
+**/Homework_28-11-2022_CallApplyBind/node_modules
+**/MyTsExpressApp
+**/Test
+dist/
+**/**/*.log
