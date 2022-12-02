@@ -12,15 +12,16 @@ export default class King extends Piece{
         const targetFile = files.indexOf(position.file);
         const targetRank = ranks.indexOf(position.rank);
 
-        if((Math.abs(targetFile-currentFile)<=1) 
-        && (Math.abs(targetRank-currentRank) <=1))
-            return true;
         if((currentFile === targetFile)
         && (currentRank === targetRank))
             return false;
+            
+        if((Math.abs(targetFile-currentFile)<=1) 
+        && (Math.abs(targetRank-currentRank) <=1))
+            return true;
         
         return false;
-        
+
     }
     
 }

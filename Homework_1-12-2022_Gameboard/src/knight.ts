@@ -1,8 +1,8 @@
 import Piece from "./piece";
-import position from "./position";
+import Position from "./position";
 
 export default class Knight extends Piece{
-    canMoveTo(position: position): boolean {
+    canMoveTo(position: Position): boolean {
         throw new Error("Method not implemented.");
     }
     
