@@ -16,14 +16,14 @@ it('Should move one place forward', () => {
     expect(king.canMoveTo(position)).toBe(true);
 });
 
-it('Shouldnt move to the same place', () => {
+it('Should not move to the same place', () => {
     const position = new Position('E', '1');
     expect(king.canMoveTo(position)).toBe(false);
 });
 
-it('Shoul move one place to the left', () => {
+it('Should move one place to the left', () => {
     const position = new Position('D', '1');
-    expect(king.canMoveTo(position)).toBe(false);
+    expect(king.canMoveTo(position)).toBe(true);
 });
 
 it('Should not move forward more than one space', () => {
