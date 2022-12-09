@@ -1,7 +1,8 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
+import User from "../entities/user";
 
 @Entity()
-export default class User { 
+export default class DBUser implements User { 
 
     @PrimaryColumn()
     id: number

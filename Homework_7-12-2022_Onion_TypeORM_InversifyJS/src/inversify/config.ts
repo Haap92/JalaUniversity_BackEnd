@@ -1,8 +1,11 @@
 import { Container } from "inversify";
-import { UserService } from "../services/userService";
-import { USER } from "../types/types";
+import UserDataService from "../db/db-services";
+import UserRepository from "../repository/userRepository";
+import UserService from "../services/userService";
 
 const container = new Container();
-container.bind(USER).to(UserService);
+
+container.bind<UserRepository>('UserService').to(UserService);
+container.bind<UserRepository>('UserDataService').to(UserDataService);
 
 export { container };
