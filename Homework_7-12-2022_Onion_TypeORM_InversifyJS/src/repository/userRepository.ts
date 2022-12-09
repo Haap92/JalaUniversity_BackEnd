@@ -1,4 +1,3 @@
-//import { DeleteResult } from "typeorm"
 import User from "../entities/user"
 
 export default interface UserRepository {
