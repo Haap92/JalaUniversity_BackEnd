@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
-import Snake from "../../entities/snake";
+import Snake from "../../domain/entities/snake";
 
 @Entity()
 export default class DBSnake implements Snake { 
@@ -8,6 +8,8 @@ export default class DBSnake implements Snake {
     id: number
 
     @Column()
-    position: [[number],[number]]
+    axisX: number
 
+    @Column()
+    axisY: number
 }

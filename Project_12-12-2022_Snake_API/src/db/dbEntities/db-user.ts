@@ -1,13 +1,13 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
-import Board from "../../entities/board";
+import User from "../../domain/entities/user";
 
 @Entity()
-export default class DBBoard implements Board { 
+export default class DBUser implements User { 
 
     @PrimaryColumn()
     id: number
 
     @Column()
-    size: [[number],[number]]
+    name: string
 
 }

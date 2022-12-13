@@ -1,6 +1,6 @@
 import { AppDataSource } from '../db-source';
-import DBUser from './db-user';
-import UserRepository from '../../repository/userRepository';
+import DBUser from '../dbEntities/db-user';
+import UserRepository from '../../domain/repository/userRepository';
 import { injectable } from 'inversify';
 
 @injectable()

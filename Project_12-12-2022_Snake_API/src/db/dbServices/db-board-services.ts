@@ -1,7 +1,7 @@
 import { AppDataSource } from '../db-source';
 import { injectable } from 'inversify';
-import BoardRepository from '../../repository/boardRepository';
-import DBBoard from './db-board';
+import BoardRepository from '../../domain/repository/boardRepository';
+import DBBoard from '../dbEntities/db-board';
 
 @injectable()
 export default class BoardDataService implements BoardRepository  {

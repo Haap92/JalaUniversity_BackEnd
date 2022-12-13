@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
-import User from '../entities/user';
+import User from '../domain/entities/user';
 import { container } from '../inversify/config';
-import UserRepository from '../repository/userRepository';
+import UserRepository from '../domain/repository/userRepository';
 
 @injectable()
 export default class UserService implements UserRepository {

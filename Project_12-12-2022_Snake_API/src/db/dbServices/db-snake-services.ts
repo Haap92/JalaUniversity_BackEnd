@@ -1,7 +1,7 @@
 import { AppDataSource } from '../db-source';
 import { injectable } from 'inversify';
-import SnakeRepository from '../../repository/snakeRepository';
-import DBSnake from './db-snake';
+import SnakeRepository from '../../domain/repository/snakeRepository';
+import DBSnake from '../dbEntities/db-snake';
 
 @injectable()
 export default class SnakeDataService implements SnakeRepository  {

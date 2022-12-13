@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
-import Board from '../entities/board';
+import Board from '../domain/entities/board';
 import { container } from '../inversify/config';
-import BoardRepository from '../repository/boardRepository';
+import BoardRepository from '../domain/repository/boardRepository';
 
 @injectable()
 export default class BoardService implements BoardRepository {

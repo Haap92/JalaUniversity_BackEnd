@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
-import DBBoard from "./board/db-board";
-import DBSnake from "./snake/db-snake";
-import DBUser from './user/db-user';
+import DBBoard from "./dbEntities/db-board";
+import DBSnake from "./dbEntities/db-snake";
+import DBUser from './dbEntities/db-user';
 
 export const AppDataSource = new DataSource ({
     type: "sqlite",

@@ -1,5 +1,5 @@
 import User from "../../entities/user";
-import DBUser from "../../db/user/db-user";
+import DBUser from "../../../db/dbEntities/db-user";
 
 export class UserMapper {
     static toDomain(raw: DBUser): User{

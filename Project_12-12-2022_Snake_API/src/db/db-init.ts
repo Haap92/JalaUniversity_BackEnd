@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { AppDataSource } from "./db-source";
-import User from "./user/db-user";
-import Board from "./board/db-board";
-import Snake from "./snake/db-snake";
-import UserDataService from './user/db-user-services';
-import BoardDataService from "./board/db-board-services";
-import SnakeDataService from "./snake/db-snake-services";
+import User from "./dbEntities/db-user";
+import Board from "./dbEntities/db-board";
+import Snake from "./dbEntities/db-snake";
+import UserDataService from './dbServices/db-user-services';
+import BoardDataService from "./dbServices/db-board-services";
+import SnakeDataService from "./dbServices/db-snake-services";
 
 
 class Test {
@@ -21,7 +21,8 @@ class Test {
         console.log(await userDataAccess.read(1));
 
         const board = new Board();
-        board.size = [[40],[40]];        
+        board.gridX = 40;
+        board.gridY = 40;        
 
         const boardDataAccess = new BoardDataService;
         await boardDataAccess.create(board);
@@ -29,7 +30,8 @@ class Test {
         console.log(await boardDataAccess.read(1));
 
         const snake = new Snake();
-        snake.position = [[20],[20]];        
+        snake.axisX = 20;
+        snake.axisY = 20;       
 
         const snakeDataAccess = new SnakeDataService;
         await snakeDataAccess.create(snake);
