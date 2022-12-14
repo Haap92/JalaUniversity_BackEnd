@@ -1,5 +1,5 @@
 import express from 'express'
-import { routes } from './routes/routes'
+import { routes } from './API/routes/routes'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bodyParser = require('body-parser')

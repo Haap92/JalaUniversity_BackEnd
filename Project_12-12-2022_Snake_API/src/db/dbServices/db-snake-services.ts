@@ -8,7 +8,8 @@ export default class SnakeDataService implements SnakeRepository  {
     
     async create(snake: DBSnake){
         const repository = AppDataSource.getRepository(DBSnake);
-        await repository.save(snake)
+        await repository.save(snake);
+        return snake
     }
 
     async read(id: number){

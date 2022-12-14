@@ -8,7 +8,8 @@ export default class UserDataService implements UserRepository  {
     
     async create(user: DBUser){
         const repository = AppDataSource.getRepository(DBUser);
-        await repository.save(user)
+        await repository.save(user);
+        return user
     }
 
     async read(id: number){

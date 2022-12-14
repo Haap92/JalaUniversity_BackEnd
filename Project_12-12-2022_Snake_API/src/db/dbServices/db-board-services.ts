@@ -8,7 +8,8 @@ export default class BoardDataService implements BoardRepository  {
     
     async create(board: DBBoard){
         const repository = AppDataSource.getRepository(DBBoard);
-        await repository.save(board)
+        await repository.save(board);
+        return board
     }
 
     async read(id: number){
