@@ -31,7 +31,8 @@ class Test {
 
         const snake = new Snake();
         snake.axisX = 20;
-        snake.axisY = 20;       
+        snake.axisY = 20; 
+        snake.direction = 'RIGHT'      
 
         const snakeDataAccess = new SnakeDataService;
         await snakeDataAccess.create(snake);

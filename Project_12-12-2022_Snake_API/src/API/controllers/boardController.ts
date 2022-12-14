@@ -5,21 +5,18 @@ import createBoard from "../../factories/createBoard";
 import { container } from "../../inversify/config";
 
 export default class BoardController {
-    static createBySize(arg0: string, createBySize: any) {
-        throw new Error("Method not implemented.");
-   
-    //createBySize(req: Request, res: Response) {
-    //    async function createTheBoard() {
-    //        const input = parseFloat(req.params.size);
-    //        const boardCreator = new createBoard();
-    //        const board = boardCreator.createBoard(input);
-    //        await AppDataSource.initialize();
-    //        const newBoardCreator = container.get<BoardRepository>('BoardService');
-    //        const newBoard = await newBoardCreator.create(board);
-    //        res.send(newBoard);
-    //        await AppDataSource.destroy()
-    //        }
-    //    createTheBoard();
-     //   }
+    
+    createBySize(req: Request, res: Response) {
+        async function createTheBoard() {
+            const input = parseFloat(req.params.size);
+            const boardCreator = new createBoard();
+            const board = boardCreator.createBoard(input);
+            await AppDataSource.initialize();
+            const newBoardCreator = container.get<BoardRepository>('BoardService');
+            const newBoard = await newBoardCreator.create(board);
+            res.send(newBoard);
+            await AppDataSource.destroy()
+            }
+        createTheBoard();
     }
 }

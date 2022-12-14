@@ -12,4 +12,7 @@ export default class DBSnake implements Snake {
 
     @Column()
     axisY: number
+
+    @Column()
+    direction: string
 }
