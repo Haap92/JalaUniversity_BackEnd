@@ -9,6 +9,9 @@ import BoardService from "../services/boardService";
 import SnakeDataService from "../db/dbServices/db-snake-services";
 import SnakeRepository from "../domain/repository/snakeRepository";
 import SnakeService from "../services/snakeService";
+import FoodDataService from "../db/dbServices/db-food-services";
+import FoodRepository from "../domain/repository/foodRepository";
+import FoodService from "../services/foodService";
 
 
 const container = new Container();
@@ -19,6 +22,8 @@ container.bind<BoardRepository>('BoardService').to(BoardService);
 container.bind<BoardRepository>('BoardDataService').to(BoardDataService);
 container.bind<SnakeRepository>('SnakeService').to(SnakeService);
 container.bind<SnakeRepository>('SnakeDataService').to(SnakeDataService);
+container.bind<FoodRepository>('FoodService').to(FoodService);
+container.bind<FoodRepository>('FoodDataService').to(FoodDataService);
 
 
 export { container };

@@ -19,6 +19,11 @@ export default class SnakeDataService implements SnakeRepository  {
         })
     }
 
+    async update(snake: DBSnake){
+        const repository = AppDataSource.getRepository(DBSnake);
+        await repository.save(snake)
+    }
+
     async delete(id: number){
         const repository = AppDataSource.getRepository(DBSnake);
         await repository.delete({

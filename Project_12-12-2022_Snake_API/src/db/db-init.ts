@@ -6,6 +6,8 @@ import Snake from "./dbEntities/db-snake";
 import UserDataService from './dbServices/db-user-services';
 import BoardDataService from "./dbServices/db-board-services";
 import SnakeDataService from "./dbServices/db-snake-services";
+import Food from "../domain/entities/food";
+import FoodDataService from "./dbServices/db-food-services";
 
 
 class Test {
@@ -37,7 +39,15 @@ class Test {
         const snakeDataAccess = new SnakeDataService;
         await snakeDataAccess.create(snake);
 
-        console.log(await snakeDataAccess.read(1));
+        const food = new Food();
+        food.axisX = 5;
+        food.axisY = 16; 
+
+        const foodDataAccess = new FoodDataService;
+        await foodDataAccess.create(food);
+
+
+        console.log(await foodDataAccess.read(1));
 
 
 

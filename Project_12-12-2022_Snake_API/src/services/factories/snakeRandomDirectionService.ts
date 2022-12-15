@@ -1,12 +1,11 @@
 import RandomNumberService from "./randomNumberService"
+import { directions } from "./snakeDirectionConstant"
 
-const directions = [ 'LEFT', 'UP', 'RIGHT', 'DOWN']
-
-export default class DirectionsService {
+export default class SnakeRandomDirectionService {
     snakeDirection(){
         const randomDirection = new RandomNumberService().randomNumber
         const directionSnake = directions[randomDirection(3)]     
-        const snakeDir = directionSnake.toString()
-        return snakeDir
+        const spawnDirectionOfSnake = directionSnake.toString()
+        return spawnDirectionOfSnake
     }
 }

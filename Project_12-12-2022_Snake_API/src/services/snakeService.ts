@@ -18,6 +18,11 @@ snakeDataService: SnakeRepository = container.get<SnakeRepository>('SnakeDataSer
             return data;
     }
 
+    async update(snake: Snake) {
+        const result = await this.snakeDataService.update(snake);
+            return result;
+    }
+
     async delete(id: number) {
         const result = await this.snakeDataService.delete(id);
             return result;

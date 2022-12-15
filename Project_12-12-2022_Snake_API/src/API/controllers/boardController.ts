@@ -1,12 +1,12 @@
 import { Request, Response} from "express";
 import { AppDataSource } from "../../db/db-source";
 import BoardRepository from "../../domain/repository/boardRepository";
-import createBoard from "../../factories/createBoard";
+import createBoard from "../../services/factories/createBoard";
 import { container } from "../../inversify/config";
 
 export default class BoardController {
     
-    createBySize(req: Request, res: Response) {
+    static createBySize(req: Request, res: Response) {
         async function createTheBoard() {
             const input = parseFloat(req.params.size);
             const boardCreator = new createBoard();
@@ -18,5 +18,15 @@ export default class BoardController {
             await AppDataSource.destroy()
             }
         createTheBoard();
+    }
+
+    static printBoard(req: Request, res: Response) {
+
+        function printTheBoard() {
+            const input = parseFloat(req.params.size);
+            res.send(Array.from({ length: input }, () =>
+            Array.from({ length: input }, () => '  ')));
+        }
+        printTheBoard();
     }
 }
