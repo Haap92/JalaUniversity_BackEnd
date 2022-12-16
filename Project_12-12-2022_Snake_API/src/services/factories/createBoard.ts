@@ -1,10 +1,10 @@
 import Board from "../../domain/entities/board";
 
 export default class createBoard {
-    createBoard(size: number): Board  {
+    createBoard(boardSize: number): Board  {
         const board = new Board;
-        board.gridX = size;
-        board.gridY = size;
+        board.gridX = boardSize;
+        board.gridY = boardSize;
         return board
     }
 }
