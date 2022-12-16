@@ -3,7 +3,7 @@ import { AppDataSource } from "../../db/db-source";
 import SnakeRepository from "../../domain/repository/SnakeRepository";
 import createSnake from "../../services/factories/createSnake";
 import { container } from "../../inversify/config";
-import { directions } from "../../services/factories/snakeDirectionConstant";
+import { directions, minimunAxis } from '../../services/factories/snakeDirectionConstant';
 
 export default class SnakeController {
 
@@ -23,12 +23,16 @@ export default class SnakeController {
 
     static moveTheCreatedSnakeLeft(req: Request, res:Response) {
         async function moveTheSnakeLeft() {
+            const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id)
             const snakeMovingLeft = directions[0];
+            const snakeMovingRight = directions[2];
             await AppDataSource.initialize();
             const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
             const updatedSnake = await updateSnakeDirection.read(snakeId)
-            updatedSnake.axisX--
+            updatedSnake.axisX === minimunAxis && updatedSnake.direction !== snakeMovingRight
+                ? updatedSnake.axisX = boardSize 
+                : updatedSnake.axisX--
             updatedSnake.direction = snakeMovingLeft
             await updateSnakeDirection.update(updatedSnake)
             res.send(updatedSnake)
@@ -39,12 +43,16 @@ export default class SnakeController {
 
     static moveTheCreatedSnakeUp(req: Request, res:Response) {
         async function moveTheSnakeUp() {
+            const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id)
             const snakeMovingUp = directions[1];
+            const snakeMovingDown = directions[3];
             await AppDataSource.initialize();
             const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
             const updatedSnake = await updateSnakeDirection.read(snakeId)
-            updatedSnake.axisY++
+            updatedSnake.axisY === boardSize && updatedSnake.direction !== snakeMovingDown
+                ? updatedSnake.axisY = minimunAxis
+                : updatedSnake.axisY++
             updatedSnake.direction = snakeMovingUp
             await updateSnakeDirection.update(updatedSnake)
             res.send(updatedSnake)
@@ -55,12 +63,16 @@ export default class SnakeController {
 
     static moveTheCreatedSnakeRight(req: Request, res:Response) {
         async function moveTheSnakeRight() {
+            const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id)
+            const snakeMovingLeft = directions[0];
             const snakeMovingRight = directions[2];
             await AppDataSource.initialize();
             const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
             const updatedSnake = await updateSnakeDirection.read(snakeId)
-            updatedSnake.axisX++
+            updatedSnake.axisX === boardSize && updatedSnake.direction !== snakeMovingLeft
+                ? updatedSnake.axisX = minimunAxis
+                : updatedSnake.axisX++
             updatedSnake.direction = snakeMovingRight
             await updateSnakeDirection.update(updatedSnake)
             res.send(updatedSnake)
@@ -71,12 +83,16 @@ export default class SnakeController {
 
     static moveTheCreatedSnakeDown(req: Request, res:Response) {
         async function moveTheSnakeDown() {
+            const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id)
+            const snakeMovingUp = directions[1];
             const snakeMovingDown = directions[3];
             await AppDataSource.initialize();
             const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
             const updatedSnake = await updateSnakeDirection.read(snakeId)
-            updatedSnake.axisY--
+            updatedSnake.axisY > minimunAxis && updatedSnake.direction !== snakeMovingUp
+                ? updatedSnake.axisY--
+                : updatedSnake.axisY = boardSize 
             updatedSnake.direction = snakeMovingDown
             await updateSnakeDirection.update(updatedSnake)
             res.send(updatedSnake)
