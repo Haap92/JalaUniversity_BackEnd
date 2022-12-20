@@ -9,5 +9,4 @@ export default class DBUser implements User {
 
     @Column()
     name: string
-
 }

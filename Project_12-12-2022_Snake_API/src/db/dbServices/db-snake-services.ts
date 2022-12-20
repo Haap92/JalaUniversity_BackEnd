@@ -29,6 +29,6 @@ export default class SnakeDataService implements SnakeRepository  {
         await repository.delete({
             id: id
         })
-        return `User with ${id} deleted`
+        return `Snake with ${id} deleted`
     }
 }

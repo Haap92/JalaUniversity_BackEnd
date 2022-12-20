@@ -15,4 +15,13 @@ export default class DBSnake implements Snake {
 
     @Column()
     direction: string
+    
+    @Column()
+    length: number
+
+    @Column()
+    name: string
+
+    @Column()
+    score: number
 }

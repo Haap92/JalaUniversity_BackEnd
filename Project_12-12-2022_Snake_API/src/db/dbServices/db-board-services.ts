@@ -24,6 +24,6 @@ export default class BoardDataService implements BoardRepository  {
         await repository.delete({
             id: id
         })
-        return `User with ${id} deleted`
+        return `Board with ${id} deleted`
     }
 }

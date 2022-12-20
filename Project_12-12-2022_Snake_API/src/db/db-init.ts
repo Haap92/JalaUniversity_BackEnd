@@ -8,6 +8,8 @@ import BoardDataService from "./dbServices/db-board-services";
 import SnakeDataService from "./dbServices/db-snake-services";
 import Food from "../domain/entities/food";
 import FoodDataService from "./dbServices/db-food-services";
+import Game from "../domain/entities/game";
+import GameDataService from "./dbServices/db-game-services";
 
 
 class Test {
@@ -34,7 +36,10 @@ class Test {
         const snake = new Snake();
         snake.axisX = 20;
         snake.axisY = 20; 
-        snake.direction = 'RIGHT'      
+        snake.direction = 'RIGHT';
+        snake.length = 1
+        snake.name = 'Player'
+        snake.score = 0     
 
         const snakeDataAccess = new SnakeDataService;
         await snakeDataAccess.create(snake);
@@ -46,8 +51,15 @@ class Test {
         const foodDataAccess = new FoodDataService;
         await foodDataAccess.create(food);
 
+        const game = new Game();
+        game.status = 'Ready to Play'
+        game.speed = 1
 
-        console.log(await foodDataAccess.read(1));
+        const gameDataAccess = new GameDataService;
+        await gameDataAccess.create(game);
+
+
+        console.log(await gameDataAccess.read(1));
 
 
 
