@@ -5,6 +5,6 @@ export default class createBoard {
         const board = new Board;
         board.gridX = boardSize;
         board.gridY = boardSize;
-        return board
+        return board;
     }
 }

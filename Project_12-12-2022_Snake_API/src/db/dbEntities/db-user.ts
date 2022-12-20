@@ -5,8 +5,8 @@ import User from "../../domain/entities/user";
 export default class DBUser implements User { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
 
     @Column()
-    name: string
+    name: string;
 }

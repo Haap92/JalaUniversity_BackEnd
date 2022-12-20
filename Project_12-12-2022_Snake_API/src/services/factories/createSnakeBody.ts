@@ -9,6 +9,6 @@ export default class CreateSnakeBody{
         snakeBody.axisX = positionX;
         snakeBody.axisY = positionY;
         
-        return snakeBody
+        return snakeBody;
     }
 }

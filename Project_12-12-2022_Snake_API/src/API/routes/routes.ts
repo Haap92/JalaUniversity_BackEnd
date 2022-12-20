@@ -18,5 +18,6 @@ routes.get('/board/:size/moveSnake/:id/Down', SnakeController.moveTheCreatedSnak
 routes.get('/moveSnake', SnakeController.moveTheSnakeByBody);
 
 routes.get('/game/:size', GameController.prepareGame);
+routes.get('/gameStart/:size', GameController.startGame);
 
 routes.get('/snakeEatsLeft', SnakeEatsController.snakeAteLeft);

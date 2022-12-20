@@ -1,4 +1,4 @@
 export default class Position {
-    axisX: number
-    axisY: number
+    axisX: number;
+    axisY: number;
 }

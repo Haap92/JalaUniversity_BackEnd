@@ -6,7 +6,7 @@ import UserRepository from '../domain/repository/userRepository';
 @injectable()
 export default class UserService implements UserRepository {
 
-userDataService: UserRepository = container.get<UserRepository>('UserDataService')
+userDataService: UserRepository = container.get<UserRepository>('UserDataService');
 
     async create(user: User) {
         const result = await this.userDataService.create(user);

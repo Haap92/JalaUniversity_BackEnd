@@ -4,11 +4,11 @@ export default class CreateGame {
 
     createGame (status: string, speed: number) {
 
-        const game = new Game
+        const game = new Game;
 
-        game.status = status
-        game.speed = speed
+        game.status = status;
+        game.speed = speed;
         
-        return game
+        return game;
     }
 }

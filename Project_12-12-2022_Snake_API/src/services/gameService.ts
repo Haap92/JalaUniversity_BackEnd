@@ -6,7 +6,7 @@ import GameRepository from '../domain/repository/gameRepository';
 @injectable()
 export default class GameService implements GameRepository {
 
-gameDataService: GameRepository = container.get<GameRepository>('GameDataService')
+gameDataService: GameRepository = container.get<GameRepository>('GameDataService');
 
     async create(game: Game) {
         const result = await this.gameDataService.create(game);

@@ -6,7 +6,7 @@ import FoodRepository from '../domain/repository/FoodRepository';
 @injectable()
 export default class FoodService implements FoodRepository {
 
-FoodDataService: FoodRepository = container.get<FoodRepository>('FoodDataService')
+FoodDataService: FoodRepository = container.get<FoodRepository>('FoodDataService');
 
     async create(food: Food) {
         const result = await this.FoodDataService.create(food);

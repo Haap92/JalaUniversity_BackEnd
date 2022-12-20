@@ -6,7 +6,7 @@ import SnakeBodyRepository from '../domain/repository/snakeBodyRepository';
 @injectable()
 export default class SnakeBodyService implements SnakeBodyRepository {
 
-snakeBodyDataService: SnakeBodyRepository = container.get<SnakeBodyRepository>('SnakeBodyDataService')
+snakeBodyDataService: SnakeBodyRepository = container.get<SnakeBodyRepository>('SnakeBodyDataService');
 
     async create(snakeBody: SnakeBody) {
         const result = await this.snakeBodyDataService.create(snakeBody);

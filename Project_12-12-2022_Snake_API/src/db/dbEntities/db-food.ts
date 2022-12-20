@@ -5,12 +5,12 @@ import Food from "../../domain/entities/food";
 export default class DBFood implements Food { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
 
     @Column()
-    axisX: number
+    axisX: number;
 
     @Column()
-    axisY: number
+    axisY: number;
 
 }

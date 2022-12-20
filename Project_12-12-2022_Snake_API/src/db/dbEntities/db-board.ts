@@ -5,12 +5,12 @@ import Board from "../../domain/entities/board";
 export default class DBBoard implements Board { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
+    
+    @Column()
+    gridX: number;
 
     @Column()
-    gridX: number
-
-    @Column()
-    gridY: number
+    gridY: number;
 
 }

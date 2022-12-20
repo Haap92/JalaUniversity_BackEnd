@@ -27,10 +27,10 @@ export default class SnakeController {
     static async moveTheCreatedSnakeLeft(req: Request, res:Response) {
 
             const boardSize = parseFloat(req.params.size);
-            const snakeId = parseFloat(req.params.id)
+            const snakeId = parseFloat(req.params.id);
 
-            const snakeLeft = SnakeMovementService.moveTheSnakeLeft(boardSize, snakeId)
-            res.send(await snakeLeft)
+            const snakeLeft = SnakeMovementService.moveTheSnakeLeft(boardSize, snakeId);
+            res.send(await snakeLeft);
     }
 
     static async moveTheCreatedSnakeUp(req: Request, res:Response) {
@@ -38,8 +38,8 @@ export default class SnakeController {
             const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id);
 
-            const snakeUp = SnakeMovementService.moveTheSnakeUp(boardSize, snakeId)
-            res.send (await snakeUp)
+            const snakeUp = SnakeMovementService.moveTheSnakeUp(boardSize, snakeId);
+            res.send (await snakeUp);
 
     }
 
@@ -48,8 +48,8 @@ export default class SnakeController {
             const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id);
 
-            const snakeRight = SnakeMovementService.moveTheSnakeRight(boardSize, snakeId)
-            res.send (await snakeRight)
+            const snakeRight = SnakeMovementService.moveTheSnakeRight(boardSize, snakeId);
+            res.send (await snakeRight);
     }
 
     static async moveTheCreatedSnakeDown(req: Request, res:Response) {
@@ -57,26 +57,26 @@ export default class SnakeController {
             const boardSize = parseFloat(req.params.size);
             const snakeId = parseFloat(req.params.id);
             
-            const snakeDown = SnakeMovementService.moveTheSnakeDown(boardSize, snakeId)
-            res.send(await snakeDown)
+            const snakeDown = SnakeMovementService.moveTheSnakeDown(boardSize, snakeId);
+            res.send(await snakeDown);
     }
 
     static async moveTheSnakeByBody(req: Request, res:Response) {
 
-        const { direction, boardSize, snakeId } = req.body
+        const { direction, boardSize, snakeId } = req.body;
 
         if (direction === directions[0]){
-                const snakeLeft = SnakeMovementService.moveTheSnakeLeft(boardSize, snakeId)
-                res.send(await snakeLeft)
+                const snakeLeft = SnakeMovementService.moveTheSnakeLeft(boardSize, snakeId);
+                res.send(await snakeLeft);
         }else if (direction === directions[1]) {
-                const snakeUp = SnakeMovementService.moveTheSnakeUp(boardSize, snakeId)
-                res.send(await snakeUp)
+                const snakeUp = SnakeMovementService.moveTheSnakeUp(boardSize, snakeId);
+                res.send(await snakeUp);
         }else if (direction === directions[2]) {
-                const snakeRight = SnakeMovementService.moveTheSnakeRight(boardSize, snakeId)
-                res.send(await snakeRight)
+                const snakeRight = SnakeMovementService.moveTheSnakeRight(boardSize, snakeId);
+                res.send(await snakeRight);
         }else if (direction === directions[3]) {
-                const snakeDown = SnakeMovementService.moveTheSnakeDown(boardSize, snakeId)
-                res.send(await snakeDown)
+                const snakeDown = SnakeMovementService.moveTheSnakeDown(boardSize, snakeId);
+                res.send(await snakeDown);
         }
     }
 }

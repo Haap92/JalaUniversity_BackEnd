@@ -16,14 +16,14 @@ export default class SnakeEatsFood {
         const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
 
         if (snake.axisX == food.axisX && snake.axisY == food.axisY && snake.direction == directions[0]){
-            body.axisX = snake.axisX + minimunAxis;
+            body.axisX = snake.axisX + snake.length;
             body.axisY = snake.axisY;
             snake.length = snake.length + minimunAxis
             snake.score = snake.score + 10           
         }
 
-        await updateSnakeScore.update(snake)
         const snakeBody = await createSnakebody.create(body)
+        await updateSnakeScore.update(snake)
         biggerSnake.push(snake)
         biggerSnake.push(snakeBody)
         return biggerSnake
@@ -38,12 +38,13 @@ export default class SnakeEatsFood {
 
         if (snake.axisX == food.axisX && snake.axisY == food.axisY && snake.direction == directions[1]){
             body.axisX = snake.axisX; 
-            body.axisY = snake.axisY - minimunAxis;
+            body.axisY = snake.axisY - snake.length;
+            snake.length = snake.length + minimunAxis
             snake.score = snake.score + 10         
         }
 
-        await updateSnakeScore.update(snake)
         const snakeBody = await createSnakebody.create(body)
+        await updateSnakeScore.update(snake)
         biggerSnake.push(snake)
         biggerSnake.push(snakeBody)
         return biggerSnake
@@ -57,13 +58,13 @@ export default class SnakeEatsFood {
         const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
 
         if (snake.axisX == food.axisX && snake.axisY == food.axisY && snake.direction == directions[2]){
-            body.axisX = snake.axisX - minimunAxis;
+            body.axisX = snake.axisX - snake.length;
             body.axisY = snake.axisY;
             snake.score = snake.score + 10          
         }
 
-        await updateSnakeScore.update(snake)
         const snakeBody = await createSnakebody.create(body)
+        await updateSnakeScore.update(snake)
         biggerSnake.push(snake)
         biggerSnake.push(snakeBody)
         return biggerSnake
@@ -78,12 +79,13 @@ export default class SnakeEatsFood {
 
         if (snake.axisX == food.axisX && snake.axisY == food.axisY && snake.direction == directions[3]){
             body.axisX = snake.axisX;
-            body.axisY = snake.axisY + minimunAxis;
+            body.axisY = snake.axisY + snake.length;
+            snake.length = snake.length + minimunAxis
             snake.score = snake.score + 10
         }
 
-        await updateSnakeScore.update(snake)
         const snakeBody = await createSnakebody.create(body)
+        await updateSnakeScore.update(snake)
         biggerSnake.push(snake)
         biggerSnake.push(snakeBody)
         return biggerSnake

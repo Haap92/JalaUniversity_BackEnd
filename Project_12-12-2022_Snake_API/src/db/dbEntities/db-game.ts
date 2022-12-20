@@ -5,11 +5,11 @@ import Game from "../../domain/entities/game";
 export default class DBGame implements Game { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
 
     @Column()
-    status: string
+    status: string;
 
     @Column()
-    speed: number
+    speed: number;
 }

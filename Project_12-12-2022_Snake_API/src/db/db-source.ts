@@ -14,4 +14,4 @@ export const AppDataSource = new DataSource ({
     entities: [DBUser, DBBoard, DBSnake, DBFood, DBSnakeBody, DBGame],
     migrations: [],
     subscribers: [],
-})
+});

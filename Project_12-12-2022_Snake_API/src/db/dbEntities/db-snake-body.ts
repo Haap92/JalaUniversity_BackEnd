@@ -5,12 +5,12 @@ import SnakeBody from "../../domain/entities/snakeBody";
 export default class DBSnakeBody implements SnakeBody { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
 
     @Column()
-    axisX: number
+    axisX: number;
 
     @Column()
-    axisY: number
+    axisY: number;
 
 }

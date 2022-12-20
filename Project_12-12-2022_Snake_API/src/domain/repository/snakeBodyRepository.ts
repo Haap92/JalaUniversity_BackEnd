@@ -1,6 +1,7 @@
-import snakeBody from "../entities/snakeBody"
+import snakeBody from "../entities/snakeBody";
 
 export default interface snakeBodyRepository {
+
     create: (snakeBody: snakeBody) => Promise<snakeBody>
     read: (id: number) => Promise<snakeBody>
     update:(snakeBody: snakeBody) => Promise<void>

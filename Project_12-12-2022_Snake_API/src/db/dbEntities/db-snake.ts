@@ -5,23 +5,23 @@ import Snake from "../../domain/entities/snake";
 export default class DBSnake implements Snake { 
 
     @PrimaryColumn()
-    id: number
+    id: number;
 
     @Column()
-    axisX: number
+    axisX: number;
 
     @Column()
-    axisY: number
+    axisY: number;
 
     @Column()
-    direction: string
+    direction: string;
     
     @Column()
-    length: number
+    length: number;
 
     @Column()
-    name: string
+    name: string;
 
     @Column()
-    score: number
+    score: number;
 }

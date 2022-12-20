@@ -37,9 +37,9 @@ class Test {
         snake.axisX = 20;
         snake.axisY = 20; 
         snake.direction = 'RIGHT';
-        snake.length = 1
-        snake.name = 'Player'
-        snake.score = 0     
+        snake.length = 1;
+        snake.name = 'Player';
+        snake.score = 0;    
 
         const snakeDataAccess = new SnakeDataService;
         await snakeDataAccess.create(snake);
@@ -52,8 +52,8 @@ class Test {
         await foodDataAccess.create(food);
 
         const game = new Game();
-        game.status = 'Ready to Play'
-        game.speed = 1
+        game.status = 'Ready to Play';
+        game.speed = 1;
 
         const gameDataAccess = new GameDataService;
         await gameDataAccess.create(game);

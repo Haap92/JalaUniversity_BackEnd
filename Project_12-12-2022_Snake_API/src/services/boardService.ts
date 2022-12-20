@@ -6,7 +6,7 @@ import BoardRepository from '../domain/repository/boardRepository';
 @injectable()
 export default class BoardService implements BoardRepository {
 
-boardDataService: BoardRepository = container.get<BoardRepository>('BoardDataService')
+boardDataService: BoardRepository = container.get<BoardRepository>('BoardDataService');
 
     async create(board: Board) {
         const result = await this.boardDataService.create(board);

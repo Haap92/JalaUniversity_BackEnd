@@ -9,26 +9,26 @@ export default class SnakeBodyDataService implements SnakeBodyRepository  {
     async create(snakeBody: DBSnakeBody){
         const repository = AppDataSource.getRepository(DBSnakeBody);
         await repository.save(snakeBody);
-        return snakeBody
+        return snakeBody;
     }
 
     async read(id: number){
         const repository = AppDataSource.getRepository(DBSnakeBody);
         return await repository.findOneBy({
             id: id
-        })
+        });
     }
 
     async update(snakeBody: DBSnakeBody){
         const repository = AppDataSource.getRepository(DBSnakeBody);
-        await repository.save(snakeBody)
+        await repository.save(snakeBody);
     }
 
     async delete(id: number){
         const repository = AppDataSource.getRepository(DBSnakeBody);
         await repository.delete({
             id: id
-        })
-        return `snakeBody with ${id} deleted`
+        });
+        return `snakeBody with ${id} deleted`;
     }
 }

@@ -5,7 +5,7 @@ export default class CreateGameBoard {
 
     static createEmptyBoard(board: Board) {
 
-        const size = board.gridX
+        const size = board.gridX;
         
         const emptyBoard = Array.from({ length: size }, () => 
         Array.from({ length: size }, () => "_"));
@@ -13,23 +13,23 @@ export default class CreateGameBoard {
         return emptyBoard;
     }
 
-    static createBoardWithSnakes(emptyBoard: string[][], snake: Snake) {
+    static createBoardWithFood(emptyBoard: string[][], food:Food) {
 
-        const boardWithSnakes = emptyBoard;
-        const positionX = snake.axisX;
-        const positionY = snake.axisY;
-        boardWithSnakes[positionX][positionY] = "S";
-
-        return boardWithSnakes;
-    }
-
-    static createBoardWithSnakesAndFood(boardWithSnakes: string[][], food: Food) {
-
-        const boardWithSnakesAndFood = boardWithSnakes;
+        const boardWithFood = emptyBoard;
         const positionX = food.axisX;
         const positionY = food.axisY;
-        boardWithSnakesAndFood[positionX][positionY] = "F";
+        boardWithFood[positionX][positionY] = "F";
 
-        return boardWithSnakesAndFood;
+        return boardWithFood;
+    }
+
+    static createBoardWithFoodAndSnakes(boardWithFood: string[][], snake: Snake) {
+
+        const boardWithFoodAndSnakes = boardWithFood;
+        const positionX = snake.axisX;
+        const positionY = snake.axisY;
+        boardWithFoodAndSnakes[positionX][positionY] = "S";
+
+        return boardWithFoodAndSnakes;
     }
 }

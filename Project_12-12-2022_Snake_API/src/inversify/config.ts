@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import { Container } from "inversify";
 import UserDataService from "../db/dbServices/db-user-services";
 import UserRepository from "../domain/repository/userRepository";
