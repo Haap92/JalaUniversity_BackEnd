@@ -12,4 +12,7 @@ export default class DBGame implements Game {
 
     @Column()
     speed: number;
+
+    @Column()
+    gameBoard: string;
 }

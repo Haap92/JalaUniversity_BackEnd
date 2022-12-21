@@ -54,6 +54,7 @@ class Test {
         const game = new Game();
         game.status = 'Ready to Play';
         game.speed = 1;
+        game.gameBoard = ' ';
 
         const gameDataAccess = new GameDataService;
         await gameDataAccess.create(game);

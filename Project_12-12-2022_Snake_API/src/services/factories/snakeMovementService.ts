@@ -10,8 +10,13 @@ export default class SnakeMovementService {
         const snakeMovingRight = directions[2];
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
+
         if (snake.axisX === minimunAxis && snake.direction !== snakeMovingRight){
             snake.axisX = boardSize;
+
+        }else if (snake.axisX === minimunAxis && snake.direction === snakeMovingRight) {
+            snake.axisX;
+
         }else{
             snake.axisX--;
             snake.direction = snakeMovingLeft;
@@ -26,8 +31,13 @@ export default class SnakeMovementService {
         const snakeMovingDown = directions[3];
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
+
         if (snake.axisY === boardSize && snake.direction !== snakeMovingDown){
             snake.axisY = minimunAxis;
+
+        }else if (snake.axisY === boardSize && snake.direction === snakeMovingDown){
+            snake.axisY;
+
         }else{
             snake.axisY++;
             snake.direction = snakeMovingUp;
@@ -42,8 +52,13 @@ export default class SnakeMovementService {
         const snakeMovingRight = directions[2];
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
+
         if (snake.axisX === boardSize && snake.direction !== snakeMovingLeft){
             snake.axisX = minimunAxis;
+
+        }else if (snake.axisX === boardSize && snake.direction === snakeMovingLeft){
+            snake.axisX;
+            
         }else{
             snake.axisX++;
             snake.direction = snakeMovingRight;
@@ -58,11 +73,16 @@ export default class SnakeMovementService {
         const snakeMovingDown = directions[3];
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
-        if (snake.axisY > minimunAxis && snake.direction !== snakeMovingUp){
-            snake.axisY--;
-            snake.direction = snakeMovingDown;
-        }else{
+
+        if (snake.axisY === minimunAxis && snake.direction !== snakeMovingUp){
             snake.axisY = boardSize;
+
+        } else if (snake.axisY === minimunAxis && snake.direction === snakeMovingUp){ 
+            snake.axisY;
+
+        }else{
+            snake.axisY--;
+            snake.direction = snakeMovingDown;            
         }
         await updateSnakeDirection.update(snake);
         return snake;

@@ -1,2 +1,2 @@
 export const directions = [ 'LEFT', 'UP', 'RIGHT', 'DOWN'];
-export const minimunAxis = 1;
+export const minimunAxis = 0;
