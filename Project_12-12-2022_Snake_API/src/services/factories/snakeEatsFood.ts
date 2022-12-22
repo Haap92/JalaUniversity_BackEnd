@@ -1,105 +1,124 @@
-import Food from "../../domain/entities/food";
-import Snake from "../../domain/entities/Snake";
-import SnakeBody from "../../domain/entities/snakeBody";
+import FoodRepository from "../../domain/repository/FoodRepository";
 import SnakeRepository from "../../domain/repository/snakeRepository";
-import SnakeBodyRepository from "../../domain/repository/snakeBodyRepository";
 import { container } from "../../inversify/config";
-import { directions, minimunAxis } from "./snakeDirectionConstant";
+import { directions, node } from "./snakeDirectionConstant";
 
 export default class SnakeEatsFood {
 
-    static didSnakeAteFood(snake: Snake, food: Food){
-        if(snake.axisX == food.axisX && snake.axisY == food.axisY){
-            return food;
+    static async didSnakeAteFood(snakeId: number, foodId: number) {
+
+        const nextPosition = await this.snakeNextPosition(snakeId);
+        const readFoodPosition = container.get<FoodRepository>('FoodService');
+        const food = await readFoodPosition.read(foodId);
+
+        const axisX = food.axisX;
+        const axisY = food.axisY;
+
+        const foodPosition = [];
+        foodPosition.push(axisX);
+        foodPosition.push(axisY);
+
+        const nextFoodPosition = JSON.stringify(foodPosition);
+
+        if(nextPosition == nextFoodPosition) {
+            return true;
         }
     }
 
-    static async snakeEatsFacingLeft(snake: Snake, food: Food){
+    static async snakeEats(snakeId: number) {
 
-        const biggerSnake = [];
-        const body = new SnakeBody;
         const updateSnakeScore = container.get<SnakeRepository>('SnakeService');
-        const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
-        const snakeAte = SnakeEatsFood.didSnakeAteFood(snake, food);
-        
+        const snake = await updateSnakeScore.read(snakeId);
+          
+        if (snake.direction == directions[0]) {
 
-        if (snakeAte && snake.direction == directions[0]){
-            body.axisX = snake.axisX + snake.length;
-            body.axisY = snake.axisY;
-            snake.length = snake.length + minimunAxis;
-            snake.score = snake.score + 10;          
-        }
+            const body = [];
+            const axisX = snake.axisX + snake.length;
+            const axisY = snake.axisY;
+            body.push(axisX);
+            body.push(axisY);
 
-        const snakeBody = await createSnakebody.create(body);
-        await updateSnakeScore.update(snake);
-        biggerSnake.push(snake);
-        biggerSnake.push(snakeBody);
-        return biggerSnake;
-    }
-
-    static async snakeEatsFacingUp(snake: Snake, food: Food){
-
-        const biggerSnake = [];
-        const body = new SnakeBody;
-        const updateSnakeScore = container.get<SnakeRepository>('SnakeService');
-        const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
-        const snakeAte = SnakeEatsFood.didSnakeAteFood(snake, food);
-
-        if (snakeAte && snake.direction == directions[1]){
-            body.axisX = snake.axisX; 
-            body.axisY = snake.axisY - snake.length;
-            snake.length = snake.length + minimunAxis;
-            snake.score = snake.score + 10;   
-        }
-
-        const snakeBody = await createSnakebody.create(body);
-        await updateSnakeScore.update(snake);
-        biggerSnake.push(snake);
-        biggerSnake.push(snakeBody);
-        return biggerSnake;
-    }
-
-    static async snakeEatsFacingRight(snake: Snake, food: Food){
-
-        const biggerSnake = [];
-        const body = new SnakeBody;
-        const updateSnakeScore = container.get<SnakeRepository>('SnakeService');
-        const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
-        const snakeAte = SnakeEatsFood.didSnakeAteFood(snake, food);
-
-        if (snakeAte && snake.direction == directions[2]){
-            body.axisX = snake.axisX - snake.length;
-            body.axisY = snake.axisY;
-            snake.score = snake.score + 10;          
-        }
-
-        const snakeBody = await createSnakebody.create(body);
-        await updateSnakeScore.update(snake);
-        biggerSnake.push(snake);
-        biggerSnake.push(snakeBody);
-        return biggerSnake;
-    }
-
-    static async snakeEatsFacingDown(snake: Snake, food: Food){
-
-        const biggerSnake = [];
-        const body = new SnakeBody;
-        const updateSnakeScore = container.get<SnakeRepository>('SnakeService');
-        const createSnakebody = container.get<SnakeBodyRepository>('SnakeBodyService');
-        const snakeAte = SnakeEatsFood.didSnakeAteFood(snake, food);
-
-        if (snakeAte && snake.direction == directions[3]){
-            body.axisX = snake.axisX;
-            body.axisY = snake.axisY + snake.length;
-            snake.length = snake.length + minimunAxis;
+            snake.length = snake.length + node;
+            snake.body = JSON.stringify(body);
             snake.score = snake.score + 10;
-        }
+            await updateSnakeScore.update(snake);
+   
+            return snake;
 
-        const snakeBody = await createSnakebody.create(body);
-        await updateSnakeScore.update(snake);
-        biggerSnake.push(snake);
-        biggerSnake.push(snakeBody);
-        return biggerSnake;
+        }else if (snake.direction == directions[1]) {
+
+            const body = [];
+            const axisX = snake.axisX; 
+            const axisY = snake.axisY - snake.length;
+            body.push(axisX);
+            body.push(axisY);
+
+            snake.length = snake.length + node;
+            snake.body = JSON.stringify(body);
+            snake.score = snake.score + 10;   
+
+            await updateSnakeScore.update(snake);
+
+            return snake;
+
+        }else if (snake.direction == directions[2]) {
+
+            const body = [];
+            const axisX = snake.axisX - snake.length;
+            const axisY = snake.axisY;
+            body.push(axisX);
+            body.push(axisY);
+
+            snake.length = snake.length + node;
+            snake.body = JSON.stringify(body);
+            snake.score = snake.score + 10; 
+            await updateSnakeScore.update(snake);
+
+            return snake;         
+
+        }else if (snake.direction == directions[3]) {
+
+            const body = [];
+            const axisX = snake.axisX;
+            const axisY = snake.axisY + snake.length;
+            body.push(axisX);
+            body.push(axisY);
+
+            snake.length = snake.length + node;
+            snake.body = JSON.stringify(body);
+            snake.score = snake.score + 10;
+            await updateSnakeScore.update(snake);
+
+            return snake;
+        }           
     }
-    
+
+
+    static async snakeNextPosition(snakeId: number) {
+        
+        const snakeReader = container.get<SnakeRepository>('SnakeService');
+        const snake = await snakeReader.read(snakeId);
+        const snakePosition = [];
+
+        if (snake.direction == directions[0]){
+            snakePosition.push(snake.axisX - node);
+            snakePosition.push(snake.axisY);
+            return JSON.stringify(snakePosition);
+
+        }else if (snake.direction == directions[1]){
+            snakePosition.push(snake.axisX);
+            snakePosition.push(snake.axisY + node);
+            return JSON.stringify(snakePosition);
+
+        }else if (snake.direction == directions[2]){
+            snakePosition.push(snake.axisX + node);
+            snakePosition.push(snake.axisY);
+            return JSON.stringify(snakePosition);
+
+        }else if (snake.direction == directions[3]){
+            snakePosition.push(snake.axisX);
+            snakePosition.push(snake.axisY - node);
+            return JSON.stringify(snakePosition);
+        }
+    }
 }

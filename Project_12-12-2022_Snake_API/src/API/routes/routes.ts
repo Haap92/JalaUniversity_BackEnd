@@ -2,7 +2,7 @@ import { Router } from "express";
 import GameController from "../controllers/gameControler";
 import BoardController from "../controllers/boardController";
 import SnakeController from "../controllers/snakeController";
-import SnakeEatsController from "../controllers/snakeEatsController";
+// import SnakeEatsController from "../controllers/snakeEatsController";
 
 
 export const routes = Router();
@@ -18,6 +18,6 @@ routes.get('/board/:size/moveSnake/:id/Down', SnakeController.moveTheCreatedSnak
 routes.get('/moveSnake', SnakeController.moveTheSnakeByBody);
 
 routes.get('/game/:size', GameController.prepareGame);
-routes.get('/gameStart/:game/:size/snake/:id', GameController.startGame);
+routes.get('/gameStart/:game/:size/snake/:id/:food', GameController.startGame);
 
-routes.get('/snakeEatsLeft', SnakeEatsController.snakeAteLeft);
+// routes.get('/snakeEatsLeft', SnakeEatsController.snakeAteLeft);

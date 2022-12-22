@@ -20,6 +20,9 @@ export default class DBSnake implements Snake {
     length: number;
 
     @Column()
+    body: string;
+
+    @Column()
     name: string;
 
     @Column()

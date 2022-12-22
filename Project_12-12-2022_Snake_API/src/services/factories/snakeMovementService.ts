@@ -1,6 +1,6 @@
 import SnakeRepository from "../../domain/repository/snakeRepository";
 import { container } from "../../inversify/config";
-import { directions, minimunAxis } from "./snakeDirectionConstant";
+import { directions, minimunAxis, node } from "./snakeDirectionConstant";
 
 
 export default class SnakeMovementService {
@@ -8,14 +8,15 @@ export default class SnakeMovementService {
    static async moveTheSnakeLeft(boardSize: number, snakeId: number) {
         const snakeMovingLeft = directions[0];
         const snakeMovingRight = directions[2];
+        const limit = boardSize - node;
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
 
         if (snake.axisX === minimunAxis && snake.direction !== snakeMovingRight){
-            snake.axisX = boardSize;
+            snake.axisX = limit;
 
         }else if (snake.axisX === minimunAxis && snake.direction === snakeMovingRight) {
-            snake.axisX;
+            snake.axisX = snake.axisX + node - node;
 
         }else{
             snake.axisX--;
@@ -29,14 +30,15 @@ export default class SnakeMovementService {
     static async moveTheSnakeUp(boardSize: number, snakeId: number) {
         const snakeMovingUp = directions[1];
         const snakeMovingDown = directions[3];
+        const limit = boardSize - 1;
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
 
-        if (snake.axisY === boardSize && snake.direction !== snakeMovingDown){
+        if (snake.axisY === limit && snake.direction !== snakeMovingDown){
             snake.axisY = minimunAxis;
 
         }else if (snake.axisY === boardSize && snake.direction === snakeMovingDown){
-            snake.axisY;
+            snake.axisY = snake.axisY + node - node;
 
         }else{
             snake.axisY++;
@@ -50,19 +52,21 @@ export default class SnakeMovementService {
     static async moveTheSnakeRight(boardSize: number, snakeId: number) {
         const snakeMovingLeft = directions[0];
         const snakeMovingRight = directions[2];
+        const limit = boardSize - 1;
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
 
-        if (snake.axisX === boardSize && snake.direction !== snakeMovingLeft){
+        if (snake.axisX === limit && snake.direction !== snakeMovingLeft){
             snake.axisX = minimunAxis;
 
-        }else if (snake.axisX === boardSize && snake.direction === snakeMovingLeft){
-            snake.axisX;
+        }else if (snake.axisX === limit && snake.direction === snakeMovingLeft){
+            snake.axisX = snake.axisX + node - node;
             
-        }else{
+        }else {
             snake.axisX++;
             snake.direction = snakeMovingRight;
         }
+        
         await updateSnakeDirection.update(snake);
 
         return snake;
@@ -71,14 +75,15 @@ export default class SnakeMovementService {
     static async moveTheSnakeDown(boardSize: number, snakeId: number) {
         const snakeMovingUp = directions[1];
         const snakeMovingDown = directions[3];
+        const limit = boardSize - 1;
         const updateSnakeDirection = container.get<SnakeRepository>('SnakeService');
         const snake = await updateSnakeDirection.read(snakeId);
 
         if (snake.axisY === minimunAxis && snake.direction !== snakeMovingUp){
-            snake.axisY = boardSize;
+            snake.axisY = limit;
 
         } else if (snake.axisY === minimunAxis && snake.direction === snakeMovingUp){ 
-            snake.axisY;
+            snake.axisY = snake.axisY + node - node;
 
         }else{
             snake.axisY--;

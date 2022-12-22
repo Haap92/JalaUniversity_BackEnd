@@ -18,6 +18,11 @@ FoodDataService: FoodRepository = container.get<FoodRepository>('FoodDataService
             return data;
     }
 
+    async update(food: Food) {
+        const result = await this.FoodDataService.update(food);
+            return result;
+    }
+
     async delete(id: number) {
         const result = await this.FoodDataService.delete(id);
             return result;

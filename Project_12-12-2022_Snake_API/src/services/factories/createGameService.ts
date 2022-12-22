@@ -8,6 +8,8 @@ import createFood from "./createFood";
 import CreateGameBoard from "./createGameBoard";
 import createSnake from "./createSnake";
 import CreateGame from "./createGame";
+import RandomNumberService from "./randomNumberService";
+
 
 export default class CreateGameService {
 
@@ -36,13 +38,13 @@ export default class CreateGameService {
 
         const gameBoardWithFood = CreateGameBoard.createBoardWithFood(gameBoard, newFood);
 
-        const gameBoardWithFoodAndSnakes = CreateGameBoard.createBoardWithFoodAndSnakes(gameBoardWithFood, newSnake);
+        const newGameBoard = JSON.stringify(gameBoardWithFood);
 
-        const newGameBoard = gameBoardWithFoodAndSnakes.toString();
 
         const gameCreator = new CreateGame();
         const game = gameCreator.createGame(gameStatus, gameSpeed);
         game.gameBoard = newGameBoard;
+
         const newGameCreator = container.get<GameRepository>('GameService');
         const newGame = await newGameCreator.create(game);
 
@@ -51,41 +53,54 @@ export default class CreateGameService {
         gameAndPrintedBoard.push(newGame);
         gameAndPrintedBoard.push(newBoard);
         gameAndPrintedBoard.push(newSnake);
+        gameAndPrintedBoard.push(newFood);
        
 
-        return gameAndPrintedBoard;
+        return newGame;
+    }
+
+    static async cleanTheBoard (gameId: number, boardSize: number){
+
+        const cleanTheBoard = container.get<GameRepository>('GameService');
+        const readGame = await cleanTheBoard.read(gameId);
+
+        const gameBoard = CreateGameBoard.createEmptyBoardBySize(boardSize);
+
+        readGame.gameBoard = JSON.stringify(gameBoard);
+
+        await cleanTheBoard.update(readGame);
+
+        return readGame;
 
     }
 
-    static async prepareTheBoard (boardSize: number){
+    static async updateTheBoard (gameId: number,boardSize: number, foodId: number){
 
-        const gameStatus = 'Playing';
-        const gameSpeed = 1;
-        
-        
-        const boardCreator = new createBoard();
-        const board = boardCreator.createBoard(boardSize);
-        const newBoardCreator = container.get<BoardRepository>('BoardService');
-        const newBoard = await newBoardCreator.create(board);
+        const foodUpdater = container.get<FoodRepository>('FoodService');
+        const food = await foodUpdater.read(foodId); 
 
-        const foodCreator = new createFood();
-        const food = foodCreator.createFood(boardSize);
-        const newFoodCreator = container.get<FoodRepository>('FoodService');
-        const newFood = await newFoodCreator.create(food);    
-        
-        const gameBoard = CreateGameBoard.createEmptyBoard(newBoard);
+        const randomX = new RandomNumberService().randomNumber;
+        const randomY = new RandomNumberService().randomNumber;
 
-        const gameBoardWithFood = CreateGameBoard.createBoardWithFood(gameBoard, newFood);
+        food.axisX = randomX(boardSize);
+        food.axisY = randomY(boardSize);
+
+        await foodUpdater.update(food);
+
+        const newGameUpdater = container.get<GameRepository>('GameService');
+        const game = await newGameUpdater.read(gameId);
+
+        const gameBoard = CreateGameBoard.createEmptyBoardBySize(boardSize);
+
+        const gameBoardWithFood = CreateGameBoard.createBoardWithFood(gameBoard, food);
 
         const newGameBoard = JSON.stringify(gameBoardWithFood);
 
-        const gameCreator = new CreateGame();
-        const game = gameCreator.createGame(gameStatus, gameSpeed);
         game.gameBoard = newGameBoard;
-        const newGameCreator = container.get<GameRepository>('GameService');
-        const newGame = await newGameCreator.create(game);
 
-        return newGame;
+        await newGameUpdater.update(game);
+
+        return game;
     }
 
 }

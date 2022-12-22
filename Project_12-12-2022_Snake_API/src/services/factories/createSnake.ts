@@ -15,6 +15,7 @@ export default class createSnake {
         snake.axisY = randomAxisY;
         snake.direction = randomDirection;
         snake.length = 1;
+        snake.body = '[]';
         snake.name = 'Player';
         snake.score = 0;
 

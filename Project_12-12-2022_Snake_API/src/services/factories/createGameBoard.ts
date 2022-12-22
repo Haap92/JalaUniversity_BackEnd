@@ -13,6 +13,14 @@ export default class CreateGameBoard {
         return emptyBoard;
     }
 
+    static createEmptyBoardBySize(boardSize: number) {
+        
+        const emptyBoard = Array.from({ length: boardSize }, () => 
+        Array.from({ length: boardSize }, () => "_"));
+
+        return emptyBoard;
+    }
+
     static createBoardWithFood(emptyBoard: string[][], food:Food) {
 
         const boardWithFood = emptyBoard;

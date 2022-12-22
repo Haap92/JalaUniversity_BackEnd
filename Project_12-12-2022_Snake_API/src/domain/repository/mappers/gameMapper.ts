@@ -7,6 +7,8 @@ export class GameMapper {
         game.id = raw.id;
         game.status = raw.status;
         game.speed = raw.speed;
+        game.gameBoard = raw.gameBoard;
+        game.food = raw.food;
         return game;
     }
 }

@@ -7,6 +7,11 @@ export class SnakeMapper {
         snake.id = raw.id;
         snake.axisX = raw.axisX;
         snake.axisY = raw.axisY;
+        snake.direction = raw.direction;
+        snake.length = raw.length;
+        snake.body = raw.body;
+        snake.name = raw.name;
+        snake.score = raw.score;
         return snake;
     }
 }

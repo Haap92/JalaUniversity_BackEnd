@@ -9,6 +9,7 @@ export default class CreateGame {
         game.status = status;
         game.speed = speed;
         game.gameBoard = ' ';
+        game.food = ' ';
         
         return game;
     }

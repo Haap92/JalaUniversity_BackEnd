@@ -19,6 +19,11 @@ export default class FoodDataService implements FoodRepository  {
         });
     }
 
+    async update(food: DBFood){
+        const repository = AppDataSource.getRepository(DBFood);
+        await repository.save(food);
+    }
+
     async delete(id: number){
         const repository = AppDataSource.getRepository(DBFood);
         await repository.delete({

@@ -1,11 +1,10 @@
-import Position from "./position";
-
-export default class Snake extends Position{
+export default class Snake {
     id: number;
     axisX: number;
     axisY: number;
     direction: string;
     length: number;
+    body: string;
     name: string;
     score: number;
 }
