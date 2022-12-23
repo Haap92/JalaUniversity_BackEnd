@@ -22,7 +22,7 @@ export default class SnakeMovementService {
       snake.axisX--;
       await updateSnakeDirection.update(snake);
     }
-
+    this.snakeBodyUpdates(snakeId);
     return snake;
   }
 
@@ -41,7 +41,7 @@ export default class SnakeMovementService {
       snake.axisY++;
       await updateSnakeDirection.update(snake);
     }
-
+    this.snakeBodyUpdates(snakeId);
     return snake;
   }
 
@@ -60,7 +60,7 @@ export default class SnakeMovementService {
       snake.axisX++;
       await updateSnakeDirection.update(snake);
     }
-
+    this.snakeBodyUpdates(snakeId);
     return snake;
   }
 
@@ -78,7 +78,32 @@ export default class SnakeMovementService {
       snake.axisY--;
       await updateSnakeDirection.update(snake);
     }
-
+    this.snakeBodyUpdates(snakeId);
     return snake;
+  }
+
+  static async snakeBodyUpdates(snakeId: number) {
+    const updateSnakeDirection = container.get<SnakeRepository>("SnakeService");
+    const snake = await updateSnakeDirection.read(snakeId);
+
+    const snakeBody = JSON.parse(snake.body);
+    const snakeHead = [];
+    snake.axisX;
+    snake.axisY;
+    snakeHead.push(snake.axisX);
+    snakeHead.push(snake.axisY);
+
+    let oldPosition = snakeHead;
+
+    let i = 0;
+
+    for (i = 0; i < snakeBody.length; i++) {
+      const newPosition = snakeBody[i];
+      snakeBody[i] = oldPosition;
+      oldPosition = newPosition;
+    }
+    const newSnakeBody = JSON.stringify(snakeBody);
+    snake.body = newSnakeBody;
+    await updateSnakeDirection.update(snake);
   }
 }

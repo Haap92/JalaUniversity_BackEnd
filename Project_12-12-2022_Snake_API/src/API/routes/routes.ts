@@ -22,7 +22,7 @@ routes.get('/game/:size', GameController.prepareGame);
 routes.get('/gameReset/:game/:size/snake/:id/:food', GameController.resetGame);
 routes.get('/gameStart/:game/:size/snake/:id/:food', GameController.startGame);
 routes.get('/gameAutoStart/:game/:size/snake/:id/:food', GameController.autoMovement);
+routes.get('/ShowTheBoard/:game', GameController.showTheBoard);
+routes.get('/EndGame/:game', GameController.endGame);
 
 routes.get('/scores', ScoreController.getScores);
-
-// routes.get('/snakeEatsLeft', SnakeEatsController.snakeAteLeft);

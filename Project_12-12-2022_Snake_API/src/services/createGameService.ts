@@ -164,4 +164,22 @@ export default class CreateGameService {
 
     return gameResets;
   }
+
+  static async showTheBoard(gameId: number){
+    const newGameReader = container.get<GameRepository>("GameService");
+    const game = await newGameReader.read(gameId);
+    const showingTheBoard = game.gameBoard;
+    await newGameReader.update(game);
+    const theBoard = JSON.parse(showingTheBoard);
+    return theBoard;
+  }
+
+  static async endingTheGame(gameId: number){
+    const newGameReader = container.get<GameRepository>("GameService");
+    const game = await newGameReader.read(gameId);
+    game.status = 'Ended';
+    await newGameReader.update(game);
+    const endingGame = game.status;
+    return endingGame;
+  }
 }

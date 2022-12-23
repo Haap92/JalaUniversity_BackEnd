@@ -1,6 +1,8 @@
 import Snake from "../../domain/entities/Snake";
 import Food from "../../domain/entities/food";
 import Board from "../../domain/entities/board";
+import { SnakeRepository } from "../../domain/repository/snakeRepository";
+import { container } from "../../inversify/config";
 export default class CreateGameBoard {
   static createEmptyBoard(board: Board) {
     const size = board.gridX;
@@ -36,5 +38,23 @@ export default class CreateGameBoard {
     boardWithFoodAndSnakes[positionX][positionY] = "S";
 
     return boardWithFoodAndSnakes;
+  }
+
+  static async createBoardWithFoodAndSnakeBody(
+    boardWithFoodAndSnakes: string[][],
+    snakeId: number
+  ) {
+    const boardWithFoodAndSnakeBody = boardWithFoodAndSnakes;
+    const showSnakeBody = container.get<SnakeRepository>("SnakeService");
+    const snake = await showSnakeBody.read(snakeId);
+    const snakeBody = JSON.parse(snake.body);
+
+    snakeBody.forEach((element: number[]) => {
+      const positionX = element[0];
+      const positionY = element[1];
+      boardWithFoodAndSnakes[positionX][positionY] = "B";
+    });
+
+    return boardWithFoodAndSnakeBody;
   }
 }
