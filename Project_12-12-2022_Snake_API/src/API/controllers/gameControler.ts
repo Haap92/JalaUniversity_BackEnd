@@ -59,6 +59,8 @@ export default class GameController {
         boardSize
       );
 
+      const collision = await SnakeEatsAndCollisionService.didSnakeCollide(snakeId);
+
       const snakeLeft = await SnakeMovementService.moveTheSnakeLeft(
         boardSize,
         snakeId
@@ -78,6 +80,9 @@ export default class GameController {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
       }
+      if (collision){
+        await CreateGameService.endingTheGame(gameId);
+      }
       res.send(newGameBoardWithFoodAndSnakeBody);
     } else if (direction === directions[1]) {
       const snakeAte = await SnakeEatsAndCollisionService.didSnakeAteFood(
@@ -85,6 +90,8 @@ export default class GameController {
         foodId,
         boardSize
       );
+
+      const collision = await SnakeEatsAndCollisionService.didSnakeCollide(snakeId);
 
       const snakeUp = await SnakeMovementService.moveTheSnakeUp(
         boardSize,
@@ -104,6 +111,9 @@ export default class GameController {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
       }
+      if (collision){
+        await CreateGameService.endingTheGame(gameId);
+      }
       res.send(newGameBoardWithFoodAndSnakeBody);
     } else if (direction === directions[2]) {
       const snakeAte = await SnakeEatsAndCollisionService.didSnakeAteFood(
@@ -111,6 +121,8 @@ export default class GameController {
         foodId,
         boardSize
       );
+
+      const collision = await SnakeEatsAndCollisionService.didSnakeCollide(snakeId);
 
       const snakeRight = await SnakeMovementService.moveTheSnakeRight(
         boardSize,
@@ -126,9 +138,12 @@ export default class GameController {
           newGameBoardWithFoodAndSnakes,
           snakeId
         );
-      if (snakeAte == true) {
+      if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
+      }
+      if (collision){
+        await CreateGameService.endingTheGame(gameId);
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
       console.log(newGameBoardWithFoodAndSnakeBody);
@@ -138,6 +153,8 @@ export default class GameController {
         foodId,
         boardSize
       );
+
+      const collision = await SnakeEatsAndCollisionService.didSnakeCollide(snakeId);
 
       const snakeDown = await SnakeMovementService.moveTheSnakeDown(
         boardSize,
@@ -153,9 +170,12 @@ export default class GameController {
           newGameBoardWithFoodAndSnakes,
           snakeId
         );
-      if (snakeAte == true) {
+      if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
+      }
+      if (collision){
+        await CreateGameService.endingTheGame(gameId);
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
     }
@@ -166,20 +186,22 @@ export default class GameController {
     const snakeId = parseFloat(req.params.id);
     const gameId = parseFloat(req.params.game);
     const foodId = parseFloat(req.params.food);
+    const direction = req.body;
     await SnakeAutoMovementService.runGameInLoop(
       gameId,
       snakeId,
       foodId,
-      boardSize
+      boardSize,
+      direction
     );
     res.send("Game Running");
   }
 
   static async showTheBoard(req: Request, res: Response) {
     const gameId = parseFloat(req.params.game);
-    const board = await CreateGameService.showTheBoard(gameId);
-
-    res.send(board);
+    const game = await CreateGameService.showTheBoard(gameId);
+  
+    res.send(game);
   }
 
   static async endGame(req: Request, res: Response) {

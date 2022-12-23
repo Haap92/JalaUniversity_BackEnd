@@ -9,6 +9,7 @@ import CreateGameBoard from "./factories/createGameBoard";
 import createSnake from "./factories/createSnake";
 import CreateGame from "./factories/createGame";
 import RandomNumberService from "./factories/randomNumberService";
+import { status } from "../domain/types";
 
 export default class CreateGameService {
   static async prepareGame(boardSize: number) {
@@ -52,7 +53,6 @@ export default class CreateGameService {
     gameAndPrintedBoard.push(newSnake);
     gameAndPrintedBoard.push(newFood);
 
-    console.log(newGame);
     return newGame;
   }
 
@@ -165,7 +165,7 @@ export default class CreateGameService {
     return gameResets;
   }
 
-  static async showTheBoard(gameId: number){
+  static async showTheBoard(gameId: number) {
     const newGameReader = container.get<GameRepository>("GameService");
     const game = await newGameReader.read(gameId);
     const showingTheBoard = game.gameBoard;
@@ -175,11 +175,13 @@ export default class CreateGameService {
   }
 
   static async endingTheGame(gameId: number){
-    const newGameReader = container.get<GameRepository>("GameService");
+    const newGameReader = await container.get<GameRepository>("GameService");
     const game = await newGameReader.read(gameId);
-    game.status = 'Ended';
+    const status: status = 'Ended';
+    game.status = status;
+    console.log(game.status);
+
     await newGameReader.update(game);
-    const endingGame = game.status;
-    return endingGame;
+
   }
 }

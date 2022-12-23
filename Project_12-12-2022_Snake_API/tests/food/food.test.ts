@@ -15,6 +15,12 @@ beforeEach(async () => {
   component = container.get<FoodService>("FoodService");
 });
 
+test('Create a Food', async()=>{
+  const foodCreator = new createFood();
+  const food = foodCreator.createFood(5);
+  expect(typeof food === 'object').toBeTruthy();
+});
+
 test('Create Food', async()=>{
   const foodCreator = new createFood();
   const food = foodCreator.createFood(5);

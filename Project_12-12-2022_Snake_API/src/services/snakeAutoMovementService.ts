@@ -2,30 +2,35 @@ import { GameRepository } from "../domain/repository/gameRepository";
 import { container } from "../inversify/config";
 import CreateGameService from "./createGameService";
 import CreateGameBoard from "./factories/createGameBoard";
-import { directions } from "./factories/snakeDirectionConstant";
+import { directions } from './factories/snakeDirectionConstant';
 import SnakeEatsAndCollisionService from "./snakeEatsAndCollisionService";
 import SnakeMovementService from "./snakeMovementService";
-import { SnakeRepository } from "../domain/repository/snakeRepository";
+import { direction } from '../domain/types';
 
 export default class SnakeAutoMovementService {
   static async runGameInLoop(
     gameId: number,
     snakeId: number,
     foodId: number,
-    boardSize: number
+    boardSize: number,
+    direction: direction
   ) {
     const newGamereader = container.get<GameRepository>("GameService");
     const game = await newGamereader.read(gameId);
     const speed = game.speed;
+    const status = game.status;
 
     const updateGame = async () => {
-      await this.MovementLoop(gameId, snakeId, foodId, boardSize);
       const gameStatus = game.status;
+      console.log(gameStatus);
+      console.log(status);
+
       const gameEnd = "Ended";
 
-      if (gameStatus === gameEnd) {
+      if (gameStatus == gameEnd) {
         clearInterval(gameLoopInterval);
       }
+      await this.MovementLoop(gameId, snakeId, foodId, boardSize, direction);
     };
 
     const gameLoopInterval = setInterval(updateGame, speed);
@@ -36,7 +41,8 @@ export default class SnakeAutoMovementService {
     gameId: number,
     snakeId: number,
     foodId: number,
-    boardSize: number
+    boardSize: number, 
+    direction: direction
   ) {
     const gameStatus = "Playing";
     const gameSpeed = 1000;
@@ -47,13 +53,8 @@ export default class SnakeAutoMovementService {
     game.status = gameStatus;
     game.speed = gameSpeed;
     await newReadGame.update(game);
-
     const gameBoardWithFood = JSON.parse(game.gameBoard);
-    const newReadSnake = container.get<SnakeRepository>("SnakeService");
-    const snake = await newReadSnake.read(snakeId);
-
-    // eslint-disable-next-line prefer-const
-    let direction = snake.direction;
+    
 
     if (direction === directions[0]) {
       const snakeAte = await SnakeEatsAndCollisionService.didSnakeAteFood(
@@ -72,10 +73,14 @@ export default class SnakeAutoMovementService {
           gameBoardWithFood,
           snakeLeft
         );
-      await CreateGameBoard.createBoardWithFoodAndSnakeBody(
-        newGameBoardWithFoodAndSnakes,
-        snakeId
-      );
+      const newGameBoardWithFoodAndSnakeBody =
+        await CreateGameBoard.createBoardWithFoodAndSnakeBody(
+          newGameBoardWithFoodAndSnakes,
+          snakeId
+        );
+      const boardToSave = JSON.stringify(newGameBoardWithFoodAndSnakeBody);
+      game.gameBoard = boardToSave;
+      await newReadGame.update(game);
       if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
@@ -96,11 +101,15 @@ export default class SnakeAutoMovementService {
           gameBoardWithFood,
           snakeUp
         );
-      await CreateGameBoard.createBoardWithFoodAndSnakeBody(
-        newGameBoardWithFoodAndSnakes,
-        snakeId
-      );
-      if (snakeAte == true) {
+      const newGameBoardWithFoodAndSnakeBody =
+        await CreateGameBoard.createBoardWithFoodAndSnakeBody(
+          newGameBoardWithFoodAndSnakes,
+          snakeId
+        );
+      const boardToSave = JSON.stringify(newGameBoardWithFoodAndSnakeBody);
+      game.gameBoard = boardToSave;
+      await newReadGame.update(game);
+      if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
       }
@@ -120,11 +129,15 @@ export default class SnakeAutoMovementService {
           gameBoardWithFood,
           snakeRight
         );
-      await CreateGameBoard.createBoardWithFoodAndSnakeBody(
-        newGameBoardWithFoodAndSnakes,
-        snakeId
-      );
-      if (snakeAte == true) {
+      const newGameBoardWithFoodAndSnakeBody =
+        await CreateGameBoard.createBoardWithFoodAndSnakeBody(
+          newGameBoardWithFoodAndSnakes,
+          snakeId
+        );
+      const boardToSave = JSON.stringify(newGameBoardWithFoodAndSnakeBody);
+      game.gameBoard = boardToSave;
+      await newReadGame.update(game);
+      if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
       }
@@ -144,11 +157,15 @@ export default class SnakeAutoMovementService {
           gameBoardWithFood,
           snakeDown
         );
-      await CreateGameBoard.createBoardWithFoodAndSnakeBody(
-        newGameBoardWithFoodAndSnakes,
-        snakeId
-      );
-      if (snakeAte == true) {
+      const newGameBoardWithFoodAndSnakeBody =
+        await CreateGameBoard.createBoardWithFoodAndSnakeBody(
+          newGameBoardWithFoodAndSnakes,
+          snakeId
+        );
+      const boardToSave = JSON.stringify(newGameBoardWithFoodAndSnakeBody);
+      game.gameBoard = boardToSave;
+      await newReadGame.update(game);
+      if (snakeAte) {
         await CreateGameService.updateTheBoard(gameId, boardSize, foodId);
         await SnakeEatsAndCollisionService.snakeEats(snakeId);
       }

@@ -31,20 +31,23 @@ export default class SnakeEatsAndCollisionService {
     }
   }
 
-  static async didSnakeCollide(snakeId: number) {
+  static async didSnakeCollide(snakeId: number): Promise<boolean> {
     const showSnakeBody = container.get<SnakeRepository>("SnakeService");
+
     const snake = await showSnakeBody.read(snakeId);
+
     const snakeBody = JSON.parse(snake.body);
+
     const positionX = snake.axisX;
+
     const positionY = snake.axisY;
 
-    const collision = snakeBody.forEach((element: number[]) => {
-      if (positionX == element[0] && positionY == element[1]) {
-        return true;
-      }
+    snakeBody.forEach((element: number[]) => {
+      if(positionX == element[0] && positionY == element[1])
+    return true;        
+
     });
-    
-    return collision;
+    return false;
   }
 
   static async snakeEats(snakeId: number) {
