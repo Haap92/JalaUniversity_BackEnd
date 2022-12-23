@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1671821042334" clover="3.2.0">
-  <project timestamp="1671821042334" name="All files">
-    <metrics statements="235" coveredstatements="148" conditionals="0" coveredconditionals="0" methods="51" coveredmethods="17" elements="286" coveredelements="165" complexity="0" loc="235" ncloc="235" packages="8" files="24" classes="24"/>
+<coverage generated="1671822167738" clover="3.2.0">
+  <project timestamp="1671822167739" name="All files">
+    <metrics statements="243" coveredstatements="160" conditionals="0" coveredconditionals="0" methods="52" coveredmethods="21" elements="295" coveredelements="181" complexity="0" loc="243" ncloc="243" packages="8" files="26" classes="26"/>
     <package name="db">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="db-source.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\db-source.ts">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
       </file>
     </package>
     <package name="db.dbEntities">
       <metrics statements="26" coveredstatements="26" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="db-board.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbEntities\db-board.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
       </file>
       <file name="db-food.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbEntities\db-food.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
       </file>
       <file name="db-game.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbEntities\db-game.ts">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
-        <line num="16" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
       </file>
       <file name="db-snake.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbEntities\db-snake.ts">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
-        <line num="16" count="4" type="stmt"/>
-        <line num="19" count="4" type="stmt"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="28" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
       </file>
     </package>
     <package name="db.dbServices">
-      <metrics statements="57" coveredstatements="22" conditionals="0" coveredconditionals="0" methods="16" coveredmethods="3"/>
+      <metrics statements="57" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="16" coveredmethods="4"/>
       <file name="db-board-services.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbServices\db-board-services.ts">
         <metrics statements="12" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
@@ -74,10 +74,10 @@
       </file>
       <file name="db-food-services.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbServices\db-food-services.ts">
         <metrics statements="14" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="1"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
@@ -90,16 +90,16 @@
         <line num="32" count="0" type="stmt"/>
       </file>
       <file name="db-game-services.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbServices\db-game-services.ts">
-        <metrics statements="14" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <metrics statements="14" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="1"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
@@ -108,10 +108,10 @@
       </file>
       <file name="db-snake-services.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\db\dbServices\db-snake-services.ts">
         <metrics statements="17" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="1"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
@@ -128,12 +128,16 @@
       </file>
     </package>
     <package name="domain.entities">
-      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="board.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\domain\entities\board.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
       <file name="food.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\domain\entities\food.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="game.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\domain\entities\game.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
@@ -146,26 +150,26 @@
       <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="config.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\inversify\config.ts">
         <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="2" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
-        <line num="9" count="4" type="stmt"/>
-        <line num="11" count="4" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="14" count="4" type="stmt"/>
-        <line num="16" count="4" type="stmt"/>
-        <line num="18" count="4" type="stmt"/>
-        <line num="19" count="4" type="stmt"/>
-        <line num="20" count="4" type="stmt"/>
-        <line num="21" count="4" type="stmt"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
       </file>
     </package>
     <package name="services">
@@ -182,12 +186,12 @@
       </file>
     </package>
     <package name="services.coreServices">
-      <metrics statements="48" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="20" coveredmethods="6"/>
+      <metrics statements="48" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="20" coveredmethods="8"/>
       <file name="boardService.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\coreServices\boardService.ts">
         <metrics statements="10" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="4" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
@@ -198,9 +202,9 @@
       </file>
       <file name="foodService.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\coreServices\foodService.ts">
         <metrics statements="12" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="2"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
@@ -212,14 +216,14 @@
         <line num="28" count="0" type="stmt"/>
       </file>
       <file name="gameService.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\coreServices\gameService.ts">
-        <metrics statements="12" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
+        <metrics statements="12" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="2"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
@@ -228,9 +232,9 @@
       </file>
       <file name="snakeService.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\coreServices\snakeService.ts">
         <metrics statements="14" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="3" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="8" count="4" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
@@ -245,7 +249,7 @@
       </file>
     </package>
     <package name="services.factories">
-      <metrics statements="68" coveredstatements="46" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="7"/>
+      <metrics statements="75" coveredstatements="53" conditionals="0" coveredconditionals="0" methods="15" coveredmethods="8"/>
       <file name="createBoard.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\factories\createBoard.ts">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -266,6 +270,16 @@
         <line num="10" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
+      </file>
+      <file name="createGame.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\factories\createGame.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
       </file>
       <file name="createGameBoard.ts" path="C:\Users\haap9\Documents\HAAP Documents\Cursos\JalaUniversity\Backend\Project_12-12-2022_Snake_API\src\services\factories\createGameBoard.ts">
         <metrics statements="28" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="3"/>

@@ -24,8 +24,8 @@ class Test {
         console.log(await boardDataAccess.read(1));
 
         const snake = new Snake();
-        snake.axisX = 20;
-        snake.axisY = 20; 
+        snake.axisX = 10;
+        snake.axisY = 10; 
         snake.direction = 'RIGHT';
         snake.length = 1;
         snake.body = '[]';
@@ -37,7 +37,7 @@ class Test {
 
         const food = new Food();
         food.axisX = 5;
-        food.axisY = 16; 
+        food.axisY = 7; 
 
         const foodDataAccess = new FoodDataService;
         await foodDataAccess.create(food);
