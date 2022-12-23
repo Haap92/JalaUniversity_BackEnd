@@ -1,7 +1,5 @@
 export default class RandomNumberService {
-
   randomNumber(maxValue: number): number {
-
     const currentTime = new Date();
     const [month, day, hour, minutes, seconds, milliseconds] = [
       currentTime.getMonth(),

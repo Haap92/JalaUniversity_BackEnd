@@ -1,6 +1,6 @@
 import Food from "../entities/food";
 
-export default interface UserRepository {
+export interface FoodRepository {
 
     create: (food: Food) => Promise<Food>
     read: (id: number) => Promise<Food>

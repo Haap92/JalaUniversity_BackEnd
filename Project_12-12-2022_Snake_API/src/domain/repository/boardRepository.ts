@@ -1,6 +1,6 @@
 import Board from "../entities/board";
 
-export default interface UserRepository {
+export interface BoardRepository {
 
     create: (board: Board) => Promise<Board>
     read: (id: number) => Promise<Board>

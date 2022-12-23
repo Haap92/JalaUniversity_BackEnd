@@ -3,5 +3,5 @@ export default class Game {
     status: string;
     speed: number;
     gameBoard: string;
-    food: string;
+
 }

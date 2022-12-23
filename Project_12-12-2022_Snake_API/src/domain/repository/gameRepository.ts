@@ -1,6 +1,6 @@
 import Game from "../entities/game";
 
-export default interface SnakeRepository {
+export interface GameRepository {
 
     create: (game: Game) => Promise<Game>
     read: (id: number) => Promise<Game>

@@ -1,5 +1,5 @@
 import { Request, Response} from "express";
-import BoardRepository from "../../domain/repository/boardRepository";
+import { BoardRepository } from "../../domain/repository/boardRepository";
 import createBoard from "../../services/factories/createBoard";
 import { container } from "../../inversify/config";
 

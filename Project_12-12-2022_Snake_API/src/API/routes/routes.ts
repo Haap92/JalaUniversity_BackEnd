@@ -3,6 +3,7 @@ import GameController from "../controllers/gameControler";
 import BoardController from "../controllers/boardController";
 import SnakeController from "../controllers/snakeController";
 // import SnakeEatsController from "../controllers/snakeEatsController";
+import ScoreController from '../controllers/scoreController';
 
 
 export const routes = Router();
@@ -18,6 +19,10 @@ routes.get('/board/:size/moveSnake/:id/Down', SnakeController.moveTheCreatedSnak
 routes.get('/moveSnake', SnakeController.moveTheSnakeByBody);
 
 routes.get('/game/:size', GameController.prepareGame);
+routes.get('/gameReset/:game/:size/snake/:id/:food', GameController.resetGame);
 routes.get('/gameStart/:game/:size/snake/:id/:food', GameController.startGame);
+routes.get('/gameAutoStart/:game/:size/snake/:id/:food', GameController.autoMovement);
+
+routes.get('/scores', ScoreController.getScores);
 
 // routes.get('/snakeEatsLeft', SnakeEatsController.snakeAteLeft);

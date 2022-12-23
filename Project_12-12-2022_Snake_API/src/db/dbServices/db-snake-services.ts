@@ -1,7 +1,8 @@
 import { AppDataSource } from '../db-source';
 import { injectable } from 'inversify';
-import SnakeRepository from '../../domain/repository/snakeRepository';
+import { SnakeRepository } from '../../domain/repository/snakeRepository';
 import DBSnake from '../dbEntities/db-snake';
+import Snake from '../../domain/entities/Snake';
 
 @injectable()
 export default class SnakeDataService implements SnakeRepository  {
@@ -17,6 +18,13 @@ export default class SnakeDataService implements SnakeRepository  {
         return await repository.findOneBy({
             id: id
         });
+    }
+
+    async findAll(): Promise<Snake[]> {
+        const repository = AppDataSource.getRepository(DBSnake);
+        const snakeArray = await repository.find();
+        return snakeArray;
+        
     }
 
     async update(snake: DBSnake){

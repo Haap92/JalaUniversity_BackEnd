@@ -1,6 +1,6 @@
 import { AppDataSource } from '../db-source';
 import { injectable } from 'inversify';
-import BoardRepository from '../../domain/repository/boardRepository';
+import { BoardRepository } from '../../domain/repository/boardRepository';
 import DBBoard from '../dbEntities/db-board';
 
 @injectable()

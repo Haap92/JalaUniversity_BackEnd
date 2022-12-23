@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import SnakeRepository from "../../domain/repository/SnakeRepository";
+import { SnakeRepository } from "../../domain/repository/SnakeRepository";
 import createSnake from "../../services/factories/createSnake";
 import { container } from "../../inversify/config";
-import SnakeMovementService from "../../services/factories/snakeMovementService";
+import SnakeMovementService from "../../services/snakeMovementService";
 import { directions } from '../../services/factories/snakeDirectionConstant';
 
 

@@ -13,7 +13,7 @@
             "-r", "tsconfig-paths/register",
         ],
         "args": [
-            "${workspaceFolder}/src/app.ts"
+            "${workspaceFolder}/src/serve.ts"
         ]
       }
     ]

@@ -16,6 +16,4 @@ export default class DBGame implements Game {
     @Column()
     gameBoard: string;
 
-    @Column()
-    food: string;
 }
