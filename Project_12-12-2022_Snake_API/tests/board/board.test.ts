@@ -2,6 +2,7 @@ import BoardService from '../../src/services/coreServices/boardService';
 import { Container } from 'inversify';
 import BoardRepositoryMock from './__mocks__/boardRepositoryMock';
 import createBoard from '../../src/services/factories/createBoard';
+import { boardMock } from "../board/__mocks__/boardMock";
 import "reflect-metadata";
 
 let component:BoardService;
@@ -20,7 +21,13 @@ test('Create a Board', async()=>{
     expect(typeof board === 'object').toBeTruthy();
 });
 
+test('Create a Board', async()=>{
+    const boardCreator = new createBoard();
+    const board = boardCreator.createBoard(5);
+    expect(board.gridX === boardMock.gridX).toBeTruthy();
+});
+
 test('Read a Board', async()=>{
-    const board = await component.read(1);
-    expect(board).toBeTruthy();
+    const boardMock = await component.read(1);
+    expect(boardMock).toBeTruthy();
 });

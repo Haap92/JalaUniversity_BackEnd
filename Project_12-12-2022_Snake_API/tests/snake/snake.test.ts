@@ -2,6 +2,7 @@ import SnakeService from "../../src/services/coreServices/snakeService";
 import { Container } from "inversify";
 import SnakeRepositoryMock from "./__mocks__/SnakeRepositoryMock";
 import createSnake from '../../src/services/factories/createsnake';
+import { snakeMock } from './__mocks__/snakeMock';
 import "reflect-metadata";
 
 let component: SnakeService;
@@ -19,6 +20,12 @@ test('Create a Snake', async()=>{
   const snakeCreator = new createSnake();
   const snake = snakeCreator.createSnake(5);
   expect(typeof snake === 'object').toBeTruthy();
+});
+
+test('Compare a Snake', async()=>{
+  const snakeCreator = new createSnake();
+  const snake = snakeCreator.createSnake(5);
+  expect(snake.axisY === snakeMock.axisY).toBeTruthy();
 });
 
 test('Create Snake', async()=>{

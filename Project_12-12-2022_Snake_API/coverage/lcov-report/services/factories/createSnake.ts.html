@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for db/dbServices/db-board-services.ts</title>
+    <title>Code coverage report for services/factories/createSnake.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">db/dbServices</a> db-board-services.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/factories</a> createSnake.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/12</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -86,68 +86,53 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { AppDataSource } from '../db-source';
-import { injectable } from 'inversify';
-import { BoardRepository } from '../../domain/repository/boardRepository';
-import DBBoard from '../dbEntities/db-board';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Snake from "../../domain/entities/snake";
+import SnakeRandomDirectionService from "../snakeRandomDirectionService";
+import RandomNumberService from "./randomNumberService";
 &nbsp;
-@injectable()
-export default class BoardDataService implements BoardRepository  {
-    
-    async <span class="fstat-no" title="function not covered" >create(</span>board: DBBoard){
-        const repository = <span class="cstat-no" title="statement not covered" >AppDataSource.getRepository(DBBoard);</span>
-<span class="cstat-no" title="statement not covered" >        await repository.save(board);</span>
-<span class="cstat-no" title="statement not covered" >        return board;</span>
-    }
+export default class createSnake {
+  createSnake(boardSize: number): Snake {
+    const snake = new Snake();
 &nbsp;
-    async read(id: number){
-        const repository = AppDataSource.getRepository(DBBoard);
-        return await repository.findOneBy({
-            id: id
-        });
-    }
+    const randomAxisX = new RandomNumberService().randomNumber(boardSize);
+    const randomAxisY = new RandomNumberService().randomNumber(boardSize);
+    const randomDirection = new SnakeRandomDirectionService().snakeDirection();
 &nbsp;
-    async <span class="fstat-no" title="function not covered" >delete(</span>id: number){
-        const repository = <span class="cstat-no" title="statement not covered" >AppDataSource.getRepository(DBBoard);</span>
-<span class="cstat-no" title="statement not covered" >        await repository.delete({</span>
-            id: id
-        });
-<span class="cstat-no" title="statement not covered" >        return `Board with ${id} deleted`;</span>
-    }
-}</pre></td></tr></table></pre>
+    snake.axisX = randomAxisX;
+    snake.axisY = randomAxisY;
+    snake.direction = randomDirection;
+    snake.length = 1;
+    snake.body = "[]";
+    snake.name = "Player";
+    snake.score = 0;
+&nbsp;
+    return snake;
+  }
+}
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

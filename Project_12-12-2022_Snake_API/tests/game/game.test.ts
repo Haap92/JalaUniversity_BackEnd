@@ -3,6 +3,7 @@ import { Container } from "inversify";
 import GameRepositoryMock from "./__mocks__/gameRepositoryMock";
 import createGame from '../../src/services/factories/creategame';
 import "reflect-metadata";
+import { gameMock } from './__mocks__/gameMock';
 
 let component: GameService;
 beforeEach(async () => {
@@ -33,7 +34,13 @@ test('Create game', async()=>{
    });
 });
 
+test('Compare a game item', async()=>{
+  const gameCreator = new createGame();
+  const game = gameCreator.createGame('Ready to Play', 1000);
+  expect(game.speed === gameMock.speed).toBeTruthy();
+});
+
  test('Read a game', async()=>{
-   const game = await component.read(1);
-   expect(game).toBeTruthy();
+  const game = await component.read(1);
+  expect(game).toBeTruthy();
  });

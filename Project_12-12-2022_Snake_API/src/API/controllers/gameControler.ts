@@ -24,14 +24,14 @@ export default class GameController {
     const snakeId = parseFloat(req.params.id);
     const gameId = parseFloat(req.params.game);
     const foodId = parseFloat(req.params.food);
-    const resetGame = await CreateGameService.resetTheGame(
+    await CreateGameService.resetTheGame(
       gameId,
       snakeId,
       foodId,
       boardSize
     );
 
-    res.send(resetGame);
+    res.send('Game Resseted');
   }
 
   static async startGame(req: Request, res: Response) {
@@ -82,6 +82,7 @@ export default class GameController {
       }
       if (collision){
         await CreateGameService.endingTheGame(gameId);
+        res.send('Game Over, Collision');
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
     } else if (direction === directions[1]) {
@@ -113,6 +114,7 @@ export default class GameController {
       }
       if (collision){
         await CreateGameService.endingTheGame(gameId);
+        res.send('Game Over, Collision');
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
     } else if (direction === directions[2]) {
@@ -144,6 +146,7 @@ export default class GameController {
       }
       if (collision){
         await CreateGameService.endingTheGame(gameId);
+        res.send('Game Over, Collision');
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
       console.log(newGameBoardWithFoodAndSnakeBody);
@@ -176,6 +179,7 @@ export default class GameController {
       }
       if (collision){
         await CreateGameService.endingTheGame(gameId);
+        res.send('Game Over, Collision');
       }
       res.send(newGameBoardWithFoodAndSnakeBody);
     }

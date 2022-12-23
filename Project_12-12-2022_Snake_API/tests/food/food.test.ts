@@ -31,7 +31,7 @@ test('Create Food', async()=>{
    });
 });
 
- test('Read a Food', async()=>{
-   const food = await component.read(1);
-   expect(food).toBeTruthy();
- });
+test('Read a Food', async()=>{
+  const food = await component.read(1);
+  expect(food).toBeTruthy();
+});
