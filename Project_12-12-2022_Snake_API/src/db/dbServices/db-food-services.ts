@@ -7,25 +7,29 @@ import DBFood from '../dbEntities/db-Food';
 export default class FoodDataService implements FoodRepository  {
     
     async create(food: DBFood){
-        const repository = AppDataSource.getRepository(DBFood);
+        const repository = AppDataSource.getMongoRepository(DBFood);
+        const findFood = await repository.find({});
+        food.id = 1 + findFood.length;
         await repository.save(food);
         return food;
     }
 
     async read(id: number){
-        const repository = AppDataSource.getRepository(DBFood);
+        const repository = AppDataSource.getMongoRepository(DBFood);
         return await repository.findOneBy({
             id: id
         });
     }
 
     async update(food: DBFood){
-        const repository = AppDataSource.getRepository(DBFood);
-        await repository.save(food);
+        const repository = AppDataSource.getMongoRepository(DBFood);
+        const currentFood = await repository.findOneBy({id: food.id});
+        const updatedFood = {...food, _id: currentFood._id};
+        await repository.save(updatedFood);
     }
 
     async delete(id: number){
-        const repository = AppDataSource.getRepository(DBFood);
+        const repository = AppDataSource.getMongoRepository(DBFood);
         await repository.delete({
             id: id
         });

@@ -1,5 +1,5 @@
-import DBFood from "../../../db/dbEntities/db-food";
-import Food from "../../entities/food";
+import DBFood from "../dbEntities/db-food";
+import Food from "../../domain/entities/food";
 
 export class FoodMapper {
     static toDomain(raw: DBFood): Food{

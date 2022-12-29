@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import Snake from "../../domain/entities/snake";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class DBSnake implements Snake { 
+export default class DBSnake { 
+
+    @ObjectIdColumn()
+    _id: string;
 
     @PrimaryColumn()
     id: number;

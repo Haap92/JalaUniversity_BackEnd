@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import Board from "../../domain/entities/board";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class DBBoard implements Board { 
+export default class DBBoard { 
+
+    @ObjectIdColumn()
+    _id: string;
 
     @PrimaryColumn()
     id: number;

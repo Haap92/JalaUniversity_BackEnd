@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import Game from "../../domain/entities/game";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class DBGame implements Game { 
+export default class DBGame { 
+
+    @ObjectIdColumn()
+    _id: string;
 
     @PrimaryColumn()
     id: number;

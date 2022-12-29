@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import Food from "../../domain/entities/food";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class DBFood implements Food { 
+export default class DBFood { 
+
+    @ObjectIdColumn()
+    _id: string;
 
     @PrimaryColumn()
     id: number;

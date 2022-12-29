@@ -1,5 +1,5 @@
-import DBGame from "../../../db/dbEntities/db-game";
-import Game from "../../entities/game";
+import DBGame from "../dbEntities/db-game";
+import Game from "../../domain/entities/game";
 
 export class GameMapper {
     static toDomain(raw: DBGame): Game{

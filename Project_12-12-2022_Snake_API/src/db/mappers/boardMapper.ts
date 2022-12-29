@@ -1,5 +1,5 @@
-import DBBoard from "../../../db/dbEntities/db-board";
-import Board from "../../entities/board";
+import DBBoard from "../dbEntities/db-board";
+import Board from "../../domain/entities/board";
 
 export class BoardMapper {
     static toDomain(raw: DBBoard): Board{
