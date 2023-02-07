@@ -8,7 +8,16 @@
 **/Homework_7-12-2022_TypeORM
 **/Homework_14-12-2022_Liskov/node_modules
 **/Project_12-12-2022_Snake_API/node_modules
+**/Homework_03-02-2023_RabbitMQ/node_modules
 **/MyTsExpressApp
 **/Test
+**/FinalWork
 dist/
 **/**/*.log
+
+**/FinalWork/Downloader/node_modules
+**/FinalWork/Downloader/.env
+**/FinalWork/Uploader/node_modules
+**/FinalWork/Uploader/.env
+**/FinalWork/Stats/node_modules
+**/FinalWork/Stats/.env

@@ -1,0 +1,24 @@
+{
+  "name": "homework_03-02-2023_rabbitmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rabbitmq": "docker compose up",
+    "sendtopic": "nodemon ./src/send-topic.ts",
+    "receivetopic": "nodemon ./src/receive-topic.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/amqp": "^0.2.5",
+    "@types/amqplib": "^0.10.1",
+    "@types/nodemon": "^1.19.2",
+    "amqp": "^0.2.7",
+    "amqplib": "^0.10.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  }
+}
