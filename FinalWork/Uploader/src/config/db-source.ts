@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import User from "./dbEntities/user";
+import GoogleDriveAccount from "../model/entities/googleDriveAccount";
+import UploadedFile from "../model/entities/UploadedFile";
+
 
 export const AppDataSource = new DataSource ({
     type: "mongodb",
@@ -11,7 +13,7 @@ export const AppDataSource = new DataSource ({
     useNewUrlParser:true,
     synchronize: true,
     logging: false,
-    entities: [User],
+    entities: [GoogleDriveAccount, UploadedFile],
     migrations: [],
     subscribers: [],
 });
