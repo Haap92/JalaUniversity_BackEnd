@@ -1,6 +1,8 @@
 import { AppDataSource } from "../db-source";
 import UploadedFile from "../entities/UploadedFile";
-import { ObjectId } from "mongodb";
+
+const mongodb = require('mongodb')
+const ObjectId = mongodb.ObjectId
 
 export class UploadedFileRepository {
   protected repository = AppDataSource.getMongoRepository(UploadedFile);
@@ -10,7 +12,7 @@ export class UploadedFileRepository {
   }
 
   async read(id: string): Promise<UploadedFile> {
-    const objectId: ObjectId = new ObjectId(id);
+    const objectId = new ObjectId(id);
     const foundUploadedFile = await this.repository.findOneBy({
       _id: objectId,
     });
@@ -23,22 +25,12 @@ export class UploadedFileRepository {
   }
 
   async update(uploadedFile: UploadedFile) {
-    const { id } = uploadedFile;
-    const objectId = new ObjectId(id);
-  
-    const updateResult = await this.repository.updateOne(
-      { _id: objectId },
-      { $set: uploadedFile }
-    );
-  
-    if (updateResult.result.n === 0) {
-      throw new Error(`Uploaded File with id:${id} not found`);
-    }
+    return await this.repository.save(uploadedFile)
   }
 
 
   async delete(id: string) {
-    const objectId: ObjectId = new ObjectId(id);
+    const objectId = new ObjectId(id);
     const deletedUploadedFile = await this.repository.findOneAndDelete({
       _id: objectId,
     });

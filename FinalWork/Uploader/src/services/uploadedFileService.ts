@@ -34,7 +34,7 @@ export default class UploadedFileService {
   async update(id: string, updateUploadedFile: UploadedFileValues) {
     try{
       const readedUploadedFile = await this.read(id);
-      readedUploadedFile.id = id
+
       readedUploadedFile.name =
         updateUploadedFile.name === ""
           ? readedUploadedFile.name

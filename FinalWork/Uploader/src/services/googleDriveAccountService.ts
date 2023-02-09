@@ -38,7 +38,7 @@ export default class GoogleDriveAccountService {
   ) {
     try {
       const readedGoogleDriveAccount = await this.read(id);  
-      readedGoogleDriveAccount.id = id
+
       readedGoogleDriveAccount.email =
         updateGoogleDriveAccountValues.email === ""
           ? readedGoogleDriveAccount.email

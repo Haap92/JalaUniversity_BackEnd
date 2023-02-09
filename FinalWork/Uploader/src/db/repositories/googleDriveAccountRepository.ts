@@ -1,6 +1,7 @@
 import { AppDataSource } from "../db-source";
-import GoogleDriveAccount from "../entities/googleDriveAccount";
-import { ObjectId } from "mongodb";
+import GoogleDriveAccount from '../entities/googleDriveAccount';
+const mongodb = require('mongodb')
+const ObjectId = mongodb.ObjectId
 
 export class GoogleDriveAccountRepository {
   protected repository = AppDataSource.getMongoRepository(GoogleDriveAccount);
@@ -10,7 +11,7 @@ export class GoogleDriveAccountRepository {
   }
 
   async read(id: string): Promise<GoogleDriveAccount> {
-    const objectId: ObjectId = new ObjectId(id);
+    const objectId = new ObjectId(id);
     const foundGoogleDriveAccount = await this.repository.findOneBy({
       _id: objectId,
     });
@@ -23,21 +24,11 @@ export class GoogleDriveAccountRepository {
   }
 
   async update(googleDriveAccount: GoogleDriveAccount) {
-    const { id } = googleDriveAccount;
-    const objectId = new ObjectId(id);
-  
-    const updateResult = await this.repository.updateOne(
-      { _id: objectId },
-      { $set: googleDriveAccount }
-    );
-  
-    if (updateResult.result.n === 0) {
-      throw new Error(`Google Drive Account with id:${id} not found`);
-    }
+    return await this.repository.save(googleDriveAccount)
   }
 
   async delete(id: string) {
-    const objectId: ObjectId = new ObjectId(id);
+    const objectId = new ObjectId(id);
     const deletedGoogleDriveAccount = await this.repository.findOneAndDelete({
       _id: objectId,
     });
