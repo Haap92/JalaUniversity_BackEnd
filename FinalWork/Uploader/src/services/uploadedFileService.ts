@@ -1,26 +1,27 @@
-import { AppDataSource } from "../config/db-source";
-import UploadedFile from "../model/entities/UploadedFile";
+import UploadedFile from "../db/entities/UploadedFile";
 import { EntityNotFoundError } from "typeorm/error/EntityNotFoundError";
-import { UploadedFileRepository } from "../model/repositories/uploadedFileRepository";
-import { ObjectId } from "mongodb";
+import { UploadedFileRepository } from "../db/repositories/uploadedFileRepository";
+import { UploadedFileValues } from "../types";
 
-export default class UploadedFileService implements UploadedFileRepository {
-  private readonly repository;
+export default class UploadedFileService {
+  protected uploadedFileRepository: UploadedFileRepository;
   constructor() {
-    this.repository = AppDataSource.getMongoRepository(UploadedFile);
+    this.uploadedFileRepository = new UploadedFileRepository();
   }
 
-  async create(uploadedFile: UploadedFile) {
-    await this.repository.save(uploadedFile);
+  async create(uploadedFileValues: UploadedFileValues) {
+    const uploadedFile = new UploadedFile();
+    uploadedFile.name = uploadedFileValues.name;
+    uploadedFile.size = uploadedFileValues.size;
+    uploadedFile.driveId = uploadedFileValues.driveId;
+    uploadedFile.status = uploadedFileValues.status;
+    await this.uploadedFileRepository.create(uploadedFile);
     return uploadedFile;
   }
 
   async read(id: string) {
     try {
-      const objectId: ObjectId = new ObjectId(id);
-      const uploadedFile = await this.repository.findOneBy({
-        _id: objectId,
-      });
+      const uploadedFile = await this.uploadedFileRepository.read(id);
       return uploadedFile;
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
@@ -30,20 +31,33 @@ export default class UploadedFileService implements UploadedFileRepository {
     }
   }
 
-  async update(file: UploadedFile) {
-    try {
-      await this.repository.save(file);
+  async update(id: string, updateUploadedFile: UploadedFileValues) {
+    try{
+      const readedUploadedFile = await this.read(id);
+      readedUploadedFile.id = id
+      readedUploadedFile.name =
+        updateUploadedFile.name === ""
+          ? readedUploadedFile.name
+          : updateUploadedFile.name;
+      readedUploadedFile.size =
+        updateUploadedFile.size === null
+          ? readedUploadedFile.size
+          : updateUploadedFile.size;
+      readedUploadedFile.driveId =
+        updateUploadedFile.driveId === ""
+          ? readedUploadedFile.driveId
+          : updateUploadedFile.driveId;
+      readedUploadedFile.status =
+        updateUploadedFile.status === ""
+          ? readedUploadedFile.status
+          : updateUploadedFile.status;
+      return await this.uploadedFileRepository.update(readedUploadedFile);
     } catch (error) {
-      return new Error(`Failed to update UploadedFile with id "${file.id}"`);
+      return new Error(`Failed to update Google Drive Account with id "${id}"`);
     }
   }
 
   async delete(id: string) {
-    try {
-      await this.repository.delete({ id });
-    } catch (error) {
-      return new Error(`Failed to delete UploadedFile with id "${id}"`);
-    }
-    return `UploadedFile with ${id} deleted`;
+    return await this.uploadedFileRepository.delete(id);
   }
 }

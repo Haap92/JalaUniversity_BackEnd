@@ -1,20 +1,21 @@
 import { Request, Response } from "express";
-import UploadedFile from "../../model/entities/uploadedFile";
 import UploadedFileService from "../../Services/uploadedFileService";
+import { UploadedFileValues } from "../../types";
 
 const uploadedFileService = new UploadedFileService();
 
 export default class UploadedFileController {
   static async create(req: Request, res: Response) {
     const { name, size, driveId, status } = req.body;
-    const uploadedFile = new UploadedFile();
-    uploadedFile.name = name;
-    uploadedFile.size = size;
-    uploadedFile.driveId = driveId;
-    uploadedFile.status = status;
+    const uploadedFileValues = {
+      name,
+      size,
+      driveId,
+      status,
+    };
     try {
       const createdUploadedFile = await uploadedFileService.create(
-        uploadedFile
+        uploadedFileValues
       );
       return res.status(201).json(createdUploadedFile);
     } catch (error) {
@@ -34,11 +35,22 @@ export default class UploadedFileController {
 
   static async update(req: Request, res: Response) {
     const { id } = req.params;
-    const uploadedFile = req.body;
-    uploadedFile.id = id;
+    const updateUploadedFileValues: UploadedFileValues = {
+      name: req.body.name || "",
+      size: req.body.size || "",
+      driveId: req.body.driveId || "",
+      status: req.body.status || "",
+    };
     try {
-      await uploadedFileService.update(uploadedFile);
-      return res.status(200).json(uploadedFile);
+      const updatedUploadedFile = await uploadedFileService.update(
+        id,
+        updateUploadedFileValues
+      );
+      const succesfulUpdate = {
+        message: "Uploaded File successfully updated.",
+      };
+      res.send(succesfulUpdate);
+      return res.status(200);
     } catch (error) {
       return res.status(400).json({ message: error.message });
     }
@@ -47,8 +59,13 @@ export default class UploadedFileController {
   static async delete(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const message = await uploadedFileService.delete(id);
-      return res.status(204).json({ message });
+      const deletedUploadedFileId = await uploadedFileService.delete(id);
+      const succesfulDelete = {
+        id: deletedUploadedFileId,
+        message: "Uploaded File successfully deleted.",
+      };
+      res.send(succesfulDelete);
+      return res.status(204);
     } catch (error) {
       return res.status(400).json({ message: error.message });
     }

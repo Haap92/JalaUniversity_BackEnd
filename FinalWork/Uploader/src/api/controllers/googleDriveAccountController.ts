@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
-import GoogleDriveAccount from "../../model/entities/googleDriveAccount";
 import GoogleDriveAccountService from "../../services/googleDriveAccountService";
+import { GoogleDriveAccountValues } from '../../types';
 
 const googleDriveAccountService = new GoogleDriveAccountService();
 
 export default class GoogleDriveAccountController {
   static async create(req: Request, res: Response) {
     const { email, googleDriveKey } = req.body;
-    const googleDriveAccount = new GoogleDriveAccount();
-    googleDriveAccount.email = email;
-    googleDriveAccount.googleDriveKey = googleDriveKey;
+    const googleDriveAccountValues = {
+      email,
+      googleDriveKey,
+    };
     try {
       const createdGoogleDriveAccount = await googleDriveAccountService.create(
-        googleDriveAccount
+        googleDriveAccountValues
       );
       return res.status(201).json(createdGoogleDriveAccount);
     } catch (error) {
@@ -21,7 +22,7 @@ export default class GoogleDriveAccountController {
   }
 
   static async read(req: Request, res: Response) {
-    const { id } = req.params; 
+    const { id } = req.params;
     try {
       const googleDriveAccount = await googleDriveAccountService.read(id);
       return res.status(200).json(googleDriveAccount);
@@ -32,11 +33,20 @@ export default class GoogleDriveAccountController {
 
   static async update(req: Request, res: Response) {
     const { id } = req.params;
-    const googleDriveAccount = req.body;
-    googleDriveAccount.id = id;
+    const updateGoogleDriveAccountValues: GoogleDriveAccountValues = {
+      email: req.body.email || "",
+      googleDriveKey: req.body.googleDriveKey || "",
+    };
     try {
-      await googleDriveAccountService.update(googleDriveAccount);
-      return res.status(200).json(googleDriveAccount);
+      const updatedGoogleDriveAccount = await googleDriveAccountService.update(
+        id,
+        updateGoogleDriveAccountValues
+      );
+      const succesfulUpdate = {
+        message: "Google Drive Account successfully updated.",
+      };
+      res.send(succesfulUpdate);
+      return res.status(200);
     } catch (error) {
       return res.status(400).json({ message: error.message });
     }
@@ -45,10 +55,17 @@ export default class GoogleDriveAccountController {
   static async delete(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const message = await googleDriveAccountService.delete(id);
-      return res.status(204).json({ message });
+      const deletedGoogleDriveAccountId =
+        await googleDriveAccountService.delete(id);
+      const succesfulDelete = {
+        id: deletedGoogleDriveAccountId,
+        message: "Google Drive Account successfully deleted.",
+      };
+      res.send(succesfulDelete);
+      return res.status(204);
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      if (error instanceof Error)
+        return res.status(400).json({ message: error.message });
     }
   }
 }

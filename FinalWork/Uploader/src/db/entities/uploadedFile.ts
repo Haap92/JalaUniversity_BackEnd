@@ -9,7 +9,7 @@ export default class UploadedFile {
   name!: string;
 
   @Column()
-  size!: number;
+  size!: string;
 
   @Column()
   driveId!: string;

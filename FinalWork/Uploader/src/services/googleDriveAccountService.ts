@@ -1,28 +1,28 @@
-import { AppDataSource } from "../config/db-source";
-import GoogleDriveAccount from "../model/entities/googleDriveAccount";
+import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import { EntityNotFoundError } from "typeorm/error/EntityNotFoundError";
-import { GoogleDriveAccountRepository } from "../model/repositories/googleDriveAccountRepository";
-import { ObjectId } from "mongodb";
+import { GoogleDriveAccountRepository } from "../db/repositories/googleDriveAccountRepository";
+import { GoogleDriveAccountValues } from "../types";
 
-export default class GoogleDriveAccountService
-  implements GoogleDriveAccountRepository
-{
-  private readonly repository;
+
+export default class GoogleDriveAccountService {
+  protected googleDriveAccountRepository: GoogleDriveAccountRepository;
   constructor() {
-    this.repository = AppDataSource.getMongoRepository(GoogleDriveAccount);
+    this.googleDriveAccountRepository = new GoogleDriveAccountRepository();
   }
 
-  async create(googleDriveAccount: GoogleDriveAccount) {
-    await this.repository.save(googleDriveAccount);
+  async create(googleDriveAccountValues: GoogleDriveAccountValues) {
+    const googleDriveAccount = new GoogleDriveAccount();
+    googleDriveAccount.email = googleDriveAccountValues.email;
+    googleDriveAccount.googleDriveKey = googleDriveAccountValues.googleDriveKey;
+    await this.googleDriveAccountRepository.create(googleDriveAccount);
     return googleDriveAccount;
   }
 
   async read(id: string) {
     try {
-      const objectId: ObjectId = new ObjectId(id);
-      const googleDriveAccount = await this.repository.findOneBy({
-        _id: objectId,
-      });
+      const googleDriveAccount = await this.googleDriveAccountRepository.read(
+        id
+      );
       return googleDriveAccount;
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
@@ -32,22 +32,31 @@ export default class GoogleDriveAccountService
     }
   }
 
-  async update(googleDriveAccount: GoogleDriveAccount) {
+  async update(
+    id: string,
+    updateGoogleDriveAccountValues: GoogleDriveAccountValues
+  ) {
     try {
-      await this.repository.save(googleDriveAccount);
-    } catch (error) {
-      return new Error(
-        `Failed to update GoogleDriveAccount with id "${googleDriveAccount.id}"`
+      const readedGoogleDriveAccount = await this.read(id);  
+      readedGoogleDriveAccount.id = id
+      readedGoogleDriveAccount.email =
+        updateGoogleDriveAccountValues.email === ""
+          ? readedGoogleDriveAccount.email
+          : updateGoogleDriveAccountValues.email;
+      readedGoogleDriveAccount.googleDriveKey =
+        updateGoogleDriveAccountValues.googleDriveKey === ""
+          ? readedGoogleDriveAccount.googleDriveKey
+          : updateGoogleDriveAccountValues.googleDriveKey;   
+        
+      return await this.googleDriveAccountRepository.update(
+        readedGoogleDriveAccount
       );
+    } catch (error) {
+      return new Error(`Failed to update Google Drive Account with id "${id}"`);
     }
   }
 
   async delete(id: string) {
-    try {
-      await this.repository.delete({ id });
-    } catch (error) {
-      return new Error(`Failed to delete GoogleDriveAccount with id "${id}"`);
-    }
-    return `GoogleDriveAccount with ${id} deleted`;
+    return await this.googleDriveAccountRepository.delete(id);
   }
 }
