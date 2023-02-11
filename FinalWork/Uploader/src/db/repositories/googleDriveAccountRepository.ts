@@ -1,7 +1,7 @@
 import { AppDataSource } from "../db-source";
-import GoogleDriveAccount from '../entities/googleDriveAccount';
-const mongodb = require('mongodb')
-const ObjectId = mongodb.ObjectId
+import GoogleDriveAccount from "../entities/googleDriveAccount";
+const mongodb = require("mongodb");
+const ObjectId = mongodb.ObjectId;
 
 export class GoogleDriveAccountRepository {
   protected repository = AppDataSource.getMongoRepository(GoogleDriveAccount);
@@ -24,7 +24,7 @@ export class GoogleDriveAccountRepository {
   }
 
   async update(googleDriveAccount: GoogleDriveAccount) {
-    return await this.repository.save(googleDriveAccount)
+    return await this.repository.save(googleDriveAccount);
   }
 
   async delete(id: string) {

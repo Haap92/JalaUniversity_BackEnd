@@ -5,6 +5,7 @@ import cors from "cors";
 import { AppDataSource } from "./db/db-source";
 import routes from "./api/routes/routes";
 import bodyParser from "body-parser";
+import { errorHandler } from './middlewares/errorHandler';
 
 const PORT = process.env.PORT || 3002;
 
@@ -16,6 +17,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(routes);
+
+app.use(errorHandler);
 
 AppDataSource.initialize()
 

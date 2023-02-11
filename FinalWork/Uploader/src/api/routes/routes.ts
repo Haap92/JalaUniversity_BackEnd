@@ -1,13 +1,13 @@
 import express from "express";
-import UploadedFileController from "../controllers/uploadedFileController";
+import FileController from "../controllers/fileController";
 import GoogleDriveAccountController from "../controllers/googleDriveAccountController";
 
 const router = express.Router();
 
-router.post("/uploaded-files", UploadedFileController.create);
-router.get("/uploaded-files/:id", UploadedFileController.read);
-router.put("/uploaded-files/:id", UploadedFileController.update);
-router.delete("/uploaded-files/:id", UploadedFileController.delete);
+router.post("/files", FileController.create);
+router.get("/files/:id", FileController.read);
+router.put("/files/:id", FileController.update);
+router.delete("/files/:id", FileController.delete);
 
 router.post("/google-drive-accounts", GoogleDriveAccountController.create);
 router.get("/google-drive-accounts/:id", GoogleDriveAccountController.read);

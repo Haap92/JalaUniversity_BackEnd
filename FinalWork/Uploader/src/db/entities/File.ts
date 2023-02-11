@@ -1,19 +1,25 @@
 import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
-export default class UploadedFile {
+export default class File {
   @ObjectIdColumn({ name: '_id' })
-  id!: string;
+  id: string;
 
   @Column()
-  name!: string;
+  name: string;
 
   @Column()
-  size!: string;
+  formerName!: string;
+
+  @Column()
+  size!: number;
+
+  @Column()
+  mimetype!: string;
 
   @Column()
   driveId!: string;
 
   @Column()
-  status!: string;
+  status: string;
 }

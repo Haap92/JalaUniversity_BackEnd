@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import GoogleDriveAccount from "./entities/googleDriveAccount";
-import UploadedFile from "./entities/UploadedFile";
+import UploadedFile from "./entities/File";
 
 
 export const AppDataSource = new DataSource ({
