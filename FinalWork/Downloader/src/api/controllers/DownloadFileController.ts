@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
-import File from "../../db/entities/File";
+import DownloadFile from "../../db/entities/downloadFile";
 import { HttpError } from "../../middlewares/errorHandler";
-import FileService from "../../services/fileService";
-import { FileValues, status } from "../../types";
+import DownloadFileService from "../../services/downloadFileService";
+import { DownloadFileValues } from "../../types";
 
-const fileService = new FileService();
+const downloadFileService = new DownloadFileService();
 
-export default class FileController {
+export default class DownloadFileController {
+
   static async create(req: Request, res: Response, next: NextFunction) {
-    const { filename, originalname, size, mimetype } = req.file;
-    const status: status = "Pending";
-    if (!filename || !originalname || !size || !mimetype || !status) {
+    const { uploaderId, driveId, webViewLink, webContentLink, size, accountIndex} = req.body;
+    if (!uploaderId || !driveId || !webViewLink || !webContentLink || !webContentLink ||!size ||!accountIndex) {
       return next(
         new HttpError(
           400,
@@ -19,17 +19,18 @@ export default class FileController {
         )
       );
     }
-    const file = new File();
-      file.filename = filename;
-      file.originalname = originalname;
-      file.size = size;
-      file.mimetype = mimetype;
-      file.status = status;
+    const downloadFile = new DownloadFile();
+    downloadFile.uploaderId = uploaderId;
+    downloadFile.driveId = driveId;
+    downloadFile.webViewLink = webViewLink;
+    downloadFile.webContentLink = webContentLink;
+    downloadFile.size = size;
+    downloadFile.accountIndex = accountIndex;
     try {
-      const createdFile = await fileService.create(file);
+      const createdDownloadFile = await downloadFileService.create(downloadFile);
       const succesfulCreate = {
         message: "File succesfully created.",
-        data: createdFile,
+        data: createdDownloadFile,
       };
       return res.status(201).json(succesfulCreate);
     } catch (error) {
@@ -42,11 +43,11 @@ export default class FileController {
   }
 
   static async read(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     try {
-      const file = await fileService.read(id);
+      const file = await downloadFileService.read(id);
       const succesfulRead = {
-        message: `File with id: "${id}".`,
+        message: `Download File with id: "${id}".`,
         file: file,
       };
       return res.status(200).json(succesfulRead);
@@ -61,7 +62,7 @@ export default class FileController {
 
   static async readAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const files = await fileService.readAll();
+      const files = await downloadFileService.readAll();
       res.status(200).json({
         message: "Files found",
         data: files,
@@ -76,21 +77,39 @@ export default class FileController {
     }
   }
 
+  static async readByUploaderId(req: Request, res: Response, next: NextFunction) {
+    const { uploaderId } = req.params;
+    try {
+      const file = await downloadFileService.readByUploaderId(uploaderId);
+      const succesfulRead = {
+        message: `Download Files with Uploader id: "${uploaderId}".`,
+        files: file,
+      };
+      return res.status(200).json(succesfulRead);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        next(error);
+      } else {
+        next(new HttpError(400, error.message));
+      }
+    }
+  }
+
   static async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    const fileValues: FileValues = {
-      filename: req.body.filename || "",
-      originalname: req.body.originalname || "",
-      size: req.body.size || null,
-      mimetype: req.body.mimetype || "",
+    const id = parseInt(req.params.id);
+    const downloadFileValues: DownloadFileValues = {
+      uploaderId: req.body.uploaderId || "",
       driveId: req.body.driveId || "",
-      status: req.body.status || "Pending",
+      webViewLink: req.body.webViewLink || "",
+      webContentLink: req.body.webContentLink || "",
+      size: req.body.size || null,
+      accountIndex: req.body.accountIndex || null,
     };
     try {
-      await fileService.update(id, fileValues);
+      await downloadFileService.update(id, downloadFileValues);
       const succesfulUpdate = {
-        message: "File successfully updated.",
-        updatedFields: fileValues,
+        message: "Download File successfully updated.",
+        updatedFields: downloadFileValues,
       };
       return res.status(200).json(succesfulUpdate);
     } catch (error) {
@@ -103,9 +122,9 @@ export default class FileController {
   }
 
   static async delete(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     try {
-      const deletedFileId = await fileService.delete(id);
+      const deletedFileId = await downloadFileService.delete(id);
       const succesfulDelete = {
         message: "File successfully deleted.",
         id: deletedFileId,

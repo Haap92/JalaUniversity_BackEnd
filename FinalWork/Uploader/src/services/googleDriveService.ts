@@ -3,6 +3,7 @@ import { OAuth2Client } from "google-auth-library";
 import path from "path";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import File from "../db/entities/File";
+import { HttpError } from "../middlewares/errorHandler";
 const fs = require("fs");
 
 export default class GoogleDriveService {
@@ -28,10 +29,15 @@ export default class GoogleDriveService {
 
   async uploadFileToDrive(file: File) {
     try {
-      const filePath = path.join(__dirname, "..", "..", `uploads/${file.name}`);
+      const filePath = path.join(
+        __dirname,
+        "..",
+        "..",
+        `uploads/${file.filename}`
+      );
       const response = await this.drive.files.create({
         requestBody: {
-          name: file.name,
+          name: file.filename,
           mimeType: file.mimetype,
         },
         media: {
@@ -42,8 +48,7 @@ export default class GoogleDriveService {
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error.message);
-      throw error;
+      throw new HttpError(404, "Failed to Upload the file to drive");
     }
   }
 
@@ -55,8 +60,7 @@ export default class GoogleDriveService {
       console.log(response.data, response.status);
       return response.data, response.status;
     } catch (error) {
-      console.log(error.message);
-      throw error;
+      throw new HttpError(404, "Failed to Delete the file from the drive");
     }
   }
 
@@ -77,8 +81,7 @@ export default class GoogleDriveService {
       console.log(result.data);
       return result.data;
     } catch (error) {
-      console.log(error.message);
-      throw error;
+      throw new HttpError(404, "Failed to Generate the download link");
     }
   }
 }

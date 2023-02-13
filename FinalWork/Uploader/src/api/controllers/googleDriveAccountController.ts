@@ -60,6 +60,23 @@ export default class GoogleDriveAccountController {
     }
   }
 
+  static async readAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const googleDriveAccounts = await googleDriveAccountService.readAll();
+      res.status(200).json({
+        message: "Accounts found",
+        data: googleDriveAccounts,
+      });
+    } catch (error) {
+      if(error instanceof HttpError) {
+        next(error);
+      }
+      else {
+        next(new HttpError(400, error.message))
+      }
+    }
+  }
+
   static async update(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     const updateGoogleDriveAccountValues: GoogleDriveAccountValues = {
@@ -76,7 +93,7 @@ export default class GoogleDriveAccountController {
       );
       const succesfulUpdate = {
         message: "Google Drive Account successfully updated.",
-        account: updateGoogleDriveAccountValues,
+        updatedFields: updateGoogleDriveAccountValues,
       };
       return res.status(200).json(succesfulUpdate);
     } catch (error) {
@@ -97,7 +114,7 @@ export default class GoogleDriveAccountController {
         message: "Google Drive Account successfully deleted.",
         id: deletedGoogleDriveAccountId,
       };
-      return res.status(204).json(succesfulDelete);
+      return res.status(200).json(succesfulDelete);
     } catch (error) {
       if (error instanceof HttpError) {
         next(error);

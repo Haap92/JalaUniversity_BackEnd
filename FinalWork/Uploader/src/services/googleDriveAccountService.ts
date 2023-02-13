@@ -38,6 +38,15 @@ export default class GoogleDriveAccountService {
     }
   }
 
+  async readAll() {
+    try {
+      const googleDriveAccounts = await this.googleDriveAccountRepository.readAll();
+      return googleDriveAccounts;
+    } catch (error) {
+      throw new HttpError(400, `Bad Request!! Google Drive Accounts not found`);
+    }
+  }
+
   async update(
     id: string,
     updateGoogleDriveAccountValues: GoogleDriveAccountValues

@@ -18,5 +18,6 @@ dist/
 **/FinalWork/Downloader/.env
 **/FinalWork/Uploader/node_modules
 **/FinalWork/Uploader/.env
+**/FinalWork/Uploader/uploads
 **/FinalWork/Stats/node_modules
 **/FinalWork/Stats/.env

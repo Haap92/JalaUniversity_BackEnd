@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import User from "./dbEntities/user";
+import DownloadFile from "./entities/downloadFile";
 
 // export const AppDataSource = new DataSource ({
 //     type: "postgres",
@@ -21,7 +21,7 @@ export const AppDataSource = new DataSource ({
     database: "databse.sqlite",
     synchronize: true,
     logging: false,
-    entities: [User],
+    entities: [DownloadFile],
     migrations: [],
     subscribers: [],
 })

@@ -24,6 +24,12 @@ export class FileRepository {
     }
   }
 
+  async readAll() {
+    const repository = AppDataSource.getMongoRepository(File);
+    let files = await repository.find();
+    return files ? files.map((file) => file as File) : undefined;
+  }
+
   async update(file: File) {
     return await this.repository.save(file);
   }
