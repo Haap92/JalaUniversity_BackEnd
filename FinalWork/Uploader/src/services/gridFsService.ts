@@ -7,12 +7,12 @@ import multer from "multer";
 import fs from "fs";
 
 const diskStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
+  destination: function (req, file, callback) {
+    callback(null, "./uploads/");
   },
-  filename: function (req, file, cb) {
+  filename: function (req, file, callback) {
     const date = new Date();
-    cb(null, `${date.getTime()}_${file.originalname}`);
+    callback(null, `${date.getTime()}_${file.originalname}`);
   },
 });
 
@@ -60,7 +60,6 @@ export class GridFsService {
       if (err) {
         throw new HttpError(500, "Mongo connection error");
       }
-      console.log("Connected successfully to server");
     });
   
     if (!this.client.isConnected()) {

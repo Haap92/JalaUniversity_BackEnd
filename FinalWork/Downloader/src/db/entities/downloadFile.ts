@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 export default class DownloadFile {
 
   @PrimaryColumn()
-  id: number;
+  id!: number;
 
   @Column()
   uploaderId: string;
@@ -22,6 +22,6 @@ export default class DownloadFile {
   size: number;
   
   @Column()
-  accountIndex: number;
+  accountId: string;
 
 }

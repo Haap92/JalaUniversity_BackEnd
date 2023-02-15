@@ -24,8 +24,7 @@ export class GoogleDriveAccountRepository {
   }
 
   async readAll() {
-    const repository = AppDataSource.getMongoRepository(GoogleDriveAccount);
-    let googleDriveAccounts = await repository.find();
+    let googleDriveAccounts = await this.repository.find();
     return googleDriveAccounts ? googleDriveAccounts.map((googleDriveAccount) => googleDriveAccount as GoogleDriveAccount) : undefined;
   }
 

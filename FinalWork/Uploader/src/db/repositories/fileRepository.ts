@@ -25,8 +25,7 @@ export class FileRepository {
   }
 
   async readAll() {
-    const repository = AppDataSource.getMongoRepository(File);
-    let files = await repository.find();
+    let files = await this.repository.find();
     return files ? files.map((file) => file as File) : undefined;
   }
 

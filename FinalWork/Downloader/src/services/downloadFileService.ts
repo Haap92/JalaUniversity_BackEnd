@@ -15,7 +15,7 @@ export default class DownloadFileService {
         downloadFile
       );
       const succesfulCreate = {
-        file: createdFile,
+        file: createdFile
       };
       return succesfulCreate;
     } catch (error) {
@@ -89,10 +89,10 @@ export default class DownloadFileService {
             ? readedDownloadFile.size
             : updateDownloadFile.size;
 
-        readedDownloadFile.accountIndex =
-          updateDownloadFile.accountIndex === null
-            ? readedDownloadFile.accountIndex
-            : updateDownloadFile.accountIndex;
+        readedDownloadFile.accountId =
+          updateDownloadFile.accountId === null
+            ? readedDownloadFile.accountId
+            : updateDownloadFile.accountId;
 
         return await this.downloadFileRepository.update(readedDownloadFile);
       }

@@ -5,6 +5,7 @@ import { HttpError } from "../middlewares/errorHandler";
 import GoogleDriveAccountService from "./googleDriveAccountService";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import GoogleDriveService from "./googleDriveService";
+import { sendToDownload, sendToUpload } from "./messageQeueService";
 
 export default class FileService {
   protected fileRepository: FileRepository;
@@ -17,10 +18,11 @@ export default class FileService {
   async create(file: File) {
     try {
       const createdFile = await this.fileRepository.create(file);
-      const downloadFileData = await this.setupDriveUpload(file);
+      const stringUploadFile = JSON.stringify(createdFile)
+      sendToUpload(stringUploadFile)
       const succesfulCreate = {
         file: createdFile,
-        GoogleDriveFilesData: downloadFileData,
+        message: `File will be uploaded soon`
       };
       return succesfulCreate;
     } catch (error) {
@@ -103,6 +105,63 @@ export default class FileService {
     }
   }
 
+  async updateStatusReplicating(id: string) {
+    try {
+      const readedFile = await this.read(id);
+      if (
+        readedFile &&
+        (readedFile.status === "Pending" ||
+          readedFile.status === "Replicating" ||
+          readedFile.status === "Uploaded")
+      ) {
+          readedFile.status ="Replicating"
+        if (
+          !["Pending", "Replicating", "Uploaded"].includes(readedFile.status)
+        ) {
+          throw new HttpError(
+            400,
+            `Failed to update File. The file status should be 'Pending', 'Replicating', or 'Uploaded'.`
+          );
+        }
+        return await this.fileRepository.update(readedFile);
+      }
+    } catch (error) {
+      throw new HttpError(
+        404,
+        `Failed to update File, the data provided for the update is incorrect`
+      );
+    }
+  }
+
+  async updateStatusUploaded(id: string) {
+    try {
+      const readedFile = await this.read(id);
+      if (
+        readedFile &&
+        (readedFile.status === "Pending" ||
+          readedFile.status === "Replicating" ||
+          readedFile.status === "Uploaded")
+      ) {
+          readedFile.status = 'Uploaded'
+
+        if (
+          !["Pending", "Replicating", "Uploaded"].includes(readedFile.status)
+        ) {
+          throw new HttpError(
+            400,
+            `Failed to update File. The file status should be 'Pending', 'Replicating', or 'Uploaded'.`
+          );
+        }
+        return await this.fileRepository.update(readedFile);
+      }
+    } catch (error) {
+      throw new HttpError(
+        404,
+        `Failed to update File, the data provided for the update is incorrect`
+      );
+    }
+  }
+
   async delete(id: string) {
     try {
       return await this.fileRepository.delete(id);
@@ -118,22 +177,20 @@ export default class FileService {
     const googleDriveAccounts = await this.googleDriveAccountService.readAll();
     const fileDriveIds = [];
     const downloadFileData: DownloadFileValues[] = []
-    for (const [index, googleDriveAccount] of googleDriveAccounts.entries()) {
-      const newDownloadFileData = await this.uploadToDrive(googleDriveAccount, file, index);
+    this.updateStatusReplicating(file.id)
+    for (const googleDriveAccount of googleDriveAccounts) {
+      const newDownloadFileData = await this.uploadToDrive(googleDriveAccount, file);
       fileDriveIds.push(newDownloadFileData.driveId);
       downloadFileData.push(newDownloadFileData)
     }
     file.driveId = fileDriveIds.toString();
-    file.status = "Uploaded";
     await this.fileRepository.update(file);
     return downloadFileData;
   }
 
   async uploadToDrive(
     googleDriveAccount: GoogleDriveAccount,
-    file: File,
-    accountIndex: number
-  ) {
+    file: File ) {
     try {
       const googleDriveService = new GoogleDriveService(googleDriveAccount);
       const uploadResponse = await googleDriveService.uploadFileToDrive(file);
@@ -144,8 +201,12 @@ export default class FileService {
         webViewLink: fileUrls.webViewLink,
         webContentLink: fileUrls.webContentLink,
         size: file.size,
-        accountIndex: accountIndex
+        accountId: googleDriveAccount.id
       }
+      this.updateStatusUploaded(file.id)
+      const stringDownloadFile = JSON.stringify(downloadFileData)
+      sendToDownload(stringDownloadFile)
+
       return downloadFileData
     } catch (error) {
       throw error;

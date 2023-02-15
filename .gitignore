@@ -16,6 +16,7 @@ dist/
 
 **/FinalWork/Downloader/node_modules
 **/FinalWork/Downloader/.env
+**/FinalWork/RabbitMQ/data
 **/FinalWork/Uploader/node_modules
 **/FinalWork/Uploader/.env
 **/FinalWork/Uploader/uploads

@@ -4,5 +4,5 @@ export type DownloadFileValues = {
   webViewLink: string;
   webContentLink: string;
   size: number;
-  accountIndex: number;
+  accountId: string;
 };

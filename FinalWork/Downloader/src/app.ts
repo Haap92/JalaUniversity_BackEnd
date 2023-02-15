@@ -5,6 +5,7 @@ import { AppDataSource } from './db/db-source';
 import bodyParser from "body-parser";
 import routes from "./api/routes/routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import { receiveFromUploader } from "./services/messageQeueService";
 
 const PORT = process.env.PORT || 3004;
 
@@ -17,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 
 app.use(errorHandler);
+
+receiveFromUploader();
 
 AppDataSource.initialize();
 

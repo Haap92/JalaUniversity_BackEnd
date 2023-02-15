@@ -45,7 +45,6 @@ export default class GoogleDriveService {
           body: fs.createReadStream(filePath),
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       throw new HttpError(404, "Failed to Upload the file to drive");
@@ -57,7 +56,6 @@ export default class GoogleDriveService {
       const response = await this.drive.files.delete({
         fileId: fileId,
       });
-      console.log(response.data, response.status);
       return response.data, response.status;
     } catch (error) {
       throw new HttpError(404, "Failed to Delete the file from the drive");
@@ -78,7 +76,6 @@ export default class GoogleDriveService {
         fileId: fileId,
         fields: "webViewLink, webContentLink",
       });
-      console.log(result.data);
       return result.data;
     } catch (error) {
       throw new HttpError(404, "Failed to Generate the download link");

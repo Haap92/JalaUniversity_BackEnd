@@ -10,8 +10,8 @@ const downloadFileService = new DownloadFileService();
 export default class DownloadFileController {
 
   static async create(req: Request, res: Response, next: NextFunction) {
-    const { uploaderId, driveId, webViewLink, webContentLink, size, accountIndex} = req.body;
-    if (!uploaderId || !driveId || !webViewLink || !webContentLink || !webContentLink ||!size ||!accountIndex) {
+    const { uploaderId, driveId, webViewLink, webContentLink, size, accountId} = req.body;
+    if (!uploaderId || !driveId || !webViewLink || !webContentLink || !webContentLink ||!size ||!accountId) {
       return next(
         new HttpError(
           400,
@@ -25,7 +25,7 @@ export default class DownloadFileController {
     downloadFile.webViewLink = webViewLink;
     downloadFile.webContentLink = webContentLink;
     downloadFile.size = size;
-    downloadFile.accountIndex = accountIndex;
+    downloadFile.accountId = accountId;
     try {
       const createdDownloadFile = await downloadFileService.create(downloadFile);
       const succesfulCreate = {
@@ -103,7 +103,7 @@ export default class DownloadFileController {
       webViewLink: req.body.webViewLink || "",
       webContentLink: req.body.webContentLink || "",
       size: req.body.size || null,
-      accountIndex: req.body.accountIndex || null,
+      accountId: req.body.accountId || null,
     };
     try {
       await downloadFileService.update(id, downloadFileValues);
