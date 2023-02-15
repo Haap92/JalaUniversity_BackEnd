@@ -177,7 +177,7 @@ export default class FileService {
     const googleDriveAccounts = await this.googleDriveAccountService.readAll();
     const fileDriveIds = [];
     const downloadFileData: DownloadFileValues[] = []
-    this.updateStatusReplicating(file.id)
+    this.updateStatusReplicating(file.id)  
     for (const googleDriveAccount of googleDriveAccounts) {
       const newDownloadFileData = await this.uploadToDrive(googleDriveAccount, file);
       fileDriveIds.push(newDownloadFileData.driveId);
@@ -203,9 +203,9 @@ export default class FileService {
         size: file.size,
         accountId: googleDriveAccount.id
       }
-      this.updateStatusUploaded(file.id)
-      const stringDownloadFile = JSON.stringify(downloadFileData)
-      sendToDownload(stringDownloadFile)
+      this.updateStatusUploaded(file.id);
+      const stringDownloadFile = JSON.stringify(downloadFileData);
+      sendToDownload(stringDownloadFile);
 
       return downloadFileData
     } catch (error) {

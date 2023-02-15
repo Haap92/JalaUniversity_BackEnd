@@ -72,9 +72,10 @@ export async function receiveFromUploader() {
 
       await downloadFileService.create(downloadFile);
       console.log(
-        `File "${uploadedFile.uploaderId}" has been created in Downloader DB.`
+        `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been created in Downloader DB.`
       );
     },
     { noAck: true }
   );
+  console.log("Message Queue Service running on Downloader.");
 }

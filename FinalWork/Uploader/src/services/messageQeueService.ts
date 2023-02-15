@@ -31,26 +31,27 @@ async function sendMessage(queue: string, message: string) {
   const channel = await connectToRabbitMq();
   channel.assertQueue(queue, { durable: false });
   channel.sendToQueue(queue, Buffer.from(message));
-  console.log("Message Sent: " + message);
   setTimeout(function () {
     channel.close(() => {
-      console.log("Channel closed");
     });
   }, 500);
 }
 
 export async function sendToUpload(message: string) {
   const queue = "Uploader-Drive";
+  console.log("File sent to Drive: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToDownload(message: string) {
   const queue = "Uploader-Downloader";
+  console.log("File sent to Downloads: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToSatus(message: string) {
   const queue = "Uploader-Status";
+  console.log("File sent to Status: " + message);
   await sendMessage(queue, message);
 }
 
@@ -64,7 +65,7 @@ export async function receiveToUpload() {
     queue,
     (msg) => {
       const message = JSON.parse(msg.content.toString());
-      console.log("Received message: " + JSON.stringify(message));
+      console.log("Received File to Upload to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
       fileService.setupDriveUpload(message);;
     },
@@ -72,6 +73,5 @@ export async function receiveToUpload() {
       noAck: true,
     }
   );
-
-  console.log("Waiting for messages...");
+  console.log("Message Queue Service running on Uploader.");
 }
