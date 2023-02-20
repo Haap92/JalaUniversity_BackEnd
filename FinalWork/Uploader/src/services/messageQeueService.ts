@@ -50,7 +50,7 @@ export async function sendToDownload(message: string) {
 }
 
 export async function sendToSatus(message: string) {
-  const queue = "Uploader-Status";
+  const queue = "Uploader-Stats";
   console.log("File sent to Status: " + message);
   await sendMessage(queue, message);
 }

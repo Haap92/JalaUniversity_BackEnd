@@ -13,6 +13,9 @@ export default class DownloadFile {
   driveId: string;
 
   @Column()
+  name: string;
+
+  @Column()
   webViewLink: string;
 
   @Column()
@@ -23,5 +26,11 @@ export default class DownloadFile {
   
   @Column()
   accountId: string;
+
+  @Column()
+  downloadsTotal?: number;
+
+  @Column()
+  downloadsToday?: number;
 
 }

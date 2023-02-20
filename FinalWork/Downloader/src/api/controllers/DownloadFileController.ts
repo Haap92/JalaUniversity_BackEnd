@@ -10,8 +10,8 @@ const downloadFileService = new DownloadFileService();
 export default class DownloadFileController {
 
   static async create(req: Request, res: Response, next: NextFunction) {
-    const { uploaderId, driveId, webViewLink, webContentLink, size, accountId} = req.body;
-    if (!uploaderId || !driveId || !webViewLink || !webContentLink || !webContentLink ||!size ||!accountId) {
+    const { uploaderId, driveId, name, webViewLink, webContentLink, size, accountId} = req.body;
+    if (!uploaderId || !driveId || !name || !webViewLink || !webContentLink || !webContentLink ||!size ||!accountId) {
       return next(
         new HttpError(
           400,
@@ -22,6 +22,7 @@ export default class DownloadFileController {
     const downloadFile = new DownloadFile();
     downloadFile.uploaderId = uploaderId;
     downloadFile.driveId = driveId;
+    downloadFile.name = name; 
     downloadFile.webViewLink = webViewLink;
     downloadFile.webContentLink = webContentLink;
     downloadFile.size = size;
@@ -95,11 +96,31 @@ export default class DownloadFileController {
     }
   }
 
+  static async getWebLinksByUploaderId(req: Request, res: Response, next: NextFunction) {
+    const { uploaderId } = req.params;
+    try {
+      const file = await downloadFileService.getWebLinks(uploaderId);
+      const succesfulRead = {
+        message: `Web Links with Uploader id: "${uploaderId}".`,
+        files: file,
+      };
+      return res.status(200).json(succesfulRead);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        next(error);
+      } else {
+        next(new HttpError(400, error.message));
+      }
+    }
+  }
+
+
   static async update(req: Request, res: Response, next: NextFunction) {
     const id = parseInt(req.params.id);
     const downloadFileValues: DownloadFileValues = {
       uploaderId: req.body.uploaderId || "",
       driveId: req.body.driveId || "",
+      name: req.body.name || "",
       webViewLink: req.body.webViewLink || "",
       webContentLink: req.body.webContentLink || "",
       size: req.body.size || null,

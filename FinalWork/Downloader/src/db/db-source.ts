@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import DownloadFile from "./entities/downloadFile";
+import DriveAccount from './entities/driveAccount';
 
 // export const AppDataSource = new DataSource ({
 //     type: "postgres",
@@ -21,7 +22,7 @@ export const AppDataSource = new DataSource ({
     database: "databse.sqlite",
     synchronize: true,
     logging: false,
-    entities: [DownloadFile],
+    entities: [DownloadFile, DriveAccount],
     migrations: [],
     subscribers: [],
 })

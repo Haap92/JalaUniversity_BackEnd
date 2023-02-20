@@ -29,8 +29,8 @@ function connectToRabbitMq(): Promise<amqp.Channel> {
 export async function statusListener() {
   const channel = await connectToRabbitMq();
 
-  const queueUploader = "Uploader-Status";
-  const queueDownloader = "Downloader-Status";
+  const queueUploader = "Uploader-Stats";
+  const queueDownloader = "Downloader-Stats";
 
   await channel.assertQueue(queueUploader, { durable: false });
   await channel.assertQueue(queueDownloader, { durable: false });

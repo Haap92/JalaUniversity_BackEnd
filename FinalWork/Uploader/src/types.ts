@@ -19,6 +19,7 @@ export type DownloadFileValues = {
   [x: string]: any;
   uploaderId: string;
   driveId: string;
+  name: string;
   webViewLink: string;
   webContentLink: string;
   size: number;

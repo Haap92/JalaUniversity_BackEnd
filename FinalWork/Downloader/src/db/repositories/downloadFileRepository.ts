@@ -29,6 +29,20 @@ export default class DownloadFileRepository {
     }
   }
 
+  async readByUploaderIdAndAccountId (uploaderId: string, accountId: string) {
+    console.log(accountId, uploaderId)
+    const FileAccountFound = await this.repository.findOneBy({
+      uploaderId,
+      accountId
+    })
+
+    if (FileAccountFound) {
+      return FileAccountFound
+    } else {
+      return undefined
+    }
+  }
+
   async update(downloadFile: DownloadFile) {
     return await this.repository.save(downloadFile);
   }

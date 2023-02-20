@@ -36,13 +36,12 @@ async function sendMessage(queue: string, message: string) {
   console.log("Message Sent: " + message);
   setTimeout(function () {
     channel.close(() => {
-      console.log("Channel closed");
     });
   }, 500);
 }
 
 export async function sendToStatus(message: string) {
-  const queue = "Downloader-Status";
+  const queue = "Downloader-Stats";
   await sendMessage(queue, message);
 }
 
@@ -65,10 +64,14 @@ export async function receiveFromUploader() {
       const downloadFile = new DownloadFile();
       downloadFile.uploaderId = uploadedFile.uploaderId;
       downloadFile.driveId = uploadedFile.driveId;
+      downloadFile.name = uploadedFile.name;
       downloadFile.webViewLink = uploadedFile.webViewLink;
       downloadFile.webContentLink = uploadedFile.webContentLink;
       downloadFile.size = uploadedFile.size;
       downloadFile.accountId = uploadedFile.accountId;
+      downloadFile.downloadsToday = 0;
+      downloadFile.downloadsTotal = 0;
+
 
       await downloadFileService.create(downloadFile);
       console.log(

@@ -198,6 +198,7 @@ export default class FileService {
       const downloadFileData: DownloadFileValues = {
         uploaderId: file.id,
         driveId: uploadResponse.id,
+        name: file.filename,
         webViewLink: fileUrls.webViewLink,
         webContentLink: fileUrls.webContentLink,
         size: file.size,
