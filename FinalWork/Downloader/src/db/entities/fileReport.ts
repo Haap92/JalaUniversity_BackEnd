@@ -1,22 +1,19 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
-export default class DriveAccount {
+export default class FileReport {
 
   @PrimaryColumn()
   id!: number;
 
   @Column()
-  accountId: string;
+  uploaderId: string;
 
   @Column()
-  downloadsTotal: number
+  downloadsTotal: number;
 
   @Column()
-  downloadsToday: number
-
-  @Column({ nullable: true })
-  consecutiveDownloads: number | null
+  downloadsToday: number;
 
   @Column()
   acumulatedSizeTotal: number;

@@ -16,7 +16,6 @@ export type FileValues = {
 };
 
 export type DownloadFileValues = {
-  [x: string]: any;
   uploaderId: string;
   driveId: string;
   name: string;

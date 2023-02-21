@@ -2,6 +2,10 @@ import amqp from "amqplib/callback_api";
 import DownloadFile from "../db/entities/downloadFile";
 import { DownloadFileValues } from "../types";
 import DownloadFileService from "./downloadFileService";
+import FileReportService from "./fileReportService";
+import FileReport from '../db/entities/fileReport';
+import DriveAccountService from "./driveAccountService";
+import DriveAccount from "../db/entities/driveAccount";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -45,14 +49,28 @@ export async function sendToStatus(message: string) {
   await sendMessage(queue, message);
 }
 
+export async function sendFileToStatus(message: string) {
+  const queue = "Downloader-Stats-File";
+  await sendMessage(queue, message);
+}
+
+export async function sendAccountToStatus(message: string) {
+  const queue = "Downloader-Stats-Account";
+  await sendMessage(queue, message);
+}
+
 export async function receiveFromUploader() {
   const channel = await connectToRabbitMq();
 
   const queueUploader = "Uploader-Downloader";
+  const queueStatsFile = "Stats-Downloader-File";
+  const queueStatsAccount = "Stats-Downloader-Account";
 
   await channel.assertQueue(queueUploader, {
     durable: false,
   });
+  await channel.assertQueue(queueStatsFile, { durable: false });
+  await channel.assertQueue(queueStatsAccount, { durable: false });
 
   channel.consume(
     queueUploader,
@@ -69,14 +87,33 @@ export async function receiveFromUploader() {
       downloadFile.webContentLink = uploadedFile.webContentLink;
       downloadFile.size = uploadedFile.size;
       downloadFile.accountId = uploadedFile.accountId;
-      downloadFile.downloadsToday = 0;
-      downloadFile.downloadsTotal = 0;
-
 
       await downloadFileService.create(downloadFile);
       console.log(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been created in Downloader DB.`
       );
+    },
+    { noAck: true }
+  );
+
+  channel.consume(
+    queueStatsAccount,
+    async (message) => {
+      const accountReport = JSON.parse(message!.content.toString());
+      const driveAccountService = new DriveAccountService()
+
+      await driveAccountService.updateOrCreateAccountByAccountId(accountReport)
+    },
+    { noAck: true }
+  );
+
+  channel.consume(
+    queueStatsFile,
+    async (message) => {
+      const fileReport = JSON.parse(message!.content.toString());
+      const fileReportService = new FileReportService()
+  
+      await fileReportService.updateOrCreateFileByUploaderId(fileReport)
     },
     { noAck: true }
   );

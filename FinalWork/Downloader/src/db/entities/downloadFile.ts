@@ -26,11 +26,4 @@ export default class DownloadFile {
   
   @Column()
   accountId: string;
-
-  @Column()
-  downloadsTotal?: number;
-
-  @Column()
-  downloadsToday?: number;
-
 }

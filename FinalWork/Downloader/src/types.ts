@@ -7,3 +7,32 @@ export type DownloadFileValues = {
   size: number;
   accountId: string;
 };
+
+export type AccountStatsValues = {
+  id: number;
+  accountId: string;
+  downloadsTotal: number;
+  downloadsToday: number;
+  acumulatedSizeTotal: number;
+  acumulatedSizeDay: number;
+  filesize: number;
+}
+
+export type FileReportValues = {
+  id: number;
+  uploaderId: string;
+  downloadsTotal: number;
+  downloadsToday: number;
+  acumulatedSizeTotal: number;
+  acumulatedSizeDay: number;
+  size: number;
+}
+
+export type NewFileReportValues = {
+  uploaderId: string;
+  downloadsTotal: number;
+  downloadsToday: number;
+  acumulatedSizeTotal: number;
+  acumulatedSizeDay: number;
+  size: number;
+}

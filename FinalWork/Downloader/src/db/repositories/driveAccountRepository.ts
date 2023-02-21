@@ -26,6 +26,13 @@ export class DriveAccountRepository {
     }
   }
 
+  async readByAccountId(accountId: string) {
+    const readedAccountId = await this.repository.find({ where: { accountId: accountId } });
+    if (readedAccountId){
+    return readedAccountId
+    }
+  }
+
   async update (updateDriveAccount: DriveAccount) {
     const response = await this.repository.save(updateDriveAccount)
     return response
@@ -41,7 +48,7 @@ export class DriveAccountRepository {
 
   async findAccountWithSmallestDownloadToday () {
     const response = await this.repository.createQueryBuilder('account')
-      .where('account.consecutiveDownloads <= :consecutiveDownloads', { consecutiveDownloads: 5 })
+      .where('account.consecutiveDownloads <= :consecutiveDownloads', { consecutiveDownloads: 4 })
       .orderBy('account.acumulatedSizeDay', 'ASC')
       .getOne()
 

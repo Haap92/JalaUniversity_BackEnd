@@ -1,17 +1,26 @@
 import DownloadFile from "../db/entities/downloadFile";
 import DownloadFileRepository from "../db/repositories/downloadFileRepository";
 import { HttpError } from "../middlewares/errorHandler";
-import { DownloadFileValues } from "../types";
-import DriveAccountService from './driveAccountService';
-import DriveAccount from '../db/entities/driveAccount';
-
+import {
+  AccountStatsValues,
+  DownloadFileValues,
+  FileReportValues,
+  NewFileReportValues,
+} from "../types";
+import DriveAccountService from "./driveAccountService";
+import DriveAccount from "../db/entities/driveAccount";
+import { sendAccountToStatus, sendFileToStatus } from "./messageQeueService";
+import FileReportService from "./fileReportService";
+import FileReport from "../db/entities/fileReport";
 
 export default class DownloadFileService {
   protected downloadFileRepository: DownloadFileRepository;
-  protected driveAccountService: DriveAccountService
+  protected driveAccountService: DriveAccountService;
+  protected fileReportService: FileReportService;
   constructor() {
     this.downloadFileRepository = new DownloadFileRepository();
     this.driveAccountService = new DriveAccountService();
+    this.fileReportService = new FileReportService();
   }
 
   async create(downloadFile: DownloadFile) {
@@ -67,17 +76,24 @@ export default class DownloadFileService {
 
   async readByUploaderIdAndAccountId(uploaderId: string, accountId: string) {
     try {
-      const file = await this.downloadFileRepository.readByUploaderIdAndAccountId(
-        uploaderId,
-        accountId
-      );
+      const file =
+        await this.downloadFileRepository.readByUploaderIdAndAccountId(
+          uploaderId,
+          accountId
+        );
       if (file) {
         return file;
       } else {
-        throw new HttpError(404, `File id "${uploaderId}" with account id "${accountId}" not found`);
+        throw new HttpError(
+          404,
+          `File id "${uploaderId}" with account id "${accountId}" not found`
+        );
       }
     } catch (error) {
-      throw new HttpError(404, `File id "${uploaderId}" with account id "${accountId}" not found`);
+      throw new HttpError(
+        404,
+        `File id "${uploaderId}" with account id "${accountId}" not found`
+      );
     }
   }
 
@@ -136,37 +152,74 @@ export default class DownloadFileService {
     }
   }
 
-  async getWebLinks (uploaderId: string) {
-    const driveAccount = await this.driveAccountService.getOptimizedAccount()
-    const fileToDownload = await this.downloadFileRepository.readByUploaderIdAndAccountId(uploaderId, driveAccount.accountId)
+  async getWebLinks(uploaderId: string) {
+    const driveAccount = await this.driveAccountService.getOptimizedAccount();
+    const fileToDownload =
+      await this.downloadFileRepository.readByUploaderIdAndAccountId(
+        uploaderId,
+        driveAccount.accountId
+      );
 
     if (driveAccount && fileToDownload) {
-      driveAccount.downloadsTotal += 1
-      driveAccount.downloadsToday += 1
-      driveAccount.acumulatedSizeTotal += fileToDownload.size
-      driveAccount.acumulatedSizeDay += fileToDownload.size
-      driveAccount.consecutiveDownloads += 1
+      driveAccount.consecutiveDownloads += 1;
+      const accountToStats: AccountStatsValues = {
+        id: driveAccount.id,
+        accountId: driveAccount.accountId,
+        downloadsTotal: driveAccount.downloadsTotal,
+        downloadsToday: driveAccount.downloadsToday,
+        acumulatedSizeTotal: driveAccount.acumulatedSizeTotal,
+        acumulatedSizeDay: driveAccount.acumulatedSizeDay,
+        filesize: fileToDownload.size,
+      };
+      await sendAccountToStatus(JSON.stringify(accountToStats));
+      const uploaderIdFile = fileToDownload.uploaderId;
+      try {
+        const fileToStats = await this.fileReportService.readByUploaderId(
+          uploaderIdFile
+        );
+        const newFileToStats: FileReportValues = {
+          id: fileToStats.id,
+          uploaderId: fileToStats.uploaderId,
+          downloadsTotal: fileToStats.downloadsTotal,
+          downloadsToday: fileToStats.downloadsToday,
+          acumulatedSizeTotal: fileToStats.acumulatedSizeTotal,
+          acumulatedSizeDay: fileToStats.acumulatedSizeDay,
+          size: fileToDownload.size
+        }
+        await sendFileToStatus(JSON.stringify(newFileToStats));
+      } catch (error) {
+        const newFileToStats2: NewFileReportValues = {
+          uploaderId: fileToDownload.uploaderId,
+          downloadsTotal: 0,
+          downloadsToday: 0,
+          acumulatedSizeTotal: 0,
+          acumulatedSizeDay: 0,
+          size: fileToDownload.size
+        };
+        await sendFileToStatus(JSON.stringify(newFileToStats2));
+      }
 
-      fileToDownload.downloadsToday += 1
-      fileToDownload.downloadsTotal += 1
-
-      await this.driveAccountService.updateOrCreateAccount(driveAccount)
-      const updatedFile = await this.downloadFileRepository.update(fileToDownload)
-      const filterAccounts = await this.driveAccountService.getAllAccountsExceptOne(driveAccount.accountId)
+      await this.driveAccountService.updateOrCreateAccountByAccountId(
+        driveAccount
+      );
+      const filterAccounts =
+        await this.driveAccountService.getAllAccountsExceptOne(
+          driveAccount.accountId
+        );
 
       filterAccounts.forEach((account: DriveAccount) => {
-        account.consecutiveDownloads = 0
-        this.driveAccountService.updateOrCreateAccount(account)
-      })
+        account.consecutiveDownloads = 0;
+        this.driveAccountService.updateOrCreateAccountByAccountId(account);
+      });
 
       return {
-        'File name': updatedFile.name,
-        'Download link': updatedFile.webContentLink,
-        'View link': updatedFile.webViewLink
-      }
+        "File name": fileToDownload.name,
+        "Download link": fileToDownload.webContentLink,
+        "View link": fileToDownload.webViewLink,
+      };
     }
     return {
-      'file ': 'not found'
-    }
+      "file ": "not found",
+    };
   }
 }
