@@ -4,6 +4,7 @@ import path from "path";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import File from "../db/entities/File";
 import { HttpError } from "../middlewares/errorHandler";
+import stream from "stream";
 const fs = require("fs");
 
 export default class GoogleDriveService {
@@ -27,14 +28,10 @@ export default class GoogleDriveService {
     });
   }
 
-  async uploadFileToDrive(file: File) {
+  async uploadFileToDrive(file: File, buffer: Buffer) {
     try {
-      const filePath = path.join(
-        __dirname,
-        "..",
-        "..",
-        `uploads/${file.filename}`
-      );
+      const bufferString = new stream.PassThrough();
+      bufferString.end(buffer)
       const response = await this.drive.files.create({
         requestBody: {
           name: file.filename,
@@ -42,7 +39,7 @@ export default class GoogleDriveService {
         },
         media: {
           mimeType: file.mimetype,
-          body: fs.createReadStream(filePath),
+          body: bufferString
         },
       });
       return response.data;

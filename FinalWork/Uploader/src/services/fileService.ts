@@ -7,15 +7,18 @@ import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import GoogleDriveService from "./googleDriveService";
 import { deleteOnDownload, sendToDownload, sendToUpload } from "./messageQeueService";
 import DriveFileService from "./driveFileService";
+import { GridFsService } from './gridFsService';
 
 export default class FileService {
   protected fileRepository: FileRepository;
   protected googleDriveAccountService: GoogleDriveAccountService;
   protected driveFileService: DriveFileService;
+  protected gridFsService: GridFsService;
   constructor() {
     this.fileRepository = new FileRepository();
     this.googleDriveAccountService = new GoogleDriveAccountService();
     this.driveFileService = new DriveFileService();
+    this.gridFsService = new GridFsService();
   }
 
   async create(file: File) {
@@ -167,7 +170,7 @@ export default class FileService {
 
   async delete(id: string) {
     try {
-      await this.setupDriveDelete(id)
+      this.setupDriveDelete(id)
       return await this.fileRepository.delete(id);
     } catch (error) {
       throw new HttpError(
@@ -204,7 +207,8 @@ export default class FileService {
     file: File ) {
     try {
       const googleDriveService = new GoogleDriveService(googleDriveAccount);
-      const uploadResponse = await googleDriveService.uploadFileToDrive(file);
+      const fileFromMongo = await this.gridFsService.getFileFromGridFS(file.filename)
+      const uploadResponse = await googleDriveService.uploadFileToDrive(file, fileFromMongo);
       const fileUrls = await googleDriveService.generateDriveFilePublicUrl(uploadResponse.id);
       const downloadFileData: DownloadFileValues = {
         uploaderId: file.id,
