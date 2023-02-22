@@ -127,4 +127,5 @@ export async function statusListener() {
     },
     { noAck: true }
   );
+  console.log("Message Queue Service running on Stats.");
 }

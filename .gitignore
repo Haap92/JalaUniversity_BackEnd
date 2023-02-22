@@ -16,6 +16,8 @@ dist/
 
 **/FinalWork/Downloader/node_modules
 **/FinalWork/Downloader/.env
+**/FinalWork/Downloader/databse.sqlite
+**/FinalWork/Downloader/src/quicktest.ts
 **/FinalWork/RabbitMQ/data
 **/FinalWork/Uploader/node_modules
 **/FinalWork/Uploader/.env
