@@ -183,8 +183,15 @@ export default class FileService {
       fileDriveIds.push(newDownloadFileData.driveId);
       downloadFileData.push(newDownloadFileData)
     }
-    file.driveId = fileDriveIds.toString();
-    await this.fileRepository.update(file);
+    const fileToUpdate: FileValues = {
+      filename: file.filename,
+      originalname: file.originalname,
+      size: file.size,
+      mimetype: file.mimetype,
+      driveId: fileDriveIds.toString(),
+      status: 'Uploaded'
+    }
+    await this.update(file.id, fileToUpdate);
     return downloadFileData;
   }
 
@@ -204,7 +211,6 @@ export default class FileService {
         size: file.size,
         accountId: googleDriveAccount.id
       }
-      this.updateStatusUploaded(file.id);
       const stringDownloadFile = JSON.stringify(downloadFileData);
       sendToDownload(stringDownloadFile);
 
