@@ -5,7 +5,7 @@ import { HttpError } from "../middlewares/errorHandler";
 import GoogleDriveAccountService from "./googleDriveAccountService";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import GoogleDriveService from "./googleDriveService";
-import { sendToDownload, sendToUpload } from "./messageQeueService";
+import { deleteOnDownload, sendToDownload, sendToUpload } from "./messageQeueService";
 import DriveFileService from "./driveFileService";
 
 export default class FileService {
@@ -167,6 +167,7 @@ export default class FileService {
 
   async delete(id: string) {
     try {
+      await this.setupDriveDelete(id)
       return await this.fileRepository.delete(id);
     } catch (error) {
       throw new HttpError(
@@ -224,12 +225,18 @@ export default class FileService {
     }
   }
 
-  async setupDriveDelete(file: File) {
-    const driveIds = file.driveId.split(",");
-    const accounts = await this.googleDriveAccountService.readAll();
-    driveIds.map(async (id, index) => {
-      await this.deleteFileFromDrive(id, accounts[index]);
-    });
+  async setupDriveDelete(id: string) {
+    const googleDriveAccounts = await this.googleDriveAccountService.readAll();
+    for (const googleDriveAccount of googleDriveAccounts) {
+      const driveFile = await this.driveFileService.readByUploaderIdAndAccountId(id, googleDriveAccount.id);
+      console.log('driveFile:', driveFile);
+      
+      const isdeleted = await this.deleteFileFromDrive(driveFile.driveId, googleDriveAccount);
+      console.log(isdeleted);
+      
+      await deleteOnDownload(JSON.stringify(driveFile));
+      await this.driveFileService.deleteByDriveIdAndAccountId(driveFile.driveId, googleDriveAccount.id);
+    };
   }
 
   async deleteFileFromDrive(
@@ -237,9 +244,8 @@ export default class FileService {
     googleDriveAccount: GoogleDriveAccount
   ) {
     try {
-      let googleDriveService = new GoogleDriveService(googleDriveAccount);
+      const googleDriveService = new GoogleDriveService(googleDriveAccount);
       await googleDriveService.deleteFileFromDrive(driveId);
-      googleDriveService = undefined;
     } catch (error) {
       throw error;
     }
