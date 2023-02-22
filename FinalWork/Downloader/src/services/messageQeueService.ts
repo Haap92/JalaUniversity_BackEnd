@@ -62,18 +62,22 @@ export async function sendAccountToStatus(message: string) {
 export async function receiveFromUploader() {
   const channel = await connectToRabbitMq();
 
-  const queueUploader = "Uploader-Downloader";
+  const queueUploaderCreate = "Uploader-Downloader-create";
+  const queueUploaderDelete = "Uploader-Downloader-delete";
   const queueStatsFile = "Stats-Downloader-File";
   const queueStatsAccount = "Stats-Downloader-Account";
 
-  await channel.assertQueue(queueUploader, {
+  await channel.assertQueue(queueUploaderCreate, {
+    durable: false,
+  });
+  await channel.assertQueue(queueUploaderDelete, {
     durable: false,
   });
   await channel.assertQueue(queueStatsFile, { durable: false });
   await channel.assertQueue(queueStatsAccount, { durable: false });
 
   channel.consume(
-    queueUploader,
+    queueUploaderCreate,
     async (message) => {
       const uploadedFile: DownloadFileValues = JSON.parse(
         message!.content.toString()
@@ -91,6 +95,24 @@ export async function receiveFromUploader() {
       await downloadFileService.create(downloadFile);
       console.log(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been created in Downloader DB.`
+      );
+    },
+    { noAck: true }
+  );
+
+  channel.consume(
+    queueUploaderDelete,
+    async (message) => {
+      const uploadedFile: DownloadFileValues = JSON.parse(
+        message!.content.toString()
+      );
+      const downloadFileService = new DownloadFileService();
+      const uploaderId = uploadedFile.uploaderId
+      const accountId = uploadedFile.accountId
+
+      await downloadFileService.deleteByUploaderAndAccountId(uploaderId, accountId);
+      console.log(
+        `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been deleted in Downloader DB.`
       );
     },
     { noAck: true }

@@ -6,13 +6,16 @@ import GoogleDriveAccountService from "./googleDriveAccountService";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import GoogleDriveService from "./googleDriveService";
 import { sendToDownload, sendToUpload } from "./messageQeueService";
+import DriveFileService from "./driveFileService";
 
 export default class FileService {
   protected fileRepository: FileRepository;
   protected googleDriveAccountService: GoogleDriveAccountService;
+  protected driveFileService: DriveFileService;
   constructor() {
     this.fileRepository = new FileRepository();
     this.googleDriveAccountService = new GoogleDriveAccountService();
+    this.driveFileService = new DriveFileService();
   }
 
   async create(file: File) {
@@ -212,6 +215,7 @@ export default class FileService {
         accountId: googleDriveAccount.id
       }
       const stringDownloadFile = JSON.stringify(downloadFileData);
+      this.driveFileService.create(downloadFileData)
       sendToDownload(stringDownloadFile);
 
       return downloadFileData

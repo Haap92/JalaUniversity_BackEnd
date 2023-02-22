@@ -44,8 +44,14 @@ export async function sendToUpload(message: string) {
 }
 
 export async function sendToDownload(message: string) {
-  const queue = "Uploader-Downloader";
+  const queue = "Uploader-Downloader-create";
   console.log("File sent to Downloads: " + message);
+  await sendMessage(queue, message);
+}
+
+export async function deleteOnDownload(message: string) {
+  const queue = "Uploader-Downloader-delete";
+  console.log("File to delete in Downloads: " + message);
   await sendMessage(queue, message);
 }
 

@@ -152,6 +152,24 @@ export default class DownloadFileService {
     }
   }
 
+  async deleteByUploaderAndAccountId(uploaderId: string, accountId: string) {
+    try {
+      const file =
+        await this.downloadFileRepository.readByUploaderIdAndAccountId(
+            uploaderId,
+            accountId
+        );
+      if (file) {
+         await this.downloadFileRepository.deleteByUploaderAndAccountId(uploaderId, accountId)
+      }
+    } catch (error) {
+      throw new HttpError(
+        404,
+        `Failed to Delete the Download Files, Download Files with id: "${uploaderId}" not found`
+      );
+    }
+  }
+
   async getWebLinks(uploaderId: string) {
     const driveAccount = await this.driveAccountService.getOptimizedAccount();
     const fileToDownload =

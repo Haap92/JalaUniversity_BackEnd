@@ -57,4 +57,17 @@ export default class DownloadFileRepository {
       throw new Error(`Uploaded File with id:${id} not found`);
     }
   }
+
+  async deleteByUploaderAndAccountId(uploaderId: string, accountId: string) {
+    
+    const deletedFiles = await this.repository.delete({
+      uploaderId: uploaderId,
+      accountId: accountId
+    });
+    if (deletedFiles) {
+      return deletedFiles;
+    } else {
+      throw new Error(`Uploaded Files with id:${uploaderId} not found`);
+    }
+  }
 }
