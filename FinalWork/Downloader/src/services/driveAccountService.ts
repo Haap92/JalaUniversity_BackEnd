@@ -59,4 +59,8 @@ export default class DriveAccountService {
     return filterAccounts
   }
 
+  async dailyUpdateDownloads () {
+    this.driveAccountRepository.dailyUpdate()
+  }
+
 }

@@ -56,4 +56,8 @@ export class DriveAccountRepository {
       return response
     }
   }
+
+  async dailyUpdate () {
+    await this.repository.update({}, { downloadsToday: 0, acumulatedSizeDay: 0 })
+  }
 }

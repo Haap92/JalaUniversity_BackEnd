@@ -6,7 +6,10 @@ import bodyParser from "body-parser";
 import routes from "./api/routes/routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import { receiveFromUploader } from "./services/messageQeueService";
+import DailyUpdateService from "./services/dailyUpdateService";
 
+
+const dailyUpdateService = new DailyUpdateService()
 const PORT = process.env.PORT || 3004;
 
 const app = express();
@@ -18,6 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 
 app.use(errorHandler);
+
+dailyUpdateService.setScheduleUpdate()
 
 receiveFromUploader();
 

@@ -61,4 +61,8 @@ export default class FileReportService {
       throw new HttpError(404, `File with id "${uploaderId}" not found`);
     }
   }
+
+  async dailyUpdateDownloads () {
+    this.fileReportRepository.dailyUpdate()
+  }
 }

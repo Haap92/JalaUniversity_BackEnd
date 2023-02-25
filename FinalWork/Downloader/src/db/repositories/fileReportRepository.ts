@@ -45,4 +45,8 @@ export class FileReportRepository {
       return deleteFile
     }
   }
+
+  async dailyUpdate () {
+    await this.repository.update({}, { downloadsToday: 0, acumulatedSizeDay: 0 })
+  }
 }

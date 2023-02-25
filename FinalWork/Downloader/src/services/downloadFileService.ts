@@ -204,10 +204,6 @@ export default class DownloadFileService {
           acumulatedSizeDay: fileToStats.acumulatedSizeDay,
           size: fileToDownload.size
         }
-        console.log('readed', fileToStats);
-        console.log('readedcreated', newFileToStats);
-        
-        
         await sendFileToStatus(JSON.stringify(newFileToStats));
       } catch (error) {
         const newFileToStats2: NewFileReportValues = {
@@ -217,9 +213,7 @@ export default class DownloadFileService {
           acumulatedSizeTotal: 0,
           acumulatedSizeDay: 0,
           size: fileToDownload.size
-        };
-        console.log('created', newFileToStats2);
-        
+        };       
         await sendFileToStatus(JSON.stringify(newFileToStats2));
       }
 
