@@ -134,8 +134,11 @@ export async function receiveFromUploader() {
     async (message) => {
       const fileReport = JSON.parse(message!.content.toString());
       const fileReportService = new FileReportService()
-  
-      await fileReportService.updateOrCreateFileByUploaderId(fileReport)
+      if (fileReport.id) {
+      await fileReportService.updateFileReportById(fileReport)
+      } else {
+        await fileReportService.create(fileReport)
+      }
     },
     { noAck: true }
   );

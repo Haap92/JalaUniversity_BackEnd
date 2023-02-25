@@ -1,6 +1,7 @@
 import { HttpError } from "../middlewares/errorHandler";
 import { FileReportRepository } from "../db/repositories/fileReportRepository";
 import FileReport from "../db/entities/fileReport";
+import { NewFileReportValues } from "../types";
 
 
 
@@ -10,9 +11,24 @@ export default class FileReportService {
     this.fileReportRepository = new FileReportRepository()
   }
 
-  async updateOrCreateFileByUploaderId (message: any) {
-    const fileFromDb: FileReport | undefined = await this.read(message.id)
-    const filetoUpdate: FileReport = fileFromDb || new FileReport()
+  async create (fileReport: NewFileReportValues) {
+
+    const newFileReport = new FileReport;
+    newFileReport.uploaderId = fileReport.uploaderId;
+    newFileReport.downloadsTotal = fileReport.downloadsTotal;
+    newFileReport.downloadsToday = fileReport.downloadsToday;
+    newFileReport.acumulatedSizeTotal = fileReport.acumulatedSizeTotal;
+    newFileReport.acumulatedSizeDay = fileReport.acumulatedSizeDay;
+    try {
+      const createdFileReport = await this.fileReportRepository.create(newFileReport);
+      return createdFileReport;
+    } catch (error) {
+        throw(new HttpError(400, error.message));
+      }
+  }
+
+  async updateFileReportById (message: any) {
+    const filetoUpdate: FileReport | undefined = await this.read(message.id)
 
     filetoUpdate.uploaderId = message.uploaderId
     filetoUpdate.downloadsToday = message.downloadsToday

@@ -233,10 +233,8 @@ export default class FileService {
     const googleDriveAccounts = await this.googleDriveAccountService.readAll();
     for (const googleDriveAccount of googleDriveAccounts) {
       const driveFile = await this.driveFileService.readByUploaderIdAndAccountId(id, googleDriveAccount.id);
-      console.log('driveFile:', driveFile);
       
-      const isdeleted = await this.deleteFileFromDrive(driveFile.driveId, googleDriveAccount);
-      console.log(isdeleted);
+      await this.deleteFileFromDrive(driveFile.driveId, googleDriveAccount);
       
       await deleteOnDownload(JSON.stringify(driveFile));
       await this.driveFileService.deleteByDriveIdAndAccountId(driveFile.driveId, googleDriveAccount.id);

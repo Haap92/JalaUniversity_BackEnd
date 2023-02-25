@@ -30,7 +30,6 @@ export class DriveFileRepository {
   }
 
   async readByDriveIdAndAccountId (driveId: string, accountId: string) {
-    console.log(accountId, driveId)
     const FileAccountFound = await this.repository.findOneBy({
         driveId,
         accountId
@@ -44,7 +43,6 @@ export class DriveFileRepository {
   }
 
   async readByUploaderIdAndAccountId (uploaderId: string, accountId: string) {
-    console.log(accountId, uploaderId)
     const FileAccountFound = await this.repository.findOneBy({
         uploaderId,
         accountId
