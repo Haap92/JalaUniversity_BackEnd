@@ -6,6 +6,7 @@ import FileReportService from "./fileReportService";
 import FileReport from '../db/entities/fileReport';
 import DriveAccountService from "./driveAccountService";
 import DriveAccount from "../db/entities/driveAccount";
+import { DriveAccountValues } from '../../../Stats/src/types';
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -62,22 +63,26 @@ export async function sendAccountToStatus(message: string) {
 export async function receiveFromUploader() {
   const channel = await connectToRabbitMq();
 
-  const queueUploaderCreate = "Uploader-Downloader-create";
-  const queueUploaderDelete = "Uploader-Downloader-delete";
+  const queueUploaderCreateFile = "Uploader-Downloader-create-file";
+  const queueUploaderDeleteFile = "Uploader-Downloader-delete-file";
+  const queueUploaderCreateAccount = "Uploader-Downloader-create-account";
   const queueStatsFile = "Stats-Downloader-File";
   const queueStatsAccount = "Stats-Downloader-Account";
 
-  await channel.assertQueue(queueUploaderCreate, {
+  await channel.assertQueue(queueUploaderCreateFile, {
     durable: false,
   });
-  await channel.assertQueue(queueUploaderDelete, {
+  await channel.assertQueue(queueUploaderDeleteFile, {
+    durable: false,
+  });
+  await channel.assertQueue(queueUploaderCreateAccount, {
     durable: false,
   });
   await channel.assertQueue(queueStatsFile, { durable: false });
   await channel.assertQueue(queueStatsAccount, { durable: false });
 
   channel.consume(
-    queueUploaderCreate,
+    queueUploaderCreateFile,
     async (message) => {
       const uploadedFile: DownloadFileValues = JSON.parse(
         message!.content.toString()
@@ -101,7 +106,7 @@ export async function receiveFromUploader() {
   );
 
   channel.consume(
-    queueUploaderDelete,
+    queueUploaderDeleteFile,
     async (message) => {
       const uploadedFile: DownloadFileValues = JSON.parse(
         message!.content.toString()
@@ -113,6 +118,29 @@ export async function receiveFromUploader() {
       await downloadFileService.deleteByUploaderAndAccountId(uploaderId, accountId);
       console.log(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been deleted in Downloader DB.`
+      );
+    },
+    { noAck: true }
+  );
+
+  channel.consume(
+    queueUploaderCreateAccount,
+    async (message) => {
+      const newAccount: any = JSON.parse(
+        message!.content.toString()
+      );
+      const driveAccountService = new DriveAccountService();
+      const driveAccount = new DriveAccount();
+      driveAccount.accountId = newAccount.id;
+      driveAccount.downloadsTotal = 0;
+      driveAccount.downloadsToday = 0;
+      driveAccount.consecutiveDownloads = 0; 
+      driveAccount.acumulatedSizeTotal = 0;
+      driveAccount.acumulatedSizeDay = 0;
+
+      await driveAccountService.create(driveAccount);
+      console.log(
+        `Google Drive Account: "${driveAccount.accountId}" has been created in Downloader DB.`
       );
     },
     { noAck: true }

@@ -24,6 +24,16 @@ export class FileRepository {
     }
   }
 
+  async readByAccountId(accountId: string) {
+    const files = await this.repository.find({
+      where: {
+        accountId: accountId,
+      },
+    });
+    
+    return files;
+  }
+
   async readAll() {
     let files = await this.repository.find();
     return files ? files.map((file) => file as File) : undefined;

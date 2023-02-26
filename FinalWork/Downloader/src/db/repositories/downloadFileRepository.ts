@@ -29,6 +29,13 @@ export default class DownloadFileRepository {
     }
   }
 
+  async readByAccountId(accountId: string) {
+    const readedAccountId = await this.repository.find({ where: { accountId: accountId } });
+    if (readedAccountId){
+    return readedAccountId
+    }
+  }
+
   async readByUploaderIdAndAccountId (uploaderId: string, accountId: string) {
     const FileAccountFound = await this.repository.findOneBy({
       uploaderId,
@@ -67,6 +74,18 @@ export default class DownloadFileRepository {
       return deletedFiles;
     } else {
       throw new Error(`Uploaded Files with id:${uploaderId} not found`);
+    }
+  }
+
+  async deleteByAccountId(accountId: string) {
+    
+    const deletedFiles = await this.repository.delete({
+      accountId: accountId
+    });
+    if (deletedFiles) {
+      return deletedFiles;
+    } else {
+      throw new Error(`Uploaded Files with drive account id:${accountId} not found`);
     }
   }
 }

@@ -2,9 +2,11 @@ import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import { GoogleDriveAccountRepository } from "../db/repositories/googleDriveAccountRepository";
 import { GoogleDriveAccountValues } from "../types";
 import { HttpError } from "../middlewares/errorHandler";
+import { sendAccountToDownload, sendToCreateAccount } from "./messageQeueService";
+import FileService from './fileService';
 
 export default class GoogleDriveAccountService {
-  protected googleDriveAccountRepository: GoogleDriveAccountRepository;
+  private googleDriveAccountRepository: GoogleDriveAccountRepository;
   constructor() {
     this.googleDriveAccountRepository = new GoogleDriveAccountRepository();
   }
@@ -17,8 +19,15 @@ export default class GoogleDriveAccountService {
       googleDriveAccount.clientSecret = googleDriveAccountValues.clientSecret;
       googleDriveAccount.redirectUri = googleDriveAccountValues.redirectUri;
       googleDriveAccount.refreshToken = googleDriveAccountValues.refreshToken;
-      await this.googleDriveAccountRepository.create(googleDriveAccount);
-      return googleDriveAccount;
+      const newGoogleDriveAccount = await this.googleDriveAccountRepository.create(googleDriveAccount);
+      const stringUploadAccount = JSON.stringify(newGoogleDriveAccount)
+      await sendAccountToDownload(stringUploadAccount)
+      sendToCreateAccount(stringUploadAccount)
+      const succesfulCreate = {
+        Account: newGoogleDriveAccount,
+        message: `Files will be uploaded soon to the new created Account`
+      };
+      return succesfulCreate;
     } catch (error) {
       throw new HttpError(
         400,
@@ -92,12 +101,22 @@ export default class GoogleDriveAccountService {
 
   async delete(id: string) {
     try {
-      return await this.googleDriveAccountRepository.delete(id);
+      const accountToDelete = this.read(id)
+      const fileService = new FileService() 
+      fileService.setupAccountDriveFilesDelete(id)
+      const deleting = {
+        message: `Account with id: "${id}" deletion its being proccessed` 
+      } 
+      return deleting
     } catch (error) {
       throw new HttpError(
         404,
         `Failed to delete Google Drive Account, Account with id: "${id}" not found`
       );
     }
+  }
+
+  async hardDelete(id: string) {
+    await this.googleDriveAccountRepository.delete(id)
   }
 }

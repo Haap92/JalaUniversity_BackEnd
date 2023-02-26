@@ -36,3 +36,11 @@ export type NewFileReportValues = {
   acumulatedSizeDay: number;
   size: number;
 }
+
+export type NewAccountValues = {
+  accountId: string;
+  downloadsTotal: number;
+  downloadsToday: number;
+  acumulatedSizeTotal: number;
+  acumulatedSizeDay: number;
+}

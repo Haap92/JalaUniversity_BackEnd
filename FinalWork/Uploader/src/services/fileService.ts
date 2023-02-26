@@ -5,7 +5,7 @@ import { HttpError } from "../middlewares/errorHandler";
 import GoogleDriveAccountService from "./googleDriveAccountService";
 import GoogleDriveAccount from "../db/entities/googleDriveAccount";
 import GoogleDriveService from "./googleDriveService";
-import { deleteOnDownload, sendToDownload, sendToUpload } from "./messageQeueService";
+import { deleteOnDownload, sendToDeleteAccount, sendToDownload, sendToUpload } from "./messageQeueService";
 import DriveFileService from "./driveFileService";
 import { GridFsService } from './gridFsService';
 
@@ -52,6 +52,15 @@ export default class FileService {
   async readAll() {
     try {
       const files = await this.fileRepository.readAll();
+      return files;
+    } catch (error) {
+      throw new HttpError(400, `Bad Request!! Files not found`);
+    }
+  }
+
+  async readByAccountId(accountId: string) {
+    try {
+      const files = await this.fileRepository.readByAccountId(accountId);
       return files;
     } catch (error) {
       throw new HttpError(400, `Bad Request!! Files not found`);
@@ -237,7 +246,7 @@ export default class FileService {
       await this.deleteFileFromDrive(driveFile.driveId, googleDriveAccount);
       
       await deleteOnDownload(JSON.stringify(driveFile));
-      await this.driveFileService.deleteByDriveIdAndAccountId(driveFile.driveId, googleDriveAccount.id);
+      await this.driveFileService.delete(driveFile.id);
     };
   }
 
@@ -251,5 +260,63 @@ export default class FileService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async setupNewAccountDriveUpload(googleDriveAccount: GoogleDriveAccount) {
+    const files = await this.readAll();
+    const downloadFileData: DownloadFileValues[] = []
+    for (const file of files) {
+      const newDownloadFileData = await this.uploadToDrive(googleDriveAccount, file);
+      const driveIds = file.driveId.split(",");
+      driveIds.push(newDownloadFileData.driveId);
+      
+      const fileToUpdate: FileValues = {
+        filename: file.filename,
+        originalname: file.originalname,
+        size: file.size,
+        mimetype: file.mimetype,
+        driveId: driveIds.toString(),
+        status: 'Uploaded'
+      }
+
+      await this.update(file.id, fileToUpdate);
+      downloadFileData.push(newDownloadFileData)
+    }
+    return downloadFileData
+  }
+
+  async setupAccountDriveFilesDelete(accountId: string) {
+    const driveAccount = await this.googleDriveAccountService.read(accountId)
+
+    
+    const files = await this.driveFileService.readByAccountId(accountId);
+    for (const file of files) {
+      const driveFile = await this.driveFileService.readByUploaderIdAndAccountId(file.uploaderId, accountId);
+      const account = await this.googleDriveAccountService.read(accountId)
+      console.log('account', account);
+      
+      
+      const fileToUpdate = await this.read(file.uploaderId);
+      const driveIdArray = fileToUpdate.driveId.split(',');
+      
+      const driveIdIndex = driveIdArray.indexOf(driveFile.driveId);
+      if (driveIdIndex !== -1) {
+        driveIdArray.splice(driveIdIndex, 1);
+      }
+      
+      fileToUpdate.driveId = driveIdArray.join(','); 
+      await this.fileRepository.update(fileToUpdate);
+
+      console.log('driveFile.driveId:' + driveFile.driveId, 'driveAccount:' + account);
+      console.log(account);
+      
+      
+      await this.deleteFileFromDrive(driveFile.driveId, account);
+      
+      await deleteOnDownload(JSON.stringify(driveFile));
+      await this.driveFileService.delete(driveFile.id);
+    };
+    const accountToDelete = JSON.stringify(driveAccount)
+    sendToDeleteAccount(accountToDelete)
   }
 }

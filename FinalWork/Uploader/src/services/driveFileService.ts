@@ -26,6 +26,15 @@ export default class DriveFileService {
     }
   }
 
+  async readByAccountId(accountId: string) {
+    try {
+      const files = await this.driveFileRepository.readByAccountId(accountId);
+      return files;
+    } catch (error) {
+      throw new HttpError(400, `Bad Request!! Files not found`);
+    }
+  }
+
   async readByUploaderIdAndAccountId(uploaderId: string, accountId: string) {
     try {
       const file = await this.driveFileRepository.readByUploaderIdAndAccountId(
@@ -48,27 +57,25 @@ export default class DriveFileService {
     }
   }
 
-  async deleteByDriveIdAndAccountId(driveId: string, accountId: string) {
+  async delete(id: string) {
     try {
-      const file = await this.driveFileRepository.readByDriveIdAndAccountId(
-        driveId,
-        accountId
+      const file = await this.driveFileRepository.read(
+        id
       );
       if (file) {
-        await this.driveFileRepository.readByDriveIdAndAccountId(
-          driveId,
-          accountId
+        await this.driveFileRepository.delete(
+          id
         );
       } else {
         throw new HttpError(
           404,
-          `Drive File id "${driveId}" with account id "${accountId}" not found`
+          `Drive File id "${id}" not found`
         );
       }
     } catch (error) {
       throw new HttpError(
         404,
-        `Drive File id "${driveId}" with account id "${accountId}" not found`
+        `Drive File id "${id}" not found`
       );
     }
   }

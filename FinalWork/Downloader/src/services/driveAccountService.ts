@@ -1,6 +1,7 @@
 import { DriveAccountRepository } from "../db/repositories/driveAccountRepository"
 import DriveAccount from '../db/entities/driveAccount';
 import { HttpError } from "../middlewares/errorHandler";
+import { NewAccountValues } from "../types";
 
 
 
@@ -8,6 +9,21 @@ export default class DriveAccountService {
   private driveAccountRepository : DriveAccountRepository
   constructor () {
     this.driveAccountRepository = new DriveAccountRepository()
+  }
+  async create (driveAccount: NewAccountValues) {
+
+    const newDriveAccount = new DriveAccount;
+    newDriveAccount.accountId = driveAccount.accountId;
+    newDriveAccount.downloadsTotal = driveAccount.downloadsTotal;
+    newDriveAccount.downloadsToday = driveAccount.downloadsToday;
+    newDriveAccount.acumulatedSizeTotal = driveAccount.acumulatedSizeTotal;
+    newDriveAccount.acumulatedSizeDay = driveAccount.acumulatedSizeDay;
+    try {
+      const createdFileReport = await this.driveAccountRepository.create(newDriveAccount);
+      return createdFileReport;
+    } catch (error) {
+        throw(new HttpError(400, error.message));
+      }
   }
 
   async updateOrCreateAccountByAccountId (message: any) {
@@ -46,6 +62,18 @@ export default class DriveAccountService {
       throw new HttpError(404, `Account with id "${accountId}" not found`);
     }
   }
+
+  async delete(id: number) {
+    try {
+      return await this.driveAccountRepository.delete(id);
+    } catch (error) {
+      throw new HttpError(
+        404,
+        `Failed to Delete the Drive Account, Drive Account with id: "${id}" not found`
+      );
+    }
+  }
+
 
   async getOptimizedAccount () {
     return await this.driveAccountRepository.findAccountWithSmallestDownloadToday()

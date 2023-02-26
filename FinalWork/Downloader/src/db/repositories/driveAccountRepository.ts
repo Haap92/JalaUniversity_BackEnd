@@ -27,7 +27,7 @@ export class DriveAccountRepository {
   }
 
   async readByAccountId(accountId: string) {
-    const readedAccountId = await this.repository.find({ where: { accountId: accountId } });
+    const readedAccountId = await this.repository.findOne({ where: { accountId: accountId } });
     if (readedAccountId){
     return readedAccountId
     }

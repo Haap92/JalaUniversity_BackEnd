@@ -48,11 +48,11 @@ export default class GoogleDriveService {
     }
   }
 
-  async deleteFileFromDrive(fileId: string) {
+  async deleteFileFromDrive(fileId: string) {   
     try {
       const response = await this.drive.files.delete({
         fileId: fileId,
-      });
+      });    
       return response.data, response.status;
     } catch (error) {
       throw new HttpError(404, "Failed to Delete the file from the drive");

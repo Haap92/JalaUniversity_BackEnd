@@ -29,6 +29,16 @@ export class DriveFileRepository {
     return files ? files.map((file) => file as DriveFile) : undefined;
   }
 
+  async readByAccountId(accountId: string) {
+    const files = await this.repository.find({
+      where: {
+        accountId: accountId,
+      },
+    });
+    
+    return files;
+  }
+
   async readByDriveIdAndAccountId (driveId: string, accountId: string) {
     const FileAccountFound = await this.repository.findOneBy({
         driveId,

@@ -1,5 +1,6 @@
 import amqp = require("amqplib/callback_api");
 import FileService from "./fileService";
+import GoogleDriveAccountService from "./googleDriveAccountService";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -43,15 +44,33 @@ export async function sendToUpload(message: string) {
   await sendMessage(queue, message);
 }
 
+export async function sendToCreateAccount(message: string) {
+  const queue = "Uploader-Drive-Account-create";
+  console.log("Account sent to Drive: " + message);
+  await sendMessage(queue, message);
+}
+
+export async function sendToDeleteAccount(message: string) {
+  const queue = "Uploader-Drive-Account-delete";
+  console.log("Account sent to Hard Delete: " + message);
+  await sendMessage(queue, message);
+}
+
 export async function sendToDownload(message: string) {
-  const queue = "Uploader-Downloader-create";
+  const queue = "Uploader-Downloader-create-file";
   console.log("File sent to Downloads: " + message);
   await sendMessage(queue, message);
 }
 
 export async function deleteOnDownload(message: string) {
-  const queue = "Uploader-Downloader-delete";
+  const queue = "Uploader-Downloader-delete-file";
   console.log("File to delete in Downloads: " + message);
+  await sendMessage(queue, message);
+}
+
+export async function sendAccountToDownload(message: string) {
+  const queue = "Uploader-Downloader-create-account";
+  console.log("Account sent to Downloads: " + message);
   await sendMessage(queue, message);
 }
 
@@ -63,17 +82,47 @@ export async function sendToSatus(message: string) {
 
 export async function receiveToUpload() {
   const channel = await connectToRabbitMq();
-  const queue = "Uploader-Drive";
+  const queueDrive = "Uploader-Drive";
+  const queueAccountCreate = "Uploader-Drive-Account-create";
+  const queueAccountDelete = "Uploader-Drive-Account-delete";
 
-  channel.assertQueue(queue, { durable: false });
+  channel.assertQueue(queueDrive, { durable: false });
+  channel.assertQueue(queueAccountCreate, { durable: false });
+  channel.assertQueue(queueAccountDelete, { durable: false });
 
   channel.consume(
-    queue,
+    queueDrive,
     (msg) => {
       const message = JSON.parse(msg.content.toString());
       console.log("Received File to Upload to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
       fileService.setupDriveUpload(message);;
+    },
+    {
+      noAck: true,
+    }
+  );
+
+  channel.consume(
+    queueAccountCreate,
+    (msg) => {
+      const message = JSON.parse(msg.content.toString());
+      console.log("Received Account to Upload files to Drive: " + JSON.stringify(message));
+      const fileService = new FileService()
+      fileService.setupNewAccountDriveUpload(message);;
+    },
+    {
+      noAck: true,
+    }
+  );
+
+  channel.consume(
+    queueAccountDelete,
+    (msg) => {
+      const message = JSON.parse(msg.content.toString());
+      console.log("Received Account to Delete" + JSON.stringify(message));
+      const googleDriveAccountService = new GoogleDriveAccountService()
+      googleDriveAccountService.hardDelete(message.id);;
     },
     {
       noAck: true,
