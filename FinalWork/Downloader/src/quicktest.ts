@@ -16,6 +16,7 @@ class Test {
         account1.consecutiveDownloads = 0;
         account1.acumulatedSizeTotal = 0;
         account1.acumulatedSizeDay = 0;
+        account1.activeAccount = 'yes';
     
         const account2 = new DriveAccount();
         account2.accountId = "63e71004672c6f4f7cd86415";
@@ -24,6 +25,7 @@ class Test {
         account2.consecutiveDownloads = 0;
         account2.acumulatedSizeTotal = 0;
         account2.acumulatedSizeDay = 0;
+        account2.activeAccount = 'yes'
     
         const account3 = new DriveAccount();
         account3.accountId = "63e7103e672c6f4f7cd86416";
@@ -32,6 +34,7 @@ class Test {
         account3.consecutiveDownloads = 0;
         account3.acumulatedSizeTotal = 0;
         account3.acumulatedSizeDay = 0;
+        account3.activeAccount = 'no'
 
         const dataAccess = new DriveAccountRepository
     

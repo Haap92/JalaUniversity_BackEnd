@@ -70,6 +70,12 @@ export async function deleteOnDownload(message: string) {
 
 export async function sendAccountToDownload(message: string) {
   const queue = "Uploader-Downloader-create-account";
+  console.log("Account sent to delete on Downloader: " + message);
+  await sendMessage(queue, message);
+}
+
+export async function deleteAccountOnDownload(message: string) {
+  const queue = "Uploader-Downloader-delete-account";
   console.log("Account sent to Downloads: " + message);
   await sendMessage(queue, message);
 }

@@ -21,6 +21,22 @@ export class DriveAccountController {
     }
   }
 
+  static async readActiveAccounts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const accounts = await driveAccountService.readActiveAccounts();
+      res.status(200).json({
+        message: "Accounts found",
+        accounts: accounts,
+      });
+    } catch (error) {
+      if (error instanceof HttpError) {
+        next(error);
+      } else {
+        next(new HttpError(400, error.message));
+      }
+    }
+  }
+
   static async readByAccountId(req: Request, res: Response, next: NextFunction) {
     const { accountId } = req.params;
     try {

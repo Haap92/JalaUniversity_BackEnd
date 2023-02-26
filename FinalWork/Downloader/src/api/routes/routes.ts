@@ -14,6 +14,7 @@ router.put("/download-files/:id", DownloadFileController.update);
 router.delete("/download-files/:id", DownloadFileController.delete);
 
 router.get("/drive-accounts", DriveAccountController.readAll);
+router.get("/drive-accounts/active", DriveAccountController.readActiveAccounts);
 router.get("/drive-accounts/account/:accountId", DriveAccountController.readByAccountId);
 
 router.get("/file-reports", FileReportController.readAll);

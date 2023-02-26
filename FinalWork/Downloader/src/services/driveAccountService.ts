@@ -1,51 +1,73 @@
-import { DriveAccountRepository } from "../db/repositories/driveAccountRepository"
-import DriveAccount from '../db/entities/driveAccount';
+import { DriveAccountRepository } from "../db/repositories/driveAccountRepository";
+import DriveAccount from "../db/entities/driveAccount";
 import { HttpError } from "../middlewares/errorHandler";
-import { NewAccountValues } from "../types";
-
-
+import { InactiveAccountValues, NewAccountValues } from "../types";
 
 export default class DriveAccountService {
-  private driveAccountRepository : DriveAccountRepository
-  constructor () {
-    this.driveAccountRepository = new DriveAccountRepository()
+  private driveAccountRepository: DriveAccountRepository;
+  constructor() {
+    this.driveAccountRepository = new DriveAccountRepository();
   }
-  async create (driveAccount: NewAccountValues) {
-
-    const newDriveAccount = new DriveAccount;
+  async create(driveAccount: NewAccountValues) {
+    const newDriveAccount = new DriveAccount();
     newDriveAccount.accountId = driveAccount.accountId;
     newDriveAccount.downloadsTotal = driveAccount.downloadsTotal;
     newDriveAccount.downloadsToday = driveAccount.downloadsToday;
     newDriveAccount.acumulatedSizeTotal = driveAccount.acumulatedSizeTotal;
     newDriveAccount.acumulatedSizeDay = driveAccount.acumulatedSizeDay;
+    newDriveAccount.activeAccount = driveAccount.activeAccount;
     try {
-      const createdFileReport = await this.driveAccountRepository.create(newDriveAccount);
+      const createdFileReport = await this.driveAccountRepository.create(
+        newDriveAccount
+      );
       return createdFileReport;
     } catch (error) {
-        throw(new HttpError(400, error.message));
+      throw new HttpError(400, error.message);
+    }
+  }
+
+  async updateOrCreateAccountByAccountId(message: any) {
+    const accountFromDb: DriveAccount | undefined = await this.read(message.id);
+    const accounttoUpdate: DriveAccount = accountFromDb || new DriveAccount();
+
+    accounttoUpdate.accountId = message.accountId;
+    accounttoUpdate.downloadsToday = message.downloadsToday;
+    accounttoUpdate.downloadsTotal = message.downloadsTotal;
+    accounttoUpdate.acumulatedSizeTotal = message.acumulatedSizeTotal;
+    accounttoUpdate.acumulatedSizeDay = message.acumulatedSizeDay;
+    accounttoUpdate.consecutiveDownloads = message.consecutiveDownloads;
+
+    return await this.driveAccountRepository.update(accounttoUpdate);
+  }
+
+  async updateInactiveAccountByAccountId(
+    accountId: string,
+    inactiveAccount: InactiveAccountValues
+  ) {
+    const updateInactiveAccount =
+      await this.driveAccountRepository.readByAccountId(accountId);
+    if (updateInactiveAccount) {
+      updateInactiveAccount.consecutiveDownloads =
+        inactiveAccount.consecutiveDownloads;
+      updateInactiveAccount.activeAccount = inactiveAccount.activeAccount;
+      try {
+        await this.driveAccountRepository.update(updateInactiveAccount);
+      } catch (error) {
+        throw new HttpError(400, error.message);
       }
+    }
   }
 
-  async updateOrCreateAccountByAccountId (message: any) {
-    const accountFromDb: DriveAccount | undefined = await this.read(message.id)
-    const accounttoUpdate: DriveAccount = accountFromDb || new DriveAccount()
-
-    accounttoUpdate.accountId = message.accountId
-    accounttoUpdate.downloadsToday = message.downloadsToday
-    accounttoUpdate.downloadsTotal = message.downloadsTotal
-    accounttoUpdate.acumulatedSizeTotal = message.acumulatedSizeTotal
-    accounttoUpdate.acumulatedSizeDay = message.acumulatedSizeDay
-    accounttoUpdate.consecutiveDownloads = message.consecutiveDownloads
-
-    return await this.driveAccountRepository.update(accounttoUpdate)
+  async readAll() {
+    return await this.driveAccountRepository.readAll();
   }
 
-  async readAll () {
-    return await this.driveAccountRepository.readAll()
+  async readActiveAccounts() {
+    return await this.driveAccountRepository.readActiveAccounts();
   }
 
-  async read(id:number) {
-    return await this.driveAccountRepository.read(id)
+  async read(id: number) {
+    return await this.driveAccountRepository.read(id);
   }
 
   async readByAccountId(accountId: string) {
@@ -74,21 +96,19 @@ export default class DriveAccountService {
     }
   }
 
-
-  async getOptimizedAccount () {
-    return await this.driveAccountRepository.findAccountWithSmallestDownloadToday()
+  async getOptimizedAccount() {
+    return await this.driveAccountRepository.findAccountWithSmallestDownloadToday();
   }
 
-  async getAllAccountsExceptOne (accountId:string) {
-    const allAccounts = await this.readAll()
-    const filterAccounts = allAccounts.filter((account:any) => {
-      return account.accountId !== accountId
-    })
-    return filterAccounts
+  async getAllAccountsExceptOne(accountId: string) {
+    const allAccounts = await this.readAll();
+    const filterAccounts = allAccounts.filter((account: any) => {
+      return account.accountId !== accountId;
+    });
+    return filterAccounts;
   }
 
-  async dailyUpdateDownloads () {
-    this.driveAccountRepository.dailyUpdate()
+  async dailyUpdateDownloads() {
+    this.driveAccountRepository.dailyUpdate();
   }
-
 }

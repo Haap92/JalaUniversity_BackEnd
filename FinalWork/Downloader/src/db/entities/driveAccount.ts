@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
+import { isActive } from '../../types';
 
 @Entity()
 export default class DriveAccount {
@@ -23,4 +24,7 @@ export default class DriveAccount {
 
   @Column()
   acumulatedSizeDay: number;
+
+  @Column()
+  activeAccount: isActive;
 }

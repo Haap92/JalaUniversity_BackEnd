@@ -1,12 +1,12 @@
 import amqp from "amqplib/callback_api";
 import DownloadFile from "../db/entities/downloadFile";
-import { DownloadFileValues } from "../types";
+import { DownloadFileValues, InactiveAccountValues } from "../types";
 import DownloadFileService from "./downloadFileService";
 import FileReportService from "./fileReportService";
-import FileReport from '../db/entities/fileReport';
+import FileReport from "../db/entities/fileReport";
 import DriveAccountService from "./driveAccountService";
 import DriveAccount from "../db/entities/driveAccount";
-import { DriveAccountValues } from '../../../Stats/src/types';
+import { DriveAccountValues } from "../../../Stats/src/types";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -40,8 +40,7 @@ async function sendMessage(queue: string, message: string) {
   channel.sendToQueue(queue, Buffer.from(message));
   console.log("Message Sent: " + message);
   setTimeout(function () {
-    channel.close(() => {
-    });
+    channel.close(() => {});
   }, 500);
 }
 
@@ -66,6 +65,7 @@ export async function receiveFromUploader() {
   const queueUploaderCreateFile = "Uploader-Downloader-create-file";
   const queueUploaderDeleteFile = "Uploader-Downloader-delete-file";
   const queueUploaderCreateAccount = "Uploader-Downloader-create-account";
+  const queueUploaderDeleteAccount = "Uploader-Downloader-delete-account";
   const queueStatsFile = "Stats-Downloader-File";
   const queueStatsAccount = "Stats-Downloader-Account";
 
@@ -76,6 +76,9 @@ export async function receiveFromUploader() {
     durable: false,
   });
   await channel.assertQueue(queueUploaderCreateAccount, {
+    durable: false,
+  });
+  await channel.assertQueue(queueUploaderDeleteAccount, {
     durable: false,
   });
   await channel.assertQueue(queueStatsFile, { durable: false });
@@ -112,10 +115,13 @@ export async function receiveFromUploader() {
         message!.content.toString()
       );
       const downloadFileService = new DownloadFileService();
-      const uploaderId = uploadedFile.uploaderId
-      const accountId = uploadedFile.accountId
+      const uploaderId = uploadedFile.uploaderId;
+      const accountId = uploadedFile.accountId;
 
-      await downloadFileService.deleteByUploaderAndAccountId(uploaderId, accountId);
+      await downloadFileService.deleteByUploaderAndAccountId(
+        uploaderId,
+        accountId
+      );
       console.log(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been deleted in Downloader DB.`
       );
@@ -126,17 +132,16 @@ export async function receiveFromUploader() {
   channel.consume(
     queueUploaderCreateAccount,
     async (message) => {
-      const newAccount: any = JSON.parse(
-        message!.content.toString()
-      );
+      const newAccount: any = JSON.parse(message!.content.toString());
       const driveAccountService = new DriveAccountService();
       const driveAccount = new DriveAccount();
       driveAccount.accountId = newAccount.id;
       driveAccount.downloadsTotal = 0;
       driveAccount.downloadsToday = 0;
-      driveAccount.consecutiveDownloads = 0; 
+      driveAccount.consecutiveDownloads = 0;
       driveAccount.acumulatedSizeTotal = 0;
       driveAccount.acumulatedSizeDay = 0;
+      driveAccount.activeAccount = "yes";
 
       await driveAccountService.create(driveAccount);
       console.log(
@@ -147,12 +152,34 @@ export async function receiveFromUploader() {
   );
 
   channel.consume(
+    queueUploaderDeleteAccount,
+    async (message) => {
+      const updateAccount: any = JSON.parse(message!.content.toString()); 
+      const driveAccountService = new DriveAccountService();
+      const accountId = updateAccount.id;
+      const updateInactiveAccount: InactiveAccountValues = {
+        consecutiveDownloads: 0,
+        activeAccount: "no",
+      };
+
+      await driveAccountService.updateInactiveAccountByAccountId(
+        accountId,
+        updateInactiveAccount
+      );
+      console.log(
+        `Google Drive Account: "${accountId}" is now inactive in Downloader DB.`
+      );
+    },
+    { noAck: true }
+  );
+
+  channel.consume(
     queueStatsAccount,
     async (message) => {
       const accountReport = JSON.parse(message!.content.toString());
-      const driveAccountService = new DriveAccountService()
+      const driveAccountService = new DriveAccountService();
 
-      await driveAccountService.updateOrCreateAccountByAccountId(accountReport)
+      await driveAccountService.updateOrCreateAccountByAccountId(accountReport);
     },
     { noAck: true }
   );
@@ -161,11 +188,11 @@ export async function receiveFromUploader() {
     queueStatsFile,
     async (message) => {
       const fileReport = JSON.parse(message!.content.toString());
-      const fileReportService = new FileReportService()
+      const fileReportService = new FileReportService();
       if (fileReport.id) {
-      await fileReportService.updateFileReportById(fileReport)
+        await fileReportService.updateFileReportById(fileReport);
       } else {
-        await fileReportService.create(fileReport)
+        await fileReportService.create(fileReport);
       }
     },
     { noAck: true }

@@ -111,7 +111,7 @@ export default class GoogleDriveAccountController {
       const deletedGoogleDriveAccountId =
         await googleDriveAccountService.delete(id);
       const succesfulDelete = {
-        message: "Google Drive Account successfully deleted.",
+        message: "Google Drive Account qeued for deletion.",
         id: deletedGoogleDriveAccountId,
       };
       return res.status(200).json(succesfulDelete);

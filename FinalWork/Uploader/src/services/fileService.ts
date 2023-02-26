@@ -292,9 +292,7 @@ export default class FileService {
     const files = await this.driveFileService.readByAccountId(accountId);
     for (const file of files) {
       const driveFile = await this.driveFileService.readByUploaderIdAndAccountId(file.uploaderId, accountId);
-      const account = await this.googleDriveAccountService.read(accountId)
-      console.log('account', account);
-      
+      const account = await this.googleDriveAccountService.read(accountId)   
       
       const fileToUpdate = await this.read(file.uploaderId);
       const driveIdArray = fileToUpdate.driveId.split(',');
@@ -306,11 +304,7 @@ export default class FileService {
       
       fileToUpdate.driveId = driveIdArray.join(','); 
       await this.fileRepository.update(fileToUpdate);
-
-      console.log('driveFile.driveId:' + driveFile.driveId, 'driveAccount:' + account);
-      console.log(account);
-      
-      
+     
       await this.deleteFileFromDrive(driveFile.driveId, account);
       
       await deleteOnDownload(JSON.stringify(driveFile));

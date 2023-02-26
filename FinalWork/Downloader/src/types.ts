@@ -43,4 +43,12 @@ export type NewAccountValues = {
   downloadsToday: number;
   acumulatedSizeTotal: number;
   acumulatedSizeDay: number;
+  activeAccount: isActive
 }
+
+export type InactiveAccountValues = {
+  consecutiveDownloads: number;
+  activeAccount: isActive;
+}
+
+export type isActive = 'yes' | 'no'

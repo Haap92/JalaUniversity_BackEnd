@@ -26,6 +26,18 @@ export class DriveAccountRepository {
     }
   }
 
+  async readActiveAccounts() {
+    const allActiveAccounts = await this.repository.find({
+      where: {
+        activeAccount: 'yes'
+      }
+    })
+  
+    if (allActiveAccounts) {
+      return allActiveAccounts
+    }
+  }
+
   async readByAccountId(accountId: string) {
     const readedAccountId = await this.repository.findOne({ where: { accountId: accountId } });
     if (readedAccountId){
@@ -49,9 +61,10 @@ export class DriveAccountRepository {
   async findAccountWithSmallestDownloadToday () {
     const response = await this.repository.createQueryBuilder('account')
       .where('account.consecutiveDownloads <= :consecutiveDownloads', { consecutiveDownloads: 4 })
+      .andWhere('account.activeAccount = :activeAccount', { activeAccount: 'yes' })
       .orderBy('account.acumulatedSizeDay', 'ASC')
       .getOne()
-
+  
     if (response) {
       return response
     }
