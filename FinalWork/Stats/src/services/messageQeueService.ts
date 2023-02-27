@@ -1,5 +1,6 @@
 import amqp from "amqplib/callback_api";
 import { DriveAccountValues, FileReportValues } from "../types";
+import logger from "jet-logger";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -31,7 +32,7 @@ async function sendMessage(queue: string, message: string) {
   const channel = await connectToRabbitMq();
   channel.assertQueue(queue, { durable: false });
   channel.sendToQueue(queue, Buffer.from(message));
-  console.log("Message Sent: " + message);
+  logger.info("Message Sent: " + message);
   setTimeout(function () {
     channel.close(() => {
     });
@@ -65,7 +66,7 @@ export async function statusListener() {
     queueUploader,
     (message) => {
       const receivedMessage = JSON.parse(message!.content.toString());
-      console.log(
+      logger.info(
         `File "${receivedMessage.filename}" has been ${receivedMessage.status}.`
       );
     },
@@ -76,7 +77,7 @@ export async function statusListener() {
     queueDownloader,
     (message) => {
       const receivedMessage = JSON.parse(message!.content.toString());
-      console.log(
+      logger.info(
         `File "${receivedMessage.filename}" has been ${receivedMessage.status}.`
       );
     },
@@ -128,5 +129,5 @@ export async function statusListener() {
     },
     { noAck: true }
   );
-  console.log("Message Queue Service running on Stats.");
+  logger.info("Message Queue Service running on Stats.");
 }
