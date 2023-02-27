@@ -1,4 +1,4 @@
-import { InfluxDB, WriteApi } from "@influxdata/influxdb-client";
+import { InfluxDB, Point, WriteApi } from "@influxdata/influxdb-client";
 import { hostname } from "os";
 
 const url = 'http://localhost:8086/';
@@ -8,7 +8,7 @@ const bucket = 'Reports';
 
 export default class InfluxDbService {
     private influxDB: InfluxDB;
-    private writeApi: WriteApi;
+    public writeApi: WriteApi;
 
     private url: string;
     private token: string;
@@ -24,4 +24,11 @@ export default class InfluxDbService {
         .getWriteApi(org, bucket, 'ns')
         .useDefaultTags({ location: hostname() })
     }
+
+    async savePointCreateFile(value: string) {
+        const newPoint: Point = new Point('Create File');
+        newPoint.tag("actions", value);
+        newPoint.intField("day", new Date().getDay());
+        newPoint.timestamp(new Date());
+      }
 }

@@ -1,8 +1,10 @@
+import { Point } from "@influxdata/influxdb-client";
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import File from "../../db/entities/File";
 import { HttpError } from "../../middlewares/errorHandler";
 import FileService from "../../services/fileService";
+import InfluxDbService from "../../services/influxDbService";
 import { FileValues, status } from "../../types";
 
 const fileService = new FileService();
@@ -20,13 +22,20 @@ export default class FileController {
       );
     }
     const file = new File();
-      file.filename = filename;
-      file.originalname = originalname;
-      file.size = size;
-      file.mimetype = mimetype;
-      file.status = status;
+    file.filename = filename;
+    file.originalname = originalname;
+    file.size = size;
+    file.mimetype = mimetype;
+    file.status = status;
     try {
       const createdFile = await fileService.create(file);
+      const point = new Point("file_upload")
+        .tag("filename", filename)
+        .floatField("size", size)
+        .stringField("status", "Pending")
+        .timestamp(new Date());
+      const influxDbService = new InfluxDbService();
+      influxDbService.writeApi.writePoints([point]);
       const succesfulCreate = {
         message: "File succesfully created.",
         data: createdFile,
@@ -67,11 +76,10 @@ export default class FileController {
         data: files,
       });
     } catch (error) {
-      if(error instanceof HttpError) {
+      if (error instanceof HttpError) {
         next(error);
-      }
-      else {
-        next(new HttpError(400, error.message))
+      } else {
+        next(new HttpError(400, error.message));
       }
     }
   }

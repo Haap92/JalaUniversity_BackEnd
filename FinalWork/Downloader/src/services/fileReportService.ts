@@ -1,36 +1,35 @@
 import { HttpError } from "../middlewares/errorHandler";
 import { FileReportRepository } from "../db/repositories/fileReportRepository";
 import FileReport from "../db/entities/fileReport";
-import { NewFileReportValues } from '../types';
-
-
+import { NewFileReportValues } from "../types";
 
 export default class FileReportService {
-  private fileReportRepository : FileReportRepository
-  constructor () {
-    this.fileReportRepository = new FileReportRepository()
+  private fileReportRepository: FileReportRepository;
+  constructor() {
+    this.fileReportRepository = new FileReportRepository();
   }
 
-  async create (fileReport: NewFileReportValues) {
-
-    const newFileReport = new FileReport;
+  async create(fileReport: NewFileReportValues) {
+    const newFileReport = new FileReport();
     newFileReport.uploaderId = fileReport.uploaderId;
     newFileReport.downloadsTotal = fileReport.downloadsTotal;
     newFileReport.downloadsToday = fileReport.downloadsToday;
     newFileReport.acumulatedSizeTotal = fileReport.acumulatedSizeTotal;
     newFileReport.acumulatedSizeDay = fileReport.acumulatedSizeDay;
     try {
-      const createdFileReport = await this.fileReportRepository.create(newFileReport);
+      const createdFileReport = await this.fileReportRepository.create(
+        newFileReport
+      );
       return createdFileReport;
     } catch (error) {
-        throw(new HttpError(400, error.message));
-      }
+      throw new HttpError(400, error.message);
+    }
   }
 
   async updateFileReport(updateFile: FileReport) {
     const existingFile = await this.read(updateFile.id);
     if (!existingFile) {
-      throw new Error('File not found');
+      throw new Error("File not found");
     }
 
     existingFile.uploaderId = updateFile.uploaderId;
@@ -38,16 +37,16 @@ export default class FileReportService {
     existingFile.downloadsTotal = updateFile.downloadsTotal;
     existingFile.acumulatedSizeTotal = updateFile.acumulatedSizeTotal;
     existingFile.acumulatedSizeDay = updateFile.acumulatedSizeDay;
-  
+
     return await this.fileReportRepository.update(existingFile);
   }
 
-  async readAll () {
-    return await this.fileReportRepository.readAll()
+  async readAll() {
+    return await this.fileReportRepository.readAll();
   }
 
-  async read(id:number) {
-    return await this.fileReportRepository.read(id)
+  async read(id: number) {
+    return await this.fileReportRepository.read(id);
   }
 
   async readByUploaderId(uploaderId: string) {
@@ -65,7 +64,7 @@ export default class FileReportService {
     }
   }
 
-  async dailyUpdateDownloads () {
-    this.fileReportRepository.dailyUpdate()
+  async dailyUpdateDownloads() {
+    this.fileReportRepository.dailyUpdate();
   }
 }
