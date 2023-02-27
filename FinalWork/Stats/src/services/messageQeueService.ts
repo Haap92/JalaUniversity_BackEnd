@@ -123,6 +123,7 @@ export async function statusListener() {
         acumulatedSizeTotal: account.acumulatedSizeTotal + account.filesize,
         acumulatedSizeDay: account.acumulatedSizeDay + account.filesize
       };
+      
       await sendAccountToDownloader(JSON.stringify(accountReport))
     },
     { noAck: true }

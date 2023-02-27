@@ -18,7 +18,9 @@ dist/
 **/FinalWork/Downloader/.env
 **/FinalWork/Downloader/databse.sqlite
 **/FinalWork/Downloader/src/quicktest.ts
-**/FinalWork/RabbitMQ/data
+**/FinalWork/Containers/data
+**/FinalWork/Containers/data_grafana
+**/FinalWork/Containers/.env
 **/FinalWork/Uploader/node_modules
 **/FinalWork/Uploader/.env
 **/FinalWork/Uploader/uploads

@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  rabbitmq:
+    build:
+      context: ./
+      dockerfile: dockerfile-rabbitmq
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    hostname: rabbitmq
+    volumes:
+      - ./data:/var/lib/rabbitmq/mnesia
+    environment:
+      RABBITMQ_DEFAULT_USER: haap
+      RABBITMQ_DEFAULT_PASS: microservices
+    networks:
+      rabbitmq_net:
+        aliases:
+          - rabbitmq_host
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      INFLUXDB_DB: dbTest
+      INFLUXDB_ADMIN_USER: haap
+      INFLUXDB_ADMIN_PASSWORD: microservices
+
+  chronograf:
+    image: chronograf:latest
+    container_name: chronograf
+    ports:
+      - '127.0.0.1:8888:8888'
+    volumes:
+      - chronograf-storage:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUXDB_USERNAME: haap
+      INFLUXDB_PASSWORD: microservices
+
+  grafana:
+    image: grafana/grafana:7.3.7     
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - 'env.grafana'
+    user: "0"
+    links:
+      - influxdb
+    volumes:
+      - ./data_grafana:/var/lib/grafana
+
+volumes:
+  influxdb-storage:
+  chronograf-storage:  
+  data_grafana:
+  data: {}
+
+networks:
+  rabbitmq_net:
+    name: rabbitmq_network
+    driver: bridge
