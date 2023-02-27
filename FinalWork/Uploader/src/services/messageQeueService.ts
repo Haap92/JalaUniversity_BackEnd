@@ -1,6 +1,8 @@
+import { Point } from "@influxdata/influxdb-client";
 import amqp = require("amqplib/callback_api");
 import FileService from "./fileService";
 import GoogleDriveAccountService from "./googleDriveAccountService";
+import InfluxDbService from "./influxDbService";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -102,6 +104,13 @@ export async function receiveToUpload() {
       const message = JSON.parse(msg.content.toString());
       console.log("Received File to Upload to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
+      const point = new Point("file_upload")
+        .tag("filename", message.filename)
+        .floatField("size", message.size)
+        .stringField("status", "Pending")
+        .timestamp(new Date());
+      const influxDbService = new InfluxDbService();
+      influxDbService.writeApi.writePoints([point]);
       fileService.setupDriveUpload(message);;
     },
     {
@@ -115,7 +124,7 @@ export async function receiveToUpload() {
       const message = JSON.parse(msg.content.toString());
       console.log("Received Account to Upload files to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
-      fileService.setupNewAccountDriveUpload(message);;
+      fileService.setupNewAccountDriveUpload(message);
     },
     {
       noAck: true,

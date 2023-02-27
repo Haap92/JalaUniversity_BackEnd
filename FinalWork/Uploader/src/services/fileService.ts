@@ -288,7 +288,6 @@ export default class FileService {
   async setupAccountDriveFilesDelete(accountId: string) {
     const driveAccount = await this.googleDriveAccountService.read(accountId)
 
-    
     const files = await this.driveFileService.readByAccountId(accountId);
     for (const file of files) {
       const driveFile = await this.driveFileService.readByUploaderIdAndAccountId(file.uploaderId, accountId);

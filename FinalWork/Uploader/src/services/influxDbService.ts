@@ -24,11 +24,4 @@ export default class InfluxDbService {
         .getWriteApi(org, bucket, 'ns')
         .useDefaultTags({ location: hostname() })
     }
-
-    async savePointCreateFile(value: string) {
-        const newPoint: Point = new Point('Create File');
-        newPoint.tag("actions", value);
-        newPoint.intField("day", new Date().getDay());
-        newPoint.timestamp(new Date());
-      }
 }
