@@ -33,9 +33,9 @@ export class FileReportRepository {
     }
   }
 
-  async update (updateFile: FileReport) {
-    const response = await this.repository.save(updateFile)
-    return response
+  async update(updateFile: FileReport) {
+    const response = await this.repository.update({ id: updateFile.id }, updateFile);
+    return response;
   }
 
   async delete (id: number) {

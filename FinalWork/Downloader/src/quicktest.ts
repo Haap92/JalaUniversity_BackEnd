@@ -29,10 +29,10 @@ class Test {
     
         const account3 = new DriveAccount();
         account3.accountId = "63e7103e672c6f4f7cd86416";
-        account3.downloadsTotal = 0;
+        account3.downloadsTotal = 18;
         account3.downloadsToday = 0;
         account3.consecutiveDownloads = 0;
-        account3.acumulatedSizeTotal = 0;
+        account3.acumulatedSizeTotal = 6887541;
         account3.acumulatedSizeDay = 0;
         account3.activeAccount = 'no'
 

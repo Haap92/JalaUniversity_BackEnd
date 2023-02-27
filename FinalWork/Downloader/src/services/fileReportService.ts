@@ -1,7 +1,7 @@
 import { HttpError } from "../middlewares/errorHandler";
 import { FileReportRepository } from "../db/repositories/fileReportRepository";
 import FileReport from "../db/entities/fileReport";
-import { NewFileReportValues } from "../types";
+import { NewFileReportValues } from '../types';
 
 
 
@@ -27,16 +27,19 @@ export default class FileReportService {
       }
   }
 
-  async updateFileReportById (message: any) {
-    const filetoUpdate: FileReport | undefined = await this.read(message.id)
+  async updateFileReport(updateFile: FileReport) {
+    const existingFile = await this.read(updateFile.id);
+    if (!existingFile) {
+      throw new Error('File not found');
+    }
 
-    filetoUpdate.uploaderId = message.uploaderId
-    filetoUpdate.downloadsToday = message.downloadsToday
-    filetoUpdate.downloadsTotal = message.downloadsTotal
-    filetoUpdate.acumulatedSizeTotal = message.acumulatedSizeTotal
-    filetoUpdate.acumulatedSizeDay = message.acumulatedSizeDay
-
-    return await this.fileReportRepository.update(filetoUpdate)
+    existingFile.uploaderId = updateFile.uploaderId;
+    existingFile.downloadsToday = updateFile.downloadsToday;
+    existingFile.downloadsTotal = updateFile.downloadsTotal;
+    existingFile.acumulatedSizeTotal = updateFile.acumulatedSizeTotal;
+    existingFile.acumulatedSizeDay = updateFile.acumulatedSizeDay;
+  
+    return await this.fileReportRepository.update(existingFile);
   }
 
   async readAll () {

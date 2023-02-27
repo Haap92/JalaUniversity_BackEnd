@@ -3,8 +3,10 @@ import DownloadFile from "../db/entities/downloadFile";
 import { DownloadFileValues, InactiveAccountValues } from "../types";
 import DownloadFileService from "./downloadFileService";
 import FileReportService from "./fileReportService";
+import FileReport from "../db/entities/fileReport";
 import DriveAccountService from "./driveAccountService";
 import DriveAccount from "../db/entities/driveAccount";
+import { DriveAccountValues } from "../../../Stats/src/types";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -188,7 +190,7 @@ export async function receiveFromUploader() {
       const fileReport = JSON.parse(message!.content.toString());
       const fileReportService = new FileReportService();
       if (fileReport.id) {
-        await fileReportService.updateFileReportById(fileReport);
+        await fileReportService.updateFileReport(fileReport);
       } else {
         await fileReportService.create(fileReport);
       }
