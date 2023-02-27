@@ -3,6 +3,7 @@ import amqp = require("amqplib/callback_api");
 import FileService from "./fileService";
 import GoogleDriveAccountService from "./googleDriveAccountService";
 import InfluxDbService from "./influxDbService";
+import logger from "jet-logger";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -42,49 +43,49 @@ async function sendMessage(queue: string, message: string) {
 
 export async function sendToUpload(message: string) {
   const queue = "Uploader-Drive";
-  console.log("File sent to Drive: " + message);
+  logger.info("File sent to Drive: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToCreateAccount(message: string) {
   const queue = "Uploader-Drive-Account-create";
-  console.log("Account sent to Drive: " + message);
+  logger.info("Account sent to Drive: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToDeleteAccount(message: string) {
   const queue = "Uploader-Drive-Account-delete";
-  console.log("Account sent to Hard Delete: " + message);
+  logger.info("Account sent to Hard Delete: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToDownload(message: string) {
   const queue = "Uploader-Downloader-create-file";
-  console.log("File sent to Downloads: " + message);
+  logger.info("File sent to Downloads: " + message);
   await sendMessage(queue, message);
 }
 
 export async function deleteOnDownload(message: string) {
   const queue = "Uploader-Downloader-delete-file";
-  console.log("File to delete in Downloads: " + message);
+  logger.info("File to delete in Downloads: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendAccountToDownload(message: string) {
   const queue = "Uploader-Downloader-create-account";
-  console.log("Account sent to delete on Downloader: " + message);
+  logger.info("Account sent to delete on Downloader: " + message);
   await sendMessage(queue, message);
 }
 
 export async function deleteAccountOnDownload(message: string) {
   const queue = "Uploader-Downloader-delete-account";
-  console.log("Account sent to Downloads: " + message);
+  logger.info("Account sent to Downloads: " + message);
   await sendMessage(queue, message);
 }
 
 export async function sendToSatus(message: string) {
   const queue = "Uploader-Stats";
-  console.log("File sent to Status: " + message);
+  logger.info("File sent to Status: " + message);
   await sendMessage(queue, message);
 }
 
@@ -102,7 +103,7 @@ export async function receiveToUpload() {
     queueDrive,
     (msg) => {
       const message = JSON.parse(msg.content.toString());
-      console.log("Received File to Upload to Drive: " + JSON.stringify(message));
+      logger.info("Received File to Upload to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
       const point = new Point("file_upload")
         .tag("filename", message.filename)
@@ -122,7 +123,7 @@ export async function receiveToUpload() {
     queueAccountCreate,
     (msg) => {
       const message = JSON.parse(msg.content.toString());
-      console.log("Received Account to Upload files to Drive: " + JSON.stringify(message));
+      logger.info("Received Account to Upload files to Drive: " + JSON.stringify(message));
       const fileService = new FileService()
       fileService.setupNewAccountDriveUpload(message);
     },
@@ -135,7 +136,7 @@ export async function receiveToUpload() {
     queueAccountDelete,
     (msg) => {
       const message = JSON.parse(msg.content.toString());
-      console.log("Received Account to Delete" + JSON.stringify(message));
+      logger.info("Received Account to Delete" + JSON.stringify(message));
       const googleDriveAccountService = new GoogleDriveAccountService()
       googleDriveAccountService.hardDelete(message.id);;
     },
@@ -143,5 +144,5 @@ export async function receiveToUpload() {
       noAck: true,
     }
   );
-  console.log("Message Queue Service running on Uploader.");
+  logger.info("Message Queue Service running on Uploader.");
 }

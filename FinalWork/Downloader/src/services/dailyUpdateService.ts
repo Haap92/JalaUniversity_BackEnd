@@ -1,5 +1,6 @@
 import DriveAccountService from "./driveAccountService"
 import FileReportService from "./fileReportService"
+import logger from "jet-logger";
 
 const cron = require('node-cron')
 
@@ -16,7 +17,7 @@ export default class DailyUpdateService {
       cron.schedule('00 01 * * *', () => {
         this.fileReportService.dailyUpdateDownloads()
         this.driveAccountService.dailyUpdateDownloads()
-        console.log('Day have been resetted');
+        logger.info('Day have been resetted');
       }, {
         scheduled: true,
         timezone: 'America/Buenos_Aires'

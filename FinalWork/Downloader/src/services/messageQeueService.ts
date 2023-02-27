@@ -3,12 +3,11 @@ import DownloadFile from "../db/entities/downloadFile";
 import { DownloadFileValues, InactiveAccountValues } from "../types";
 import DownloadFileService from "./downloadFileService";
 import FileReportService from "./fileReportService";
-import FileReport from "../db/entities/fileReport";
 import DriveAccountService from "./driveAccountService";
 import DriveAccount from "../db/entities/driveAccount";
-import { DriveAccountValues } from "../../../Stats/src/types";
 import { Point } from "@influxdata/influxdb-client";
 import InfluxDbService from "./influxDbService";
+import logger from "jet-logger";
 
 const rabbitMqConfig = {
   protocol: "amqp",
@@ -40,7 +39,7 @@ async function sendMessage(queue: string, message: string) {
   const channel = await connectToRabbitMq();
   channel.assertQueue(queue, { durable: false });
   channel.sendToQueue(queue, Buffer.from(message));
-  console.log("Message Sent: " + message);
+  logger.info("Message Sent: " + message);
   setTimeout(function () {
     channel.close(() => {});
   }, 500);
@@ -103,7 +102,7 @@ export async function receiveFromUploader() {
       downloadFile.accountId = uploadedFile.accountId;
 
       await downloadFileService.create(downloadFile);
-      console.log(
+      logger.info(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been created in Downloader DB.`
       );
     },
@@ -124,7 +123,7 @@ export async function receiveFromUploader() {
         uploaderId,
         accountId
       );
-      console.log(
+      logger.info(
         `File: "${uploadedFile.uploaderId}" from Google Drive Account: "${uploadedFile.accountId}" has been deleted in Downloader DB.`
       );
     },
@@ -146,7 +145,7 @@ export async function receiveFromUploader() {
       driveAccount.activeAccount = "yes";
 
       await driveAccountService.create(driveAccount);
-      console.log(
+      logger.info(
         `Google Drive Account: "${driveAccount.accountId}" has been created in Downloader DB.`
       );
     },
@@ -168,7 +167,7 @@ export async function receiveFromUploader() {
         accountId,
         updateInactiveAccount
       );
-      console.log(
+      logger.info(
         `Google Drive Account: "${accountId}" is now inactive in Downloader DB.`
       );
     },
@@ -230,5 +229,5 @@ export async function receiveFromUploader() {
     },
     { noAck: true }
   );
-  console.log("Message Queue Service running on Downloader.");
+  logger.info("Message Queue Service running on Downloader.");
 }
