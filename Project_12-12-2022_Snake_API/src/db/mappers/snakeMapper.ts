@@ -1,5 +1,6 @@
 import DBSnake from "../dbEntities/db-snake";
-import Snake from "../../domain/entities/snake";
+import Snake from "../../domain/entities/Snake";
+
 
 export class SnakeMapper {
     static toDomain(raw: DBSnake): Snake{

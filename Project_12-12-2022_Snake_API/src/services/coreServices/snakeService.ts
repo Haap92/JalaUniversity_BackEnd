@@ -1,7 +1,8 @@
 import { injectable } from "inversify";
-import Snake from "../../domain/entities/snake";
+import Snake from "../../domain/entities/Snake";
 import { container } from "../../inversify/config";
 import { SnakeRepository } from "../../domain/repository/snakeRepository";
+
 
 @injectable()
 export default class SnakeService implements SnakeRepository {

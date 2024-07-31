@@ -1,4 +1,4 @@
-import { FoodRepository } from "../domain/repository/FoodRepository";
+import { FoodRepository } from "../domain/repository/foodRepository";
 import { SnakeRepository } from "../domain/repository/snakeRepository";
 import { container } from "../inversify/config";
 import {
@@ -39,7 +39,7 @@ export default class SnakeEatsAndCollisionService {
     const positionX = snake.axisX;
     const positionY = snake.axisY;
 
-    const collision = snakeBody.forEach((element: number[]) => {
+    snakeBody.forEach((element: number[]) => {
       if (positionX == element[0] && positionY == element[1]) return true;
     });
     return false;

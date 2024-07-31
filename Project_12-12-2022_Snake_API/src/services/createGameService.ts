@@ -1,4 +1,4 @@
-import { FoodRepository } from "../domain/repository/FoodRepository";
+import { FoodRepository } from "../domain/repository/foodRepository";
 import { SnakeRepository } from "../domain/repository/snakeRepository";
 import { BoardRepository } from "../domain/repository/boardRepository";
 import { GameRepository } from "../domain/repository/gameRepository";

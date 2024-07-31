@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import DBBoard from "./dbEntities/db-board";
-import DBFood from "./dbEntities/db-Food";
+import DBFood from "./dbEntities/db-food";
 import DBSnake from "./dbEntities/db-snake";
 import DBGame from './dbEntities/db-game';
 

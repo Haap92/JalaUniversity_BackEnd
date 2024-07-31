@@ -1,7 +1,7 @@
 import { AppDataSource } from '../db-source';
 import { injectable } from 'inversify';
-import { FoodRepository } from '../../domain/repository/FoodRepository';
-import DBFood from '../dbEntities/db-Food';
+import { FoodRepository } from '../../domain/repository/foodRepository';
+import DBFood from '../dbEntities/db-food';
 
 @injectable()
 export default class FoodDataService implements FoodRepository  {

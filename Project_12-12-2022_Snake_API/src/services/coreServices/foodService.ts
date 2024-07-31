@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
-import Food from "../../domain/entities/Food";
+import Food from "../../domain/entities/food";
 import { container } from '../../inversify/config';
-import { FoodRepository } from "../../domain/repository/FoodRepository";
+import { FoodRepository } from "../../domain/repository/foodRepository";
 
 @injectable()
 export default class FoodService implements FoodRepository {
